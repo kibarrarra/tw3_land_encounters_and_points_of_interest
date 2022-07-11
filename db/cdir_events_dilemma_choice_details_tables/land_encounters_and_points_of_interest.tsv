@@ -1,0 +1,26 @@
+choice_key	dilemma_key	associated_audio_trigger
+#cdir_events_dilemma_choice_details_tables;3;db/cdir_events_dilemma_choice_details_tables/land_encounters_and_points_of_interest		
+FIRST	land_enc_dilemma_bandits_emp	
+SECOND	land_enc_dilemma_bandits_emp	
+FIRST	land_enc_dilemma_bandits_wef	
+SECOND	land_enc_dilemma_bandits_wef	
+FIRST	land_enc_dilemma_bandits_nor	
+SECOND	land_enc_dilemma_bandits_nor	
+FIRST	land_enc_dilemma_incursion_army_hef	
+SECOND	land_enc_dilemma_incursion_army_hef	
+FIRST	land_enc_dilemma_incursion_army_lzd	
+SECOND	land_enc_dilemma_incursion_army_lzd	
+FIRST	land_enc_dilemma_incursion_army_vco	
+SECOND	land_enc_dilemma_incursion_army_vco	
+FIRST	land_enc_dilemma_surprise_attack_bst	
+SECOND	land_enc_dilemma_surprise_attack_bst	
+FIRST	land_enc_dilemma_surprise_attack_skv	
+SECOND	land_enc_dilemma_surprise_attack_skv	
+FIRST	land_enc_dilemma_battlefield_grn	
+SECOND	land_enc_dilemma_battlefield_grn	
+FIRST	land_enc_dilemma_battlefield_def	
+SECOND	land_enc_dilemma_battlefield_def	
+FIRST	land_enc_dilemma_battlefield_vmp	
+SECOND	land_enc_dilemma_battlefield_vmp	
+FIRST	land_enc_dilemma_battlefield_tmb	
+SECOND	land_enc_dilemma_battlefield_tmb	

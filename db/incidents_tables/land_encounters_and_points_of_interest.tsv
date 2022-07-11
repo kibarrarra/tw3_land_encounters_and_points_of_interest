@@ -1,0 +1,23 @@
+key	generate	ui_image	prioritised	event_category	override_icon
+#incidents_tables;3;db/incidents_tables/land_encounters_and_points_of_interest					
+land_enc_incident_tomb_robbing	false	faction	false	Event	
+land_enc_incident_abandoned_camp	false	faction	false	Event	
+land_enc_incident_buried_relics	false	faction	false	Event	
+land_enc_incident_hidden_temple	false	faction	false	Event	
+land_enc_incident_caravan_remnants	false	faction	false	Event	
+land_enc_incident_legendary_bard	false	faction	false	Event	
+land_enc_incident_whispers_of_the_gods	false	faction	false	Event	
+land_enc_incident_battle_won_bandits	false	faction	false	Event	
+land_enc_incident_battle_avoided_bandits	false	faction	false	Event	
+land_enc_incident_battle_won_incursion_hef	false	faction	false	Event	
+land_enc_incident_battle_won_incursion_lzd	false	faction	false	Event	
+land_enc_incident_battle_won_incursion_vco	false	faction	false	Event	
+land_enc_incident_battle_avoided_incursion	false	faction	false	Event	
+land_enc_incident_battle_won_surprise_bst	false	faction	false	Event	
+land_enc_incident_battle_won_surprise_skv	false	faction	false	Event	
+land_enc_incident_battle_avoided_surprise	false	faction	false	Event	
+land_enc_incident_battle_won_battlefield_grn	false	faction	false	Event	
+land_enc_incident_battle_won_battlefield_def	false	faction	false	Event	
+land_enc_incident_battle_won_battlefield_vmp	false	faction	false	Event	
+land_enc_incident_battle_won_battlefield_tmb	false	faction	false	Event	
+land_enc_incident_battle_avoided_battlefield	false	faction	false	Event	

@@ -1,0 +1,5 @@
+key	text	tooltip
+#Loc PackedFile;1;text/db/land_enc_and_poi_event_feed_strings.loc		
+event_feed_strings_text_title_event_land_enc_and_poi_encountered	Location of Interest!	false
+event_feed_strings_text_subtitle_event_land_enc_and_poi_encountered	Opportunity Missed	false
+event_feed_strings_text_description_event_land_enc_and_poi_encountered	Your army has spotted something in the surrounding area that may have been of interest to you, but you were marching too fast to have time to see what it was. Switch to default stance before returning to the location to take a closer look.	false

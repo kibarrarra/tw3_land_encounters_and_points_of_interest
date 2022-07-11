@@ -1,0 +1,33 @@
+
+{
+    "folders":
+    [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "Lua.workspace.library": [
+            "C:/Users/Diago/AppData/Roaming/rpfm/config/tw_autogen/output/wh3/all.lua",
+            "C:/Users/Diago/AppData/Roaming/rpfm/config/tw_autogen/output/wh3/tw_events_and_interfaces.lua",
+            "C:/Users/Diago/AppData/Roaming/rpfm/config/tw_autogen/output/wh3/campaign/",
+            "C:/Users/Diago/AppData/Roaming/rpfm/config/tw_autogen/output/wh3/frontend/",
+            "C:/Users/Diago/AppData/Roaming/rpfm/config/tw_autogen/output/wh3/battle/"
+        ],
+        "Lua.runtime.version": "Lua 5.1",
+        "Lua.completion.autoRequire": false,
+        "Lua.workspace.preloadFileSize": 1500,
+        "Lua.workspace.ignoreSubmodules": false,
+        "Lua.diagnostics.workspaceDelay": 500,
+        "Lua.diagnostics.workspaceRate": 40,
+        "Lua.diagnostics.disable": [
+            "lowercase-global",
+            "trailing-space"
+        ],
+        "Lua.hint.setType": true,
+        "Lua.workspace.ignoreDir": [
+            ".vscode",
+            ".git"
+        ],
+    }
+}
