@@ -42,3 +42,5 @@ id	incident_key	option_key	value	target
 7017900611	land_enc_incident_battle_won_battlefield_tmb	GEN_TARGET_MODEL		default
 7017900612	land_enc_incident_battle_avoided_battlefield	VAR_CHANCE	100	default
 7017900613	land_enc_incident_battle_avoided_battlefield	GEN_TARGET_MODEL		default
+7017900614	land_enc_incident_clean_up_event	VAR_CHANCE	100	default
+7017900615	land_enc_incident_clean_up_event	GEN_TARGET_MODEL		default

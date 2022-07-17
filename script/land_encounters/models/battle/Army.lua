@@ -5,13 +5,14 @@ local LordUnit = require("script/land_encounters/models/battle/LordUnit")
 ------------------------------------------------
 --- Constant values of the class [DO NOT CHANGE | ALWAYS DECLARE FIRST]
 ------------------------------------------------
-local RANDOMIZED_ARMY_IDENTIFIER = "encounter_force"
+local DEFAULT_FORCE_IDENTIFIER = "encounter_force"
 
 -------------------------
 --- Properties definition
 -------------------------
 local Army = {
     faction = "",
+    force_identifier = DEFAULT_FORCE_IDENTIFIER,
     -- units of the army base and generators
     units_pool = {},
     units = {},
@@ -31,9 +32,9 @@ end
 
 
 function Army:randomize_army_composition_and_declare(random_army_manager)
-    random_army_manager:remove_force(RANDOMIZED_ARMY_IDENTIFIER)
-    random_army_manager:new_force(RANDOMIZED_ARMY_IDENTIFIER)
-    --out("LEAPOI - Army new force created - encounter_force")
+    random_army_manager:remove_force(self.force_identifier)
+    random_army_manager:new_force(self.force_identifier)
+    out("LEAPOI - Army new force created - " .. self.force_identifier)
     local randomized_units = {}
     for i=1, #self.units_pool do
         local randomized_unit = self.units_pool[i]:generate_winner_unit()
@@ -56,7 +57,7 @@ end
 
 
 function Army:declare_army_unit(random_army_manager, unit_id, unit_count)
-    random_army_manager:add_mandatory_unit(RANDOMIZED_ARMY_IDENTIFIER, unit_id, unit_count)
+    random_army_manager:add_mandatory_unit(self.force_identifier, unit_id, unit_count)
 end
 
 
@@ -67,9 +68,14 @@ end
 -------------------------
 --- Constructors
 -------------------------
-function Army:newFrom(force_data)
+function Army:newFrom(force_data, identifier)
+    if identifier == nil then
+        identifier = DEFAULT_FORCE_IDENTIFIER
+    end
+    
     local t = {
-        faction = force_data.faction, 
+        faction = force_data.faction,
+        force_identifier = identifier,
         units_pool = {}, 
         units = {}, 
         unit_experience_amount = force_data.unit_experience_amount, 

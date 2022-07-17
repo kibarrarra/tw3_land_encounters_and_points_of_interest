@@ -12,7 +12,7 @@ local ie_encounter_land_locations = require("script/land_encounters/constants/co
 local roc_encounter_land_locations = require("script/land_encounters/constants/coordinates/realm_of_chaos_coordinates")
 
 --[[ Dilemma Events created for this script --]]
-local battle_events = require("script/land_encounters/constants/events/battle_type_events")
+local battle_events = require("script/land_encounters/constants/events/battle_spot_events")
 
 --[[ Model of the the land encounters functionality --]]
 local LandEncounterManager = require("script/land_encounters/controller/land_encounter_manager")
@@ -24,10 +24,17 @@ local manager = nil
 Initializes the land encounters by instantiating a LandEncounterModel
 --]]
 cm:add_first_tick_callback(
-	function()
-        --initialize_land_encounters()
-		--out("LEAPOI - reinitialised listeners")
-	end
+    function()
+        out("LEAPOI - Starting up v1.18")
+        out("LEAPOI - INITIALIZE LAND ENCOUNTERS")
+        if cm:get_campaign_name() == "wh3_main_chaos" then
+            if manager:has_previous_state() then
+                manager:restore_from_previous_state(roc_encounter_land_locations)
+            else
+                manager:generate_land_encounters(roc_encounter_land_locations)
+            end
+        end
+    end
 )
 
 
@@ -43,7 +50,7 @@ core:add_listener(
 	function(context)
         if manager then
             -- land encounter model has been initialized so we can proceed with the update logic
-            --out("LEAPOI - Beginning update process")
+            out("LEAPOI - Beginning update process")
             manager:update_land_encounters()
         --else
             --initialize_land_encounters()
@@ -106,9 +113,8 @@ local DEFAULT_FLATTENED_SPOTS_VALUE = {}
 
 cm:add_saving_game_callback(
 	function(context)
-        --out("LEAPOI - Saving State")
+        out("LEAPOI - Saving State")
         cm:save_named_value(FLATTENED_SPOTS_STATE, manager:export_state_as_table(), context)
-        --cm:save_named_value(FLATTENED_INVASION_STATE, manager.invasion_battle_manager:export_state_as_table(), context)
 	end
 );
 
@@ -117,7 +123,7 @@ cm:add_saving_game_callback(
 --]]
 cm:add_loading_game_callback(
 	function(context)
-        --out("LEAPOI - State restoration")
+        out("LEAPOI - State restoration")
         local land_encounters_state = cm:load_named_value(FLATTENED_SPOTS_STATE, DEFAULT_FLATTENED_SPOTS_VALUE, context)
         initialize_land_encounters(land_encounters_state)
 	end
@@ -149,27 +155,16 @@ core:add_listener(
 --]]
 
 function initialize_land_encounters(land_encounters_state)
-    --out("LEAPOI - Starting up v1.16")
-    --if land_encounters_state ~= nil then
-    --    out("LEAPOI - PREVIOUS_STATE: " .. tostring(#land_encounters_state))
-    --else
-    --    out("LEAPOI - PREVIOUS_STATE: NULL")
-    --end
-        
-    local invasion_battle_manager = InvasionBattleManager:newFrom(core, random_army_manager, invasion_manager)
-    if(invasion_battle_state) then
-        invasion_battle_manager:reset()
+    if manager == nil then
+        local invasion_battle_manager = InvasionBattleManager:newFrom(core, random_army_manager, invasion_manager)
+        manager = LandEncounterManager:newFrom(core, invasion_battle_manager)
     end
     
-    -- land_encounter_model has not been initialized and the initial seed for the points must be created
-    if manager == nil then
-        manager = LandEncounterManager:newFrom(core, invasion_battle_manager)
-        if cm:get_campaign_name() == "wh3_main_chaos" then
-            if land_encounters_state == nil then
-                manager:generate_land_encounters(roc_encounter_land_locations)
-            else
-                manager:restore_from_previous_state(roc_encounter_land_locations, land_encounters_state)
-            end
-        end 
+    if land_encounters_state ~= DEFAULT_FLATTENED_SPOTS_VALUE then
+        out("LEAPOI - PREVIOUS_STATE: " .. tostring(#land_encounters_state))
+        manager.previous_state = land_encounters_state
+    else
+        out("LEAPOI - PREVIOUS_STATE: NO PREVIOUS STATE")
     end
+    
 end

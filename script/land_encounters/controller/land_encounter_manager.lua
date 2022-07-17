@@ -6,7 +6,7 @@ local Zone = require("script/land_encounters/models/Zone")
 --- Constant values of the class [DO NOT CHANGE]
 -------------------------
 local DEFAULT_ACTIVE_SPOT_PERCENTAGE = 0.75
-local DEFAULT_BATTLE_PERCENTAGE = 0.75
+local DEFAULT_BATTLE_PERCENTAGE = 0.80
 
 --=======================
 --- Properties definition
@@ -17,13 +17,15 @@ local LandEncounterManager = {
     battle_percentage = DEFAULT_BATTLE_PERCENTAGE, -- 0.0 For debugging treasures, 1.0 for debugging battles. Common 0.5 should be configurable through MCT
     
     -- given that the dilemma context does not have an area_key(), we need to track it here
-    dilemma_zone_and_spot = nil,
+    dilemma_zone_and_spot = false,
     
     -- TODO: Ca managers. They don't seem to pass properly to functions outside their scope and importing them does not work. Passing their instances to the land encounters manager for using them in whenever instance needs them
     -- Core is the main manager for listeners.
-    core = nil,
+    core = false,
     -- For creating random armies and creating invasions
-    invasion_battle_manager = nil
+    invasion_battle_manager = false,
+    
+    previous_state = false
 }
 
 --=======================
@@ -32,6 +34,10 @@ local LandEncounterManager = {
 -------------------------
 -- POPULATION OF DATA RELATED METHODS
 -------------------------
+function LandEncounterManager:has_previous_state()
+    return self.previous_state ~= false
+end
+
 function LandEncounterManager:generate_land_encounters(coordinates_by_zone)
     -- we create new land encounters given the map coordinates from whatever map was selected
     self:initialize_spots_by_zone(coordinates_by_zone)
@@ -39,12 +45,13 @@ function LandEncounterManager:generate_land_encounters(coordinates_by_zone)
     self:populate_land_encounters()
 end
 
+
 -- Restores the data from a previous saved spot
-function LandEncounterManager:restore_from_previous_state(coordinates_by_zone, previous_state)
+function LandEncounterManager:restore_from_previous_state(coordinates_by_zone)
     -- we create new land encounters given the map coordinates from whatever map was selected
     self:initialize_spots_by_zone(coordinates_by_zone)
     -- we restore the data inside each encounter
-    self:reinstate_land_encounters(previous_state)
+    self:reinstate_land_encounters(self.previous_state)
 end
 
 

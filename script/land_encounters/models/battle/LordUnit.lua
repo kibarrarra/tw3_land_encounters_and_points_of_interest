@@ -1,3 +1,5 @@
+require("script/land_encounters/utils/random")
+
 -------------------------
 --- Properties definition
 -------------------------
@@ -15,13 +17,13 @@ local LordUnit = {
 --- Class Methods
 -------------------------
 function LordUnit:generate_random_level()
-    return cm:random_number(self.level_ranges[2], self.level_ranges[1])
+    return random_number(self.level_ranges[2], self.level_ranges[1])
 end
 
 
 function LordUnit:generate_subtype()
     if #self.possible_subtypes > 0 then
-        return self.possible_subtypes[cm:random_number(#self.possible_subtypes)]
+        return self.possible_subtypes[random_number(#self.possible_subtypes)]
     end
     return ""
 end
@@ -29,7 +31,7 @@ end
 
 function LordUnit:generate_random_forename()
     if #self.possible_forenames > 0 then
-        return self.possible_forenames[cm:random_number(#self.possible_forenames)]
+        return self.possible_forenames[random_number(#self.possible_forenames)]
     end
     return ""
 end
@@ -37,7 +39,7 @@ end
 
 function LordUnit:generate_random_clan_name()
     if #self.possible_clan_names > 0 then
-        return self.possible_clan_names[cm:random_number(#self.possible_clan_names)]
+        return self.possible_clan_names[random_number(#self.possible_clan_names)]
     end
     return ""
 end
@@ -45,7 +47,7 @@ end
 
 function LordUnit:generate_random_family_name()
     if #self.possible_family_names > 0 then
-        return self.possible_family_names[cm:random_number(#self.possible_family_names)]
+        return self.possible_family_names[random_number(#self.possible_family_names)]
     end
     return ""
 end
@@ -53,7 +55,7 @@ end
 
 function LordUnit:generate_random_other_name()
     if #self.possible_other_names > 0 then
-        return self.possible_other_names[cm:random_number(#self.possible_other_names)]
+        return self.possible_other_names[random_number(#self.possible_other_names)]
     end
     return ""
 end

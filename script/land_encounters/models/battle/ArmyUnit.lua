@@ -1,3 +1,5 @@
+require("script/land_encounters/utils/random")
+
 -------------------------
 --- Properties definition
 -------------------------
@@ -14,9 +16,9 @@ local ArmyUnit = {
 --- Class Methods
 -------------------------
 function ArmyUnit:generate_winner_unit()
-    if self.chance >= cm:random_number(100) then
+    if self.chance >= random_number(100) then
         return { id = self.id, count = self.quantity }
-    elseif self.alternative_chance >= cm:random_number(100) then
+    elseif self.alternative_chance >= random_number(100) then
         return { id = self.alternative_id, count = self.quantity }
     end
     return nil

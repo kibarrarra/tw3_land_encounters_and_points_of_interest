@@ -21,3 +21,4 @@ land_enc_incident_battle_won_battlefield_def	false	faction	false	Event
 land_enc_incident_battle_won_battlefield_vmp	false	faction	false	Event	
 land_enc_incident_battle_won_battlefield_tmb	false	faction	false	Event	
 land_enc_incident_battle_avoided_battlefield	false	faction	false	Event	
+land_enc_incident_clean_up_event	false	faction	false	Event	

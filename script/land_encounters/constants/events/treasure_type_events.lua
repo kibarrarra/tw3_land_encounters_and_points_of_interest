@@ -33,6 +33,7 @@ effect_bundles_ localised_title_
                 localised_description_
 --]]
 local treasures = {
+    --"land_enc_incident_clean_up_event" SPECIAL: Only used for the abstract class spot to eliminate bugged points
     "land_enc_incident_tomb_robbing",
     "land_enc_incident_abandoned_camp",
     "land_enc_incident_buried_relics",
