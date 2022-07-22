@@ -1,5 +1,23 @@
 choice_key	dilemma_key	associated_audio_trigger
 #cdir_events_dilemma_choice_details_tables;3;db/cdir_events_dilemma_choice_details_tables/land_encounters_and_points_of_interest		
+FIRST	land_enc_dilemma_skirmish_cth	
+SECOND	land_enc_dilemma_skirmish_cth	
+FIRST	land_enc_dilemma_skirmish_kis	
+SECOND	land_enc_dilemma_skirmish_kis	
+FIRST	land_enc_dilemma_skirmish_ogr	
+SECOND	land_enc_dilemma_skirmish_ogr	
+FIRST	land_enc_dilemma_skirmish_nur	
+SECOND	land_enc_dilemma_skirmish_nur	
+FIRST	land_enc_dilemma_skirmish_tze	
+SECOND	land_enc_dilemma_skirmish_tze	
+FIRST	land_enc_dilemma_underground_cth	
+SECOND	land_enc_dilemma_underground_cth	
+FIRST	land_enc_dilemma_underground_kis	
+SECOND	land_enc_dilemma_underground_kis	
+FIRST	land_enc_dilemma_underground_ogr	
+SECOND	land_enc_dilemma_underground_ogr	
+FIRST	land_enc_dilemma_underground_tze	
+SECOND	land_enc_dilemma_underground_tze	
 FIRST	land_enc_dilemma_bandits_emp	
 SECOND	land_enc_dilemma_bandits_emp	
 FIRST	land_enc_dilemma_bandits_wef	

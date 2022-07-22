@@ -7,6 +7,10 @@ land_enc_incident_hidden_temple	false	faction	false	Event
 land_enc_incident_caravan_remnants	false	faction	false	Event	
 land_enc_incident_legendary_bard	false	faction	false	Event	
 land_enc_incident_whispers_of_the_gods	false	faction	false	Event	
+land_enc_incident_battle_won_skirmish	false	faction	false	Event	
+land_enc_incident_battle_avoided_skirmish	false	faction	false	Event	
+land_enc_incident_battle_won_underground	false	faction	false	Event	
+land_enc_incident_battle_avoided_underground	false	faction	false	Event	
 land_enc_incident_battle_won_bandits	false	faction	false	Event	
 land_enc_incident_battle_avoided_bandits	false	faction	false	Event	
 land_enc_incident_battle_won_incursion_hef	false	faction	false	Event	

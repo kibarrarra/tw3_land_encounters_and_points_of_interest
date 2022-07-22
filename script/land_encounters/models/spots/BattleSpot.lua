@@ -1,4 +1,5 @@
 require("script/land_encounters/utils/strings")
+require("script/land_encounters/utils/boolean")
 
 local Spot = require("script/land_encounters/models/spots/abstract_classes/Spot")
 
@@ -36,14 +37,14 @@ end
 
 function BattleSpot:set_event_from_string(event_as_string)
     local event_in_parts = split_by_regex(event_as_string)
-    self.event = { dilemma = event_in_parts[1], victory_incident = event_in_parts[2], avoidance_incident = event_in_parts[3] }
+    self.event = { dilemma = event_in_parts[1], victory_incident = event_in_parts[2], avoidance_incident = event_in_parts[3], difficulty_level = tonumber(event_in_parts[4]), is_exclusive_to_zone = stringtoboolean[event_in_parts[5]], zone = event_in_parts[6]  }
 end
 
 
 -- Event can be nil due to it loosing it's value once used.
 function BattleSpot:get_event_as_string()
     if self.event ~= nil then
-        return self.event.dilemma .. "/" .. self.event.victory_incident .. "/" .. self.event.avoidance_incident
+        return self.event.dilemma .. "/" .. self.event.victory_incident .. "/" .. self.event.avoidance_incident .. "/" .. self.event.difficulty_level .. "/" .. booleantostring[self.event.is_exclusive_to_zone] .. "/" .. self.event.zone
     else
         return nil
     end
@@ -90,8 +91,8 @@ function BattleSpot:trigger_dilemma_by_choice(invasion_battle_manager, zone, spo
         local in_same_region = false
         local x, y = cm:find_valid_spawn_location_for_character_from_position(faction:name(), self.coordinates[1], self.coordinates[2], in_same_region)
         self.is_triggered = true
-        invasion_battle_manager:generate_battle(--[[context,]] self.event.dilemma, self.player_character, {x, y})
-        invasion_battle_manager:reset_state_post_battle(zone, spot_index)
+        invasion_battle_manager:generate_battle(self.event.dilemma, self.player_character, {x, y})
+        invasion_battle_manager:reset_state_post_battle(zone, spot_index, invasion_battle_manager.DEFAULT_ENEMY_INVASION)
         return can_remove_encounter_marker
     else
         out("LEAPOI - Second choice -- No thanks!")
@@ -111,32 +112,6 @@ function BattleSpot:trigger_victory_incident()
     self:trigger_incident(self.event.victory_incident, self.player_character)
 end
 
---[[ 
-Put into the abstract Spot class and checking as the triggering of incidents should be managed in general by the default class of all spots
-function BattleSpot:trigger_incident(incident_key)
-    if self:is_human_and_it_is_its_turn() then 
-        -- if the campaign has been reloaded from a battle then we don't have the current player
-        if self.player_character == nil then
-            local faction_name = cm:get_local_faction_name()
-            local only_general = true
-            local is_garrison_commander = false
-            local local_character, distance = cm:get_closest_character_to_position_from_faction(faction_name, self.coordinates[1], self.coordinates[2], only_general, is_garrison_commander)
-            self.player_character = local_character
-        end
-        
-        local faction_cqi = self.player_character:faction():command_queue_index()
-        local incident_key = incident_key
-        local target_faction_cqi = 0 -- ignore flag
-        local secondary_faction_cqi = 0
-        local character_cqi = self.player_character:command_queue_index()
-        local military_force_cqi = self.player_character:military_force():command_queue_index()
-        local region_cqi = 0
-        local settlement_cqi = 0
-        cm:trigger_incident_with_targets(faction_cqi, incident_key, target_faction_cqi, secondary_faction_cqi, character_cqi, military_force_cqi, region_cqi, settlement_cqi)
-        --out("LEAPOI - Triggered targeted battle victory/avoidance land encounter incident")
-    end
-end
-]]--
 
 function BattleSpot:deactivate(zone_name)
     Spot.deactivate(self, zone_name)

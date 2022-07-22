@@ -1,5 +1,23 @@
 key	text	tooltip
 #Loc PackedFile;1;text/db/land_enc_and_poi_dilemmas.loc		
+dilemmas_localised_description_land_enc_dilemma_skirmish_cth	-	false
+dilemmas_localised_title_land_enc_dilemma_skirmish_cth	A friendly skirmish	false
+dilemmas_localised_description_land_enc_dilemma_skirmish_kis	-	false
+dilemmas_localised_title_land_enc_dilemma_skirmish_kis	A friendly skirmish	false
+dilemmas_localised_description_land_enc_dilemma_skirmish_ogr	-	false
+dilemmas_localised_title_land_enc_dilemma_skirmish_ogr	A friendly skirmish	false
+dilemmas_localised_description_land_enc_dilemma_skirmish_nur	-	false
+dilemmas_localised_title_land_enc_dilemma_skirmish_nur	A friendly skirmish	false
+dilemmas_localised_description_land_enc_dilemma_skirmish_tze	-	false
+dilemmas_localised_title_land_enc_dilemma_skirmish_tze	A friendly skirmish	false
+dilemmas_localised_description_land_enc_dilemma_underground_cth	-	false
+dilemmas_localised_title_land_enc_dilemma_underground_cth	Nascent Rebellion	false
+dilemmas_localised_description_land_enc_dilemma_underground_kis	-	false
+dilemmas_localised_title_land_enc_dilemma_underground_kis	Nascent Rebellion	false
+dilemmas_localised_description_land_enc_dilemma_underground_ogr	-	false
+dilemmas_localised_title_land_enc_dilemma_underground_ogr	Nascent Rebellion	false
+dilemmas_localised_description_land_enc_dilemma_underground_tze	-	false
+dilemmas_localised_title_land_enc_dilemma_underground_tze	Nascent Rebellion	false
 dilemmas_localised_description_land_enc_dilemma_bandits_emp	The smell of gunpowder hangs vaguely in the air, and even though the road seems relatively empty, the soldiers feel they are being watched. As the vanguard advances, a suspicious call of birds is heard. Should we continue down this path?	false
 dilemmas_localised_title_land_enc_dilemma_bandits_emp	Bandits!	false
 dilemmas_localised_description_land_enc_dilemma_bandits_wef	The army crosses a thick forest, dark and humid. The restless horses, each noise seems like a footstep, a whisper; the trees moving, they seem to be alive in front of your eyes. The first regiment raises its lances in a defensive position. They say they heard whispers in the trees, and advise preparing for a possible ambush. Should we continue down this path?	false

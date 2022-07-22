@@ -13,10 +13,11 @@ local roc_encounter_land_locations = require("script/land_encounters/constants/c
 
 --[[ Dilemma Events created for this script --]]
 local battle_events = require("script/land_encounters/constants/events/battle_spot_events")
+local BattleEventFactory = require("script/land_encounters/factories/BattleEventFactory")
 
 --[[ Model of the the land encounters functionality --]]
-local LandEncounterManager = require("script/land_encounters/controller/land_encounter_manager")
-local InvasionBattleManager = require("script/land_encounters/controller/invasion_battle_manager")
+local LandEncounterManager = require("script/land_encounters/controllers/land_encounter_manager")
+local InvasionBattleManager = require("script/land_encounters/controllers/invasion_battle_manager")
 --[[ Instance of the Model of the the land encounters functionality --]]
 local manager = nil
 
@@ -27,11 +28,14 @@ cm:add_first_tick_callback(
     function()
         out("LEAPOI - Starting up v1.18")
         out("LEAPOI - INITIALIZE LAND ENCOUNTERS")
+
+        local turn_number = cm:turn_number()
+
         if cm:get_campaign_name() == "wh3_main_chaos" then
             if manager:has_previous_state() then
-                manager:restore_from_previous_state(roc_encounter_land_locations)
+                manager:restore_from_previous_state(roc_encounter_land_locations, turn_number)
             else
-                manager:generate_land_encounters(roc_encounter_land_locations)
+                manager:generate_land_encounters(roc_encounter_land_locations, turn_number)
             end
         end
     end
@@ -49,11 +53,9 @@ core:add_listener(
     end,
 	function(context)
         if manager then
-            -- land encounter model has been initialized so we can proceed with the update logic
             out("LEAPOI - Beginning update process")
-            manager:update_land_encounters()
-        --else
-            --initialize_land_encounters()
+            local turn_number = cm:turn_number()
+            manager:update_land_encounters(turn_number)
         end
 	end,
 	IS_PERSISTENT_LISTENER
@@ -157,7 +159,9 @@ core:add_listener(
 function initialize_land_encounters(land_encounters_state)
     if manager == nil then
         local invasion_battle_manager = InvasionBattleManager:newFrom(core, random_army_manager, invasion_manager)
-        manager = LandEncounterManager:newFrom(core, invasion_battle_manager)
+        local battle_event_factory = BattleEventFactory:new()
+        
+        manager = LandEncounterManager:newFrom(core, invasion_battle_manager, battle_event_factory)
     end
     
     if land_encounters_state ~= DEFAULT_FLATTENED_SPOTS_VALUE then

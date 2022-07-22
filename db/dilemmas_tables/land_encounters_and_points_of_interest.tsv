@@ -1,5 +1,14 @@
 key	generate	localised_description	localised_title	ui_image	prioritized	event_category	sound_popup_override	sound_click_override	override_icon
 #dilemmas_tables;2;db/dilemmas_tables/land_encounters_and_points_of_interest									
+land_enc_dilemma_skirmish_cth	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
+land_enc_dilemma_skirmish_kis	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
+land_enc_dilemma_skirmish_ogr	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
+land_enc_dilemma_skirmish_nur	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
+land_enc_dilemma_skirmish_tze	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
+land_enc_dilemma_underground_cth	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
+land_enc_dilemma_underground_kis	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
+land_enc_dilemma_underground_ogr	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
+land_enc_dilemma_underground_tze	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
 land_enc_dilemma_bandits_emp	false	The smell of gunpowder hangs vaguely in the air, and even though the road seems relatively empty, the soldiers feel they are being watched. As the vanguard advances, a suspicious call of birds is heard. Should we continue down this path?	Bandits!	faction	false	Event	UI_CAM_EVENT_Dilemma		
 land_enc_dilemma_bandits_wef	false	The army crosses a thick forest, dark and humid. The restless horses, each noise seems like a footstep, a whisper; the trees moving, they seem to be alive in front of your eyes. The first regiment raises its lances in a defensive position. They say they heard whispers in the trees, and advise preparing for a possible ambush. Should we continue down this path?	Bandits!	faction	false	Event	UI_CAM_EVENT_Dilemma		
 land_enc_dilemma_bandits_nor	false	Horses and chariots can be heard in the distance. They seem to surround the long line of the army everywhere. Crazy screams and expletives in a guttural and basic language are heard although they are not presented directly in front of the army. They seem like followers of dark powers who want a toll on us to let us through. What should we do?	Bandits!	faction	false	Event	UI_CAM_EVENT_Dilemma		

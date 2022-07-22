@@ -40,7 +40,7 @@ function TreasureSpot:trigger_event(context)
     local target_faction_cqi = 0 -- ignore flag
     local secondary_faction_cqi = 0
     local character_cqi = character:command_queue_index()
-    local military_force_cqi = character:military_force():command_queue_index()
+    local military_force_cqi = 0 --character:military_force():command_queue_index()
     local region_cqi = 0
     local settlement_cqi = 0
     cm:trigger_incident_with_targets(faction_cqi, incident_key, target_faction_cqi, secondary_faction_cqi, character_cqi, military_force_cqi, region_cqi, settlement_cqi)

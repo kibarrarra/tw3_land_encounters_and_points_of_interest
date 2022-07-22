@@ -25,18 +25,95 @@ dilemmas_localised_title_ + <land_enc_dilemma_bandits_emp>
 
 TODO: 
 1. Variations of this events, more varied armies
-2. While the campaign is more advanced, so too the frequency of certain battles
 --]]
-local battles = {
+local battle_events = {
     ---------------------------------------------------------------------------
     -- (Easiest) Skirmishes
     ---------------------------------------------------------------------------
+    { 
+        dilemma = "land_enc_dilemma_skirmish_cth", 
+        victory_incident = "land_enc_incident_battle_won_skirmish", 
+        avoidance_incident = "land_enc_incident_battle_avoided_skirmish",
+        difficulty_level = 1,
+        is_exclusive_to_zone = true,
+        zone = "cathay"
+    },
     
+    { 
+        dilemma = "land_enc_dilemma_skirmish_kis", 
+        victory_incident = "land_enc_incident_battle_won_skirmish", 
+        avoidance_incident = "land_enc_incident_battle_avoided_skirmish",
+        difficulty_level = 1,
+        is_exclusive_to_zone = true,
+        zone = "kislev"
+    },
+    
+    { 
+        dilemma = "land_enc_dilemma_skirmish_ogr", 
+        victory_incident = "land_enc_incident_battle_won_skirmish", 
+        avoidance_incident = "land_enc_incident_battle_avoided_skirmish",
+        difficulty_level = 1,
+        is_exclusive_to_zone = true,
+        zone = "mountainsofmourn"
+    },
+    
+    { 
+        dilemma = "land_enc_dilemma_skirmish_nur", 
+        victory_incident = "land_enc_incident_battle_won_skirmish", 
+        avoidance_incident = "land_enc_incident_battle_avoided_skirmish",
+        difficulty_level = 1,
+        is_exclusive_to_zone = true,
+        zone = "chaoswastes"
+    },
+    
+    { 
+        dilemma = "land_enc_dilemma_skirmish_tze", 
+        victory_incident = "land_enc_incident_battle_won_skirmish", 
+        avoidance_incident = "land_enc_incident_battle_avoided_skirmish",
+        difficulty_level = 1,
+        is_exclusive_to_zone = true,
+        zone = "chaoswastes"
+
+    },
     
     ---------------------------------------------------------------------------
     -- (Easier) Underground Rebellions
     ---------------------------------------------------------------------------
+    { 
+        dilemma = "land_enc_dilemma_underground_cth", 
+        victory_incident = "land_enc_incident_battle_won_underground", 
+        avoidance_incident = "land_enc_incident_battle_avoided_underground",
+        difficulty_level = 1,
+        is_exclusive_to_zone = true,
+        zone = "cathay"
+    },
     
+    { 
+        dilemma = "land_enc_dilemma_underground_kis", 
+        victory_incident = "land_enc_incident_battle_won_underground", 
+        avoidance_incident = "land_enc_incident_battle_avoided_underground",
+        difficulty_level = 1,
+        is_exclusive_to_zone = true,
+        zone = "kislev"
+    },
+    
+    { 
+        dilemma = "land_enc_dilemma_underground_ogr",
+        victory_incident = "land_enc_incident_battle_won_underground", 
+        avoidance_incident = "land_enc_incident_battle_avoided_underground",
+        difficulty_level = 1,
+        is_exclusive_to_zone = true,
+        zone = "mountainsofmourn"
+    },
+        
+    { 
+        dilemma = "land_enc_dilemma_underground_tze",
+        victory_incident = "land_enc_incident_battle_won_underground", 
+        avoidance_incident = "land_enc_incident_battle_avoided_underground",
+        difficulty_level = 1,
+        is_exclusive_to_zone = true,
+        zone = "chaoswastes"
+    },
     
     ---------------------------------------------------------------------------
     -- (Easy) Bandits can be Empire, Wood Elves, Norscans
@@ -44,17 +121,28 @@ local battles = {
     {
         dilemma = "land_enc_dilemma_bandits_emp", 
         victory_incident = "land_enc_incident_battle_won_bandits", 
-        avoidance_incident = "land_enc_incident_battle_avoided_bandits"
+        avoidance_incident = "land_enc_incident_battle_avoided_bandits",
+        difficulty_level = 1,
+        is_exclusive_to_zone = false,
+        zone = "_"
     },
+    
     {
         dilemma = "land_enc_dilemma_bandits_wef",
         victory_incident = "land_enc_incident_battle_won_bandits", 
-        avoidance_incident = "land_enc_incident_battle_avoided_bandits"
+        avoidance_incident = "land_enc_incident_battle_avoided_bandits",
+        difficulty_level = 1,
+        is_exclusive_to_zone = false,
+        zone = "_"
     },
+    
     {
         dilemma = "land_enc_dilemma_bandits_nor", 
         victory_incident = "land_enc_incident_battle_won_bandits", 
-        avoidance_incident = "land_enc_incident_battle_avoided_bandits"
+        avoidance_incident = "land_enc_incident_battle_avoided_bandits",
+        difficulty_level = 1,
+        is_exclusive_to_zone = false,
+        zone = "_"
     },
 
     ---------------------------------------------------------------------------    
@@ -63,17 +151,28 @@ local battles = {
     {
         dilemma = "land_enc_dilemma_incursion_army_hef",
         victory_incident = "land_enc_incident_battle_won_incursion_hef",
-        avoidance_incident = "land_enc_incident_battle_avoided_incursion"
+        avoidance_incident = "land_enc_incident_battle_avoided_incursion",
+        difficulty_level = 2,
+        is_exclusive_to_zone = false,
+        zone = "_"
     },
+    
     {
         dilemma = "land_enc_dilemma_incursion_army_lzd",
         victory_incident = "land_enc_incident_battle_won_incursion_lzd",
-        avoidance_incident = "land_enc_incident_battle_avoided_incursion"
+        avoidance_incident = "land_enc_incident_battle_avoided_incursion",
+        difficulty_level = 2,
+        is_exclusive_to_zone = false,
+        zone = "_"
     },
+    
     {
         dilemma = "land_enc_dilemma_incursion_army_vco",
         victory_incident = "land_enc_incident_battle_won_incursion_vco",
-        avoidance_incident = "land_enc_incident_battle_avoided_incursion"
+        avoidance_incident = "land_enc_incident_battle_avoided_incursion",
+        difficulty_level = 2,
+        is_exclusive_to_zone = false,
+        zone = "_"
     },
     
     ---------------------------------------------------------------------------    
@@ -81,7 +180,9 @@ local battles = {
     -- Differences: Makes the region in which the battle was fought tempestous. Chaos corruption + 5 in the area. Gives army buff that grants magic regeneration by +30 to the beater army
     ---------------------------------------------------------------------------
     --{
+    --    difficulty_level = 2,
     --    dilemma = "land_enc_dilemma_waystone_defense_army_hef",
+    --    is_exclusive_to_zone = false,
     --    victory_incident = "land_enc_waystone_defense_won_incursion_hef",
     --    avoidance_incident = "land_enc_waystone_defense_avoided_incursion"
     --},
@@ -92,19 +193,32 @@ local battles = {
     {
         dilemma = "land_enc_dilemma_surprise_attack_bst",
         victory_incident = "land_enc_incident_battle_won_surprise_bst",
-        avoidance_incident = "land_enc_incident_battle_avoided_surprise"
+        avoidance_incident = "land_enc_incident_battle_avoided_surprise",
+        difficulty_level = 2,
+        is_exclusive_to_zone = false,
+        zone = "_"
     },
     
     {
         dilemma = "land_enc_dilemma_surprise_attack_skv",
         victory_incident = "land_enc_incident_battle_won_surprise_skv",
-        avoidance_incident = "land_enc_incident_battle_avoided_surprise"
+        avoidance_incident = "land_enc_incident_battle_avoided_surprise",
+        difficulty_level = 2,
+        is_exclusive_to_zone = false,
+        zone = "_"
     },
     
     ---------------------------------------------------------------------------
     -- (Mid Upper) Daemonic Invasion
     ---------------------------------------------------------------------------
-    
+    --{
+    --    difficulty_level = 2,
+    --    dilemma = "land_enc_dilemma_surprise_attack_skv",
+    --    is_exclusive_to_zone = false,
+    --    victory_incident = "land_enc_incident_battle_won_surprise_skv",
+    --    losing_incident = "",
+    --    avoidance_incident = "land_enc_incident_battle_avoided_surprise"
+    --},
     
     ---------------------------------------------------------------------------
     -- (Hard) Battlefields can be Greenskins, Dark Elves, Vampires, Tomb Kings, Warriors of Chaos, Daemons Undivided and Demons of Khorne (for the ancillaries IM ONLY), Demons of Slaneesh (for the ancillaries IM ONLY)
@@ -112,47 +226,71 @@ local battles = {
     {
         dilemma = "land_enc_dilemma_battlefield_grn",
         victory_incident = "land_enc_incident_battle_won_battlefield_grn",
-        avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
+        avoidance_incident = "land_enc_incident_battle_avoided_battlefield",
+        difficulty_level = 3,
+        is_exclusive_to_zone = false,
+        zone = "_"
     },
     
     {
         dilemma = "land_enc_dilemma_battlefield_def",
         victory_incident = "land_enc_incident_battle_won_battlefield_def",
-        avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
+        avoidance_incident = "land_enc_incident_battle_avoided_battlefield",
+        difficulty_level = 3,
+        is_exclusive_to_zone = false,
+        zone = "_"
     },
     
     {
         dilemma = "land_enc_dilemma_battlefield_vmp",
         victory_incident = "land_enc_incident_battle_won_battlefield_vmp",
-        avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
+        avoidance_incident = "land_enc_incident_battle_avoided_battlefield",
+        difficulty_level = 3,
+        is_exclusive_to_zone = false,
+        zone = "_"
     },
     
     {
         dilemma = "land_enc_dilemma_battlefield_tmb",
         victory_incident = "land_enc_incident_battle_won_battlefield_tmb",
-        avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
+        avoidance_incident = "land_enc_incident_battle_avoided_battlefield",
+        difficulty_level = 3,
+        is_exclusive_to_zone = false,
+        zone = "_"
     },
     
-    --{
+    --{ --TODO
+    --    difficulty_level = 3,
     --    dilemma = "land_enc_dilemma_battlefield_wco",
+    --    is_exclusive_to_zone = false,
+    --    zone = false,
     --    victory_incident = "land_enc_incident_battle_won_battlefield_wco",
     --    avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
     --},
     
-    --{
+    --{ --TODO
+    --    difficulty_level = 3,
     --    dilemma = "land_enc_dilemma_battlefield_doc",
+    --    is_exclusive_to_zone = false,
+    --    zone = false,
     --    victory_incident = "land_enc_incident_battle_won_battlefield_doc",
     --    avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
     --},
     
-    --{
+    --{ --TODO
+    --    difficulty_level = 3,
     --    dilemma = "land_enc_dilemma_battlefield_kho",
+    --    is_exclusive_to_zone = false,
+    --    zone = false,
     --    victory_incident = "land_enc_incident_battle_won_battlefield_kho",
     --    avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
-    --}
+    --},
     
-    --{
+    --{ --TODO
+    --    difficulty_level = 3,
     --    dilemma = "land_enc_dilemma_battlefield_sla",
+    --    is_exclusive_to_zone = false,
+    --    zone = false,
     --    victory_incident = "land_enc_incident_battle_won_battlefield_sla",
     --    avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
     --}
@@ -168,4 +306,4 @@ local battles = {
     
 }
 
-return battles
+return battle_events
