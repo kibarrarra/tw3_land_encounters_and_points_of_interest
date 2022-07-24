@@ -1,5 +1,8 @@
 require("script/land_encounters/utils/strings")
 require("script/land_encounters/utils/boolean")
+require("script/land_encounters/utils/random")
+
+local elligible_items = require("script/land_encounters/constants/items/balancing_items")
 
 local Spot = require("script/land_encounters/models/spots/abstract_classes/Spot")
 
@@ -36,15 +39,47 @@ function BattleSpot:get_class()
 end
 
 function BattleSpot:set_event_from_string(event_as_string)
-    local event_in_parts = split_by_regex(event_as_string)
-    self.event = { dilemma = event_in_parts[1], victory_incident = event_in_parts[2], avoidance_incident = event_in_parts[3], difficulty_level = tonumber(event_in_parts[4]), is_exclusive_to_zone = stringtoboolean[event_in_parts[5]], zone = event_in_parts[6]  }
+    local event_in_parts = split_by_regex(event_as_string, "/")
+    
+    --TODO clean this logic on the August update
+    local victory_targets_in_parts = { "true", "false", "false", "false" }
+    if event_in_parts[7] ~= nil then
+        victory_targets_in_parts = split_by_regex(event_in_parts[7], "!")
+    end
+    
+    local avoidance_targets_in_parts = { "true", "false", "false", "false" }
+    if event_in_parts[8] ~= nil then
+        avoidance_targets_in_parts = split_by_regex(event_in_parts[8], "!")
+    end
+    
+    self.event = { 
+        dilemma = event_in_parts[1], 
+        victory_incident = event_in_parts[2], 
+        avoidance_incident = event_in_parts[3], 
+        difficulty_level = tonumber(event_in_parts[4]), 
+        is_exclusive_to_zone = stringtoboolean[event_in_parts[5]],
+        zone = event_in_parts[6],
+        victory_targets = { 
+            character = stringtoboolean[victory_targets_in_parts[1]], 
+            force = stringtoboolean[victory_targets_in_parts[2]], 
+            faction = stringtoboolean[victory_targets_in_parts[3]], 
+            region = stringtoboolean[victory_targets_in_parts[4]] 
+        },
+        avoidance_targets = { 
+            character = stringtoboolean[avoidance_targets_in_parts[1]], 
+            force = stringtoboolean[avoidance_targets_in_parts[2]], 
+            faction = stringtoboolean[avoidance_targets_in_parts[3]], 
+            region = stringtoboolean[avoidance_targets_in_parts[4]] 
+        }
+    }
 end
 
 
 -- Event can be nil due to it loosing it's value once used.
 function BattleSpot:get_event_as_string()
     if self.event ~= nil then
-        return self.event.dilemma .. "/" .. self.event.victory_incident .. "/" .. self.event.avoidance_incident .. "/" .. self.event.difficulty_level .. "/" .. booleantostring[self.event.is_exclusive_to_zone] .. "/" .. self.event.zone
+        return self.event.dilemma .. "/" .. self.event.victory_incident .. "/" .. self.event.avoidance_incident .. "/" .. self.event.difficulty_level .. "/" .. booleantostring[self.event.is_exclusive_to_zone] .. "/" .. self.event.zone .. "/" .. booleantostring[self.event.victory_targets.character] .. "!" .. booleantostring[self.event.victory_targets.force] .. "!" .. booleantostring[self.event.victory_targets.faction] .. "!" .. booleantostring[self.event.victory_targets.region] .. "/" ..
+        booleantostring[self.event.avoidance_targets.character]  .. "!" ..  booleantostring[self.event.avoidance_targets.force]  .. "!" ..  booleantostring[self.event.avoidance_targets.faction]  .. "!" ..  booleantostring[self.event.avoidance_targets.region]
     else
         return nil
     end
@@ -53,16 +88,17 @@ end
 
 function BattleSpot:trigger_event(context)
     self.player_character = context:family_member():character()
-    local player_faction_name = self.player_character:faction():name()
+    local triggering_faction = self.player_character:faction()
+    local player_faction_name = triggering_faction:name()
     
     local can_remove_encounter_marker = false
 
-    if self:is_human_and_it_is_its_turn() then
-        out("LEAPOI - Triggering battle land encounter: " .. self.event.dilemma)
+    if self:is_human_and_it_is_its_turn(triggering_faction) then
+        --out("LEAPOI - BattleSpot:trigger_event Triggering battle land encounter: " .. self.event.dilemma)
         -- Character is in normal stance and can trigger the event
         if self.player_character:military_force():active_stance() == "MILITARY_FORCE_ACTIVE_STANCE_TYPE_DEFAULT" then
             cm:trigger_dilemma(player_faction_name, self.event.dilemma)
-            out("LEAPOI - Battle Dilema " .. self.event.dilemma .. "; TRIGGERED")
+            --out("LEAPOI - BattleSpot:trigger_event dilemma " .. self.event.dilemma .. "; TRIGGERED")
         else
             cm:show_message_event_located(player_faction_name,
                 "event_feed_strings_text_title_event_land_enc_and_poi_encountered",
@@ -74,6 +110,13 @@ function BattleSpot:trigger_event(context)
                 EVENT_IMAGE_ID_LOCATION_OF_INTEREST
             )
         end
+    
+    elseif not triggering_faction:is_human() then
+        -- trigger balancing incident
+        local trigger_event_feed = false
+        cm:add_ancillary_to_faction(triggering_faction, elligible_items[random_number(#elligible_items)], trigger_event_feed)
+        can_remove_encounter_marker = true
+        --out("LEAPOI - BattleSpot:trigger_event was triggered by the AI and was given to them; TRIGGERED")
     end
     
     return can_remove_encounter_marker
@@ -85,9 +128,9 @@ function BattleSpot:trigger_dilemma_by_choice(invasion_battle_manager, zone, spo
     local faction = context:faction()
     
     local can_remove_encounter_marker = false
-    out("LEAPOI - BattleSpot:trigger_dilemma_by_choice= " .. tostring(choice) .. ", type= " .. type(choice))
+    --out("LEAPOI - BattleSpot:trigger_dilemma_by_choice= " .. tostring(choice) .. ", type= " .. type(choice))
     if choice == FIRST_OPTION then
-        out("LEAPOI - First choice -- Battle time!")
+        --out("LEAPOI - First choice -- Battle time!")
         local in_same_region = false
         local x, y = cm:find_valid_spawn_location_for_character_from_position(faction:name(), self.coordinates[1], self.coordinates[2], in_same_region)
         self.is_triggered = true
@@ -95,7 +138,7 @@ function BattleSpot:trigger_dilemma_by_choice(invasion_battle_manager, zone, spo
         invasion_battle_manager:reset_state_post_battle(zone, spot_index, invasion_battle_manager.DEFAULT_ENEMY_INVASION)
         return can_remove_encounter_marker
     else
-        out("LEAPOI - Second choice -- No thanks!")
+        --out("LEAPOI - Second choice -- No thanks!")
         self:trigger_battle_avoidance_incident()
         can_remove_encounter_marker = true
         return can_remove_encounter_marker
@@ -104,12 +147,12 @@ end
 
 
 function BattleSpot:trigger_battle_avoidance_incident()
-    self:trigger_incident(self.event.avoidance_incident, self.player_character)
+    self:trigger_incident(self.event.avoidance_incident, self.player_character, self.event.avoidance_targets)
 end
 
 
 function BattleSpot:trigger_victory_incident()
-    self:trigger_incident(self.event.victory_incident, self.player_character)
+    self:trigger_incident(self.event.victory_incident, self.player_character, self.event.victory_targets)
 end
 
 

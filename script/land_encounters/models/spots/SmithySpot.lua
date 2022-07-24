@@ -81,7 +81,7 @@ function SmithySpot:get_class()
 end
 
 function SmithySpot:set_event_from_string(event_as_string)
-    local event_in_parts = split_by_regex(event_as_string)
+    local event_in_parts = split_by_regex(event_as_string, "/")
     self.event = { dilemma = event_in_parts[1], victory_incident = event_in_parts[2], avoidance_incident = event_in_parts[3] }
 end
 
@@ -100,7 +100,7 @@ function SmithySpot:trigger_event(context)
     
     local can_remove_encounter_marker = false
     
-    if self:is_human_and_it_is_its_turn() then
+    if self:is_human_and_it_is_its_turn(visiting_faction) then
         if self:is_occupied_by_same_faction(visiting_faction:name()) then
             if self:is_on_cooldown() then
                 self:trigger_incident(self.event.cooldown_incident, visiting_character)
@@ -121,16 +121,16 @@ function SmithySpot:trigger_event(context)
                     EVENT_IMAGE_ID_LOCATION_OF_INTEREST
                 )
             else
-                out("LEAPOI - Triggering smith land encounter: " .. self.event.reclamation.dilemma)
+                --out("LEAPOI - Triggering smith land encounter: " .. self.event.reclamation.dilemma)
                 -- Character is in normal stance and can trigger the event
                 if self:character_can_trigger_dilemma(visiting_character) then
                     -- if the smith spot is not occupied, due to its owner faction being defeated or never have been occupied
                     if self:is_occupied() then
                         cm:trigger_dilemma(player_faction_name, self.event.reclamation.dilemma) 
-                        out("LEAPOI - Smithy Battle Dilemma " .. self.event.reclamation.dilemma .. "; TRIGGERED")
+                        --out("LEAPOI - Smithy Battle Dilemma " .. self.event.reclamation.dilemma .. "; TRIGGERED")
                     else
                         self:trigger_incident(self.event.reclamation.default_occupation_incident, visiting_character)
-                        out("LEAPOI - Smithy Battle Dilemma " .. self.event.dilemma .. "; TRIGGERED")
+                        --out("LEAPOI - Smithy Battle Dilemma " .. self.event.dilemma .. "; TRIGGERED")
                     end
                 else
                     cm:show_message_event_located(player_faction_name,
@@ -170,9 +170,9 @@ function SmithySpot:trigger_dilemma_by_choice(invasion_battle_manager, zone, spo
     local faction = context:faction()
     
     local can_remove_encounter_marker = false
-    out("LEAPOI - SmithySpot:trigger_dilemma_by_choice= " .. tostring(choice) .. ", type= " .. type(choice))
+    --out("LEAPOI - SmithySpot:trigger_dilemma_by_choice= " .. tostring(choice) .. ", type= " .. type(choice))
     if choice == FIRST_OPTION then
-        out("LEAPOI - First choice -- Battle time!")
+        --out("LEAPOI - First choice -- Battle time!")
         local in_same_region = false
         local x, y = cm:find_valid_spawn_location_for_character_from_position(faction:name(), self.coordinates[1], self.coordinates[2], in_same_region)
         
@@ -188,7 +188,7 @@ function SmithySpot:trigger_dilemma_by_choice(invasion_battle_manager, zone, spo
 
         return can_remove_encounter_marker
     else
-        out("LEAPOI - Second choice -- No thanks!")
+        --out("LEAPOI - Second choice -- No thanks!")
         if is_defense then
             self:trigger_unconditional_surrender_incident()
         else

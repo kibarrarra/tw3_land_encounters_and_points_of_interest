@@ -40,7 +40,7 @@ function random_number(max_num, min_num)
 	end
 	
 	if not (type(max_num) == "number") or math.floor(max_num) < max_num then
-		out("LEAPOI - random_number ERROR: supplied max number [" .. tostring(max_num) .. "] is not a valid integer")
+		--out("LEAPOI - random_number ERROR: supplied max number [" .. tostring(max_num) .. "] is not a valid integer")
 		return 0
 	end
 	
@@ -49,12 +49,12 @@ function random_number(max_num, min_num)
 	end
 	
 	if min_num == 1 and max_num < min_num then
-		out("LEAPOI - random_number ERROR: supplied max number [" .. tostring(max_num) .. "] can only be negative if a min number is also supplied")
+		--out("LEAPOI - random_number ERROR: supplied max number [" .. tostring(max_num) .. "] can only be negative if a min number is also supplied")
 		return 0
 	end
 	
 	if not (type(min_num) == "number") or min_num >= max_num or math.floor(min_num) < min_num then
-		out("LEAPOI - random_number ERROR: supplied min number [" .. tostring(min_num) .. "] is not an integer less than the max num [" .. tostring(max_num) .. "]")
+		--out("LEAPOI - random_number ERROR: supplied min number [" .. tostring(min_num) .. "] is not an integer less than the max num [" .. tostring(max_num) .. "]")
 		return 0
 	end
 	

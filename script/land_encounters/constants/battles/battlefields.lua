@@ -79,7 +79,7 @@ return {
         lord = { 
             possible_subtypes = { 
                 "wh_dlc04_vmp_helman_ghorst", 
-                --"wh_dlc04_vmp_vlad_con_carstein",
+                "wh_dlc04_vmp_vlad_con_carstein",
                 "wh_pro02_vmp_isabella_von_carstein",
                 "wh_main_vmp_heinrich_kemmler",
                 "wh2_dlc11_vmp_bloodline_lahmian",

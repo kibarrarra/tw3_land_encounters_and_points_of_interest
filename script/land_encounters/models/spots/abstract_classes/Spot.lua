@@ -4,6 +4,7 @@ require("script/land_encounters/utils/random")
 --- Constant values of the class [DO NOT CHANGE]
 -------------------------
 local AUTOMATIC_DEACTIVATION_COOLDOWN = 10
+local IGNORE_INCIDENT_PARAMETER_FLAG = 0
 
 -------------------------
 --- Properties definition
@@ -65,32 +66,22 @@ function Spot:activate(zone_name, spot_event)
     local radius = 4
     local faction_key = "" -- anyone can activate the marker
     local subculture_key = "" -- anyone can activate the marker
-    out("LEAPOI - Spot created={id:" .. self.marker_id .. ", spot_type:" .. self:get_class() .. ", (x,y):(".. x_coordinate .. "," .. y_coordinate .. "), marker_key:" .. marker_key .. "}")
+    --out("LEAPOI - Spot created={id:" .. self.marker_id .. ", spot_type:" .. self:get_class() .. ", (x,y):(".. x_coordinate .. "," .. y_coordinate .. "), marker_key:" .. marker_key .. "}")
     cm:add_interactable_campaign_marker(self.marker_id, marker_key, x_coordinate, y_coordinate, radius, faction_key, subculture_key)
 end
 
 
 -- SINGLE PLAYER ONLY = whose_turn_is_it_single
-function Spot:is_human_and_it_is_its_turn()
-    return cm:is_human_factions_turn()
+function Spot:is_human_and_it_is_its_turn(faction)
+    return faction:is_human() and cm:is_human_factions_turn()
 end
 
 
 function Spot:trigger_event(context)
-    out("LEAPOI - Abstract method to be overriden by the spot_type that implements it. We trigger it to destroy this bugged stuff. We just give 1000 gold for helping the user cleaning it up.")
+    --out("LEAPOI - Abstract method to be overriden by the spot_type that implements it. We trigger it to destroy this bugged stuff. We just give some gold and experience for the character helping us clean up this mess.")
 
     local character = context:family_member():character()
-
-    local faction_cqi = character:faction():command_queue_index()
-    local incident_key = "land_enc_incident_clean_up_event"
-    local target_faction_cqi = 0 -- ignore flag
-    local secondary_faction_cqi = 0
-    local character_cqi = character:command_queue_index()
-    local military_force_cqi = 0 --character:military_force():command_queue_index()
-    local region_cqi = 0
-    local settlement_cqi = 0
-    cm:trigger_incident_with_targets(faction_cqi, incident_key, target_faction_cqi, secondary_faction_cqi, character_cqi, military_force_cqi, region_cqi, settlement_cqi)
-    out("LEAPOI - Triggered targeted treasure land encounter")
+    self:trigger_incident_for_character("land_enc_incident_clean_up_event", character, { character = true, force = false, faction = false, region = false })
     
     return true
 end
@@ -101,28 +92,50 @@ function Spot:character_can_trigger_dilemma(character)
 end
 
 
-function Spot:trigger_incident(incident_key, character)
-    if self:is_human_and_it_is_its_turn() then 
-        -- if the campaign has been reloaded from a battle then we don't have the current player
-        if character == nil then
-            local faction_name = cm:get_local_faction_name()
-            local only_general = true
-            local is_garrison_commander = false
-            local local_character, distance = cm:get_closest_character_to_position_from_faction(faction_name, self.coordinates[1], self.coordinates[2], only_general, is_garrison_commander)
-            character = local_character
-        end
-        
-        local faction_cqi = character:faction():command_queue_index()
-        local incident_key = incident_key
-        local target_faction_cqi = 0 -- ignore flag
-        local secondary_faction_cqi = 0
-        local character_cqi = character:command_queue_index()
-        local military_force_cqi = 0 --character:military_force():command_queue_index()
-        local region_cqi = 0
-        local settlement_cqi = 0
-        cm:trigger_incident_with_targets(faction_cqi, incident_key, target_faction_cqi, secondary_faction_cqi, character_cqi, military_force_cqi, region_cqi, settlement_cqi)
-        out("LEAPOI - Triggered targeted battle victory/avoidance land encounter incident")
+function Spot:trigger_incident(incident_key, character, targets)
+    -- if the campaign has been reloaded from a battle and we don't have the current player we have to obtain it back from the cm
+    if character == nil then
+        local faction_name = cm:get_local_faction_name()
+        local only_general = true
+        local is_garrison_commander = false
+        local local_character, distance = cm:get_closest_character_to_position_from_faction(faction_name, self.coordinates[1], self.coordinates[2], only_general, is_garrison_commander)
+        character = local_character
     end
+    
+    -- Only for the human it should trigger. Otherwise ignore
+    if self:is_human_and_it_is_its_turn(character:faction()) then 
+        self:trigger_incident_for_character(incident_key, character, targets)
+    end
+end
+
+function Spot:trigger_incident_for_character(incident_key, character, targets)
+    local faction_cqi = character:faction():command_queue_index()
+
+    local target_faction_cqi = IGNORE_INCIDENT_PARAMETER_FLAG
+    if targets.faction then
+        target_faction_cqi = faction_cqi
+    end
+    
+    local secondary_faction_cqi = IGNORE_INCIDENT_PARAMETER_FLAG
+    
+    local character_cqi = IGNORE_INCIDENT_PARAMETER_FLAG
+    if targets.character then
+        character_cqi = character:command_queue_index()
+    end
+    
+    local military_force_cqi = IGNORE_INCIDENT_PARAMETER_FLAG
+    if targets.force then
+        military_force_cqi = character:military_force():command_queue_index()
+    end
+
+    local region_cqi = IGNORE_INCIDENT_PARAMETER_FLAG    
+    if targets.region then
+    end
+
+    local settlement_cqi = IGNORE_INCIDENT_PARAMETER_FLAG
+    
+    cm:trigger_incident_with_targets(faction_cqi, incident_key, target_faction_cqi, secondary_faction_cqi, character_cqi, military_force_cqi, region_cqi, settlement_cqi)
+    --out("LEAPOI - Triggered targeted battle victory/avoidance land encounter incident")    
 end
 
 
@@ -138,10 +151,10 @@ end
 
 function Spot:deactivate(zone_name)
     -- Remove the marker from the campaing map so the event is no longer reachable
-    out("LEAPOI - Spot:deactivate() marker_id=" .. self.marker_id)
+    --out("LEAPOI - Spot:deactivate() marker_id=" .. self.marker_id)
     if self.marker_id == "" then
         self.marker_id = "land_enc_marker_" .. zone_name .. "_" .. self.index
-        out("LEAPOI - Spot:deactivate() corrected marker_id=" .. self.marker_id)
+        --out("LEAPOI - Spot:deactivate() corrected marker_id=" .. self.marker_id)
     end
     cm:remove_interactable_campaign_marker(self.marker_id)
     -- Remove the logical event data

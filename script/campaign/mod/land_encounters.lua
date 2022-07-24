@@ -26,8 +26,8 @@ Initializes the land encounters by instantiating a LandEncounterModel
 --]]
 cm:add_first_tick_callback(
     function()
-        out("LEAPOI - Starting up v1.18")
-        out("LEAPOI - INITIALIZE LAND ENCOUNTERS")
+        --out("LEAPOI - Starting up v1.18")
+        --out("LEAPOI - INITIALIZE LAND ENCOUNTERS")
 
         local turn_number = cm:turn_number()
 
@@ -53,7 +53,7 @@ core:add_listener(
     end,
 	function(context)
         if manager then
-            out("LEAPOI - Beginning update process")
+            --out("LEAPOI - Beginning update process")
             local turn_number = cm:turn_number()
             manager:update_land_encounters(turn_number)
         end
@@ -106,6 +106,31 @@ core:add_listener(
 )
 
 
+--[[
+core:add_listener(
+    "land_enc_and_poi_incident_ocurred",
+    "IncidentOccuredEvent",
+    function(context)
+    
+    end,
+    function(context)
+        local incident = context:dilemma();
+        cm:callback(function()
+            for i = 1, #harkon_personality_index do
+                if incident == harkon_personality_events[harkon_personality_index[i] ] then
+                    for j = 1, #harkon_personality_dummies do
+                        cm:remove_effect_bundle(harkon_personality_dummies[j], harkon_faction);
+                    end;
+                end;
+            end;	
+        end, 0.5);
+    end,
+    true
+);
+]]--
+
+
+
 --[[ STATE MANAGEMENT --]]
 --[[
     Saves the land_encounters state variables when the game is about to close
@@ -115,7 +140,7 @@ local DEFAULT_FLATTENED_SPOTS_VALUE = {}
 
 cm:add_saving_game_callback(
 	function(context)
-        out("LEAPOI - Saving State")
+        --out("LEAPOI - Saving State")
         cm:save_named_value(FLATTENED_SPOTS_STATE, manager:export_state_as_table(), context)
 	end
 );
@@ -125,7 +150,7 @@ cm:add_saving_game_callback(
 --]]
 cm:add_loading_game_callback(
 	function(context)
-        out("LEAPOI - State restoration")
+        --out("LEAPOI - State restoration")
         local land_encounters_state = cm:load_named_value(FLATTENED_SPOTS_STATE, DEFAULT_FLATTENED_SPOTS_VALUE, context)
         initialize_land_encounters(land_encounters_state)
 	end
@@ -156,6 +181,7 @@ core:add_listener(
 )
 --]]
 
+
 function initialize_land_encounters(land_encounters_state)
     if manager == nil then
         local invasion_battle_manager = InvasionBattleManager:newFrom(core, random_army_manager, invasion_manager)
@@ -165,10 +191,9 @@ function initialize_land_encounters(land_encounters_state)
     end
     
     if land_encounters_state ~= DEFAULT_FLATTENED_SPOTS_VALUE then
-        out("LEAPOI - PREVIOUS_STATE: " .. tostring(#land_encounters_state))
+        --out("LEAPOI - PREVIOUS_STATE: " .. tostring(#land_encounters_state))
         manager.previous_state = land_encounters_state
     else
-        out("LEAPOI - PREVIOUS_STATE: NO PREVIOUS STATE")
+        --out("LEAPOI - PREVIOUS_STATE: NO PREVIOUS STATE")
     end
-    
 end

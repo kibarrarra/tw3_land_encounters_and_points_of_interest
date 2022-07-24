@@ -53,7 +53,7 @@ return {
                 "wh2_dlc12_skv_warlock_master", 
                 "wh2_dlc14_skv_master_assassin", 
                 "wh2_dlc09_skv_tretch_craventail", 
-                --"wh2_dlc12_skv_ikit_claw" 
+                "wh2_dlc12_skv_ikit_claw" 
             },
             level_ranges = {30, 40}, 
             possible_forenames = {},

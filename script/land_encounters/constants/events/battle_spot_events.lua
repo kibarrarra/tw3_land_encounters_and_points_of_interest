@@ -36,7 +36,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_skirmish",
         difficulty_level = 1,
         is_exclusive_to_zone = true,
-        zone = "cathay"
+        zone = "cathay",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = true, force = false, faction = false, region = false }
     },
     
     { 
@@ -45,7 +47,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_skirmish",
         difficulty_level = 1,
         is_exclusive_to_zone = true,
-        zone = "kislev"
+        zone = "kislev",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = true, force = false, faction = false, region = false }
     },
     
     { 
@@ -54,7 +58,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_skirmish",
         difficulty_level = 1,
         is_exclusive_to_zone = true,
-        zone = "mountainsofmourn"
+        zone = "mountainsofmourn",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = true, force = false, faction = false, region = false }
     },
     
     { 
@@ -63,7 +69,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_skirmish",
         difficulty_level = 1,
         is_exclusive_to_zone = true,
-        zone = "chaoswastes"
+        zone = "chaoswastes",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = true, force = false, faction = false, region = false }
     },
     
     { 
@@ -72,8 +80,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_skirmish",
         difficulty_level = 1,
         is_exclusive_to_zone = true,
-        zone = "chaoswastes"
-
+        zone = "chaoswastes",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = true, force = false, faction = false, region = false }
     },
     
     ---------------------------------------------------------------------------
@@ -85,7 +94,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_underground",
         difficulty_level = 1,
         is_exclusive_to_zone = true,
-        zone = "cathay"
+        zone = "cathay",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = true, force = false, faction = false, region = false }
     },
     
     { 
@@ -94,7 +105,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_underground",
         difficulty_level = 1,
         is_exclusive_to_zone = true,
-        zone = "kislev"
+        zone = "kislev",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = true, force = false, faction = false, region = false }
     },
     
     { 
@@ -103,7 +116,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_underground",
         difficulty_level = 1,
         is_exclusive_to_zone = true,
-        zone = "mountainsofmourn"
+        zone = "mountainsofmourn",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = true, force = false, faction = false, region = false }
     },
         
     { 
@@ -112,7 +127,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_underground",
         difficulty_level = 1,
         is_exclusive_to_zone = true,
-        zone = "chaoswastes"
+        zone = "chaoswastes",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = true, force = false, faction = false, region = false }
     },
     
     ---------------------------------------------------------------------------
@@ -124,7 +141,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_bandits",
         difficulty_level = 1,
         is_exclusive_to_zone = false,
-        zone = "_"
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = true, force = false, faction = false, region = false }
     },
     
     {
@@ -133,7 +152,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_bandits",
         difficulty_level = 1,
         is_exclusive_to_zone = false,
-        zone = "_"
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = true, force = false, faction = false, region = false }
     },
     
     {
@@ -142,7 +163,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_bandits",
         difficulty_level = 1,
         is_exclusive_to_zone = false,
-        zone = "_"
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = true, force = false, faction = false, region = false }
     },
 
     ---------------------------------------------------------------------------    
@@ -154,7 +177,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_incursion",
         difficulty_level = 2,
         is_exclusive_to_zone = false,
-        zone = "_"
+        zone = "_",
+        victory_targets = { character = true, force = true, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
     },
     
     {
@@ -163,7 +188,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_incursion",
         difficulty_level = 2,
         is_exclusive_to_zone = false,
-        zone = "_"
+        zone = "_",
+        victory_targets = { character = true, force = true, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
     },
     
     {
@@ -172,7 +199,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_incursion",
         difficulty_level = 2,
         is_exclusive_to_zone = false,
-        zone = "_"
+        zone = "_",
+        victory_targets = { character = true, force = true, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
     },
     
     ---------------------------------------------------------------------------    
@@ -196,7 +225,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_surprise",
         difficulty_level = 2,
         is_exclusive_to_zone = false,
-        zone = "_"
+        zone = "_",
+        victory_targets = { character = true, force = true, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
     },
     
     {
@@ -205,7 +236,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_surprise",
         difficulty_level = 2,
         is_exclusive_to_zone = false,
-        zone = "_"
+        zone = "_",
+        victory_targets = { character = true, force = true, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
     },
     
     ---------------------------------------------------------------------------
@@ -229,7 +262,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_battlefield",
         difficulty_level = 3,
         is_exclusive_to_zone = false,
-        zone = "_"
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
     },
     
     {
@@ -238,7 +273,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_battlefield",
         difficulty_level = 3,
         is_exclusive_to_zone = false,
-        zone = "_"
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
     },
     
     {
@@ -247,7 +284,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_battlefield",
         difficulty_level = 3,
         is_exclusive_to_zone = false,
-        zone = "_"
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
     },
     
     {
@@ -256,7 +295,9 @@ local battle_events = {
         avoidance_incident = "land_enc_incident_battle_avoided_battlefield",
         difficulty_level = 3,
         is_exclusive_to_zone = false,
-        zone = "_"
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
     },
     
     --{ --TODO

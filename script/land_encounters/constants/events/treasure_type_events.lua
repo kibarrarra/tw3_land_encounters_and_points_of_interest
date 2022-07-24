@@ -39,8 +39,8 @@ local treasures = {
     "land_enc_incident_buried_relics",
     "land_enc_incident_hidden_temple",
     "land_enc_incident_caravan_remnants",
-    "land_enc_incident_legendary_bard",
-    "land_enc_incident_whispers_of_the_gods",
+    --"land_enc_incident_legendary_bard",
+    "land_enc_incident_whispers_of_the_gods"
 }
 
 return treasures

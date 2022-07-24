@@ -59,7 +59,7 @@ function InvasionBattleManager:generate_battle(battle_event, player_character, e
     self.event_army:randomize_units(self.random_army_manager)
 
     local invader_force = self.random_army_manager:generate_force(DEFAULT_ENEMY_FORCE)
-    out("LEAPOI - InvasionBattleManager:generate_battle - Event_army.faction:" .. self.event_army.faction)
+    --out("LEAPOI - InvasionBattleManager:generate_battle - Event_army.faction:" .. self.event_army.faction)
     local invasion = self:setup_invasion(DEFAULT_ENEMY_INVASION, player_character, player_faction_name, invader_force, enemy_lat_lng)
     invasion:start_invasion(
         function(invasion_force)
@@ -68,7 +68,7 @@ function InvasionBattleManager:generate_battle(battle_event, player_character, e
                 "FactionLeaderDeclaresWar",
                 true,
                 function(local_context)
-                    out("LEAPOI - InvasionBattleManager:generate_battle - FactionLeaderDeclaresWar")
+                    --out("LEAPOI - InvasionBattleManager:generate_battle - FactionLeaderDeclaresWar")
                     local faction_being_declared_war_to = local_context:character():faction():name()
                     if faction_being_declared_war_to == self.event_army.faction then
                         cm:force_attack_of_opportunity(invasion_force:get_general():military_force():command_queue_index(), force_cqi, false)
@@ -99,24 +99,24 @@ function InvasionBattleManager:setup_invasion(invasion_identifier, objective_cha
     -- create general for the invasion
     local make_faction_leader = false
     invasion:create_general(make_faction_leader, self.event_army.lord.subtype, self.event_army.lord.forename, self.event_army.lord.clan_name, self.event_army.lord.family_name, self.event_army.lord.other_name)
-    out("LEAPOI - InvasionBattleManager:setup_invasion - Lord:{type=" .. self.event_army.lord.subtype .. ", forename=" .. self.event_army.lord.forename .. ", clan_name=" .. self.event_army.lord.clan_name .. ", family_name=" .. self.event_army.lord.family_name .. ", other_name=" .. self.event_army.lord.other_name .. "}")
+    --out("LEAPOI - InvasionBattleManager:setup_invasion - Lord:{type=" .. self.event_army.lord.subtype .. ", forename=" .. self.event_army.lord.forename .. ", clan_name=" .. self.event_army.lord.clan_name .. ", family_name=" .. self.event_army.lord.family_name .. ", other_name=" .. self.event_army.lord.other_name .. "}")
     -- adds an experience level to the invasion forces
     local by_level = true
     invasion:add_character_experience(self.event_army.lord.level, by_level)
     invasion:add_unit_experience(self.event_army.unit_experience_amount)
-    out("LEAPOI - Invasion setup finished")
+    --out("LEAPOI - Invasion setup finished")
     return invasion
 end
     
 
 function InvasionBattleManager:setup_encounter_force_removal(invasion_identifier)
-    out("LEAPOI - InvasionBattleManager:setup_encounter_force_removal setted")
+    out("LEAPOI - InvasionBattleManager:setup_encounter_force_removal setted for invasion_identifier=" .. tostring(invasion_identifier))
 	self.core:add_listener(
         "land_enc_and_poi_encounter_removal",
         "FactionTurnStart", 
         true,
         function(context)
-            out("LEAPOI - InvasionBattleManager:setup_encounter_force_removal runned")
+            --out("LEAPOI - InvasionBattleManager:setup_encounter_force_removal runned")
             local force = self.invasion_manager:get_invasion(invasion_identifier)
             if force then
                 out("LEAPOI - InvasionBattleManager:setup_encounter_force_removal force triggered and killed")
@@ -133,7 +133,7 @@ end
 
 
 function InvasionBattleManager:set_auxiliary_army_for_reset(battle_event)
-    out("LEAPOI - InvasionBattleManager:set_auxiliary_army_for_reset - Army being setted:" .. battle_event)
+    --out("LEAPOI - InvasionBattleManager:set_auxiliary_army_for_reset - Army being setted:" .. battle_event)
     self.event_army = Army:newFrom(battle_event)
 end
 
@@ -148,7 +148,7 @@ function InvasionBattleManager:reset_state_post_battle(zone, spot_index, invasio
             local found_encounter_faction = false
             local trigger_positive_event_result = false
     
-            out("LEAPOI - InvasionBattleManager:reset_state_post_battle - triggered")
+            --out("LEAPOI - InvasionBattleManager:reset_state_post_battle - triggered")
             local attacker_was_victorious = cm:pending_battle_cache_attacker_victory()
             local defender_was_victorious = cm:pending_battle_cache_defender_victory()
 
@@ -183,7 +183,7 @@ function InvasionBattleManager:reset_state_post_battle(zone, spot_index, invasio
                 uim:override("retreat"):unlock()
                 
                 if trigger_positive_event_result then
-                    out("LEAPOI - InvasionBattleManager:reset_state_post_battle triggering trigger_positive_event_result")
+                    --out("LEAPOI - InvasionBattleManager:reset_state_post_battle triggering trigger_positive_event_result")
                     zone.spots[spot_index]:trigger_victory_incident()
                 end
                 zone:deactivate_spot(spot_index)

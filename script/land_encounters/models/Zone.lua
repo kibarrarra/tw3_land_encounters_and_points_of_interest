@@ -49,7 +49,7 @@ local Zone = {
 function Zone:initialize_from_zone_with_coordinates(zone_name, zone_coordinates, active_spot_percentage, battle_percentage, turn_number)
     self.name = zone_name
     self.spots = {}
-    out("LEAPOI - Zone:initialize_from_zone_with_coordinates - " .. zone_name .. ", #zone_coordinates : " ..  #zone_coordinates)
+    --out("LEAPOI - Zone:initialize_from_zone_with_coordinates - " .. zone_name .. ", #zone_coordinates : " ..  #zone_coordinates)
     for i = 1, #zone_coordinates do
         local spot = Spot:new()
         spot:initialize_from_coordinates(i, zone_coordinates[i])
@@ -123,7 +123,7 @@ function Zone:update_turn_activation_cooldown(flagged_spots)
     for spot_index, state in pairs(flagged_spots) do
         local deactivated_due_to_expiration = self.spots[spot_index]:check_if_active_and_countdown_reached()
         if deactivated_due_to_expiration then
-            out("LEAPOI - Zone:update_turn_activation_cooldown - Expired spot=" .. tostring(spot_index))
+            --out("LEAPOI - Zone:update_turn_activation_cooldown - Expired spot=" .. tostring(spot_index))
             self:deactivate_spot(spot_index)
         end
     end
@@ -132,9 +132,9 @@ end
 
 function Zone:add_land_encounters(battle_event_factory)
     local disordered_indexes = randomic_length_shuffle(self.total_spots)
-    out("LEAPOI - Zone:add_land_encounters - zone_name=" .. self.name .. "number_of_spots=".. tostring(#self.spots) .. ", total_spots_value=" .. self.total_spots)
+    --out("LEAPOI - Zone:add_land_encounters - zone_name=" .. self.name .. "number_of_spots=".. tostring(#self.spots) .. ", total_spots_value=" .. self.total_spots)
     for i= 1, #disordered_indexes do
-        out("LEAPOI - add_land_encounters {current_index=" .. tostring(i) .. ", disordered_indexes[current_index]=" .. tostring(disordered_indexes[i]).."}")
+        --out("LEAPOI - add_land_encounters {current_index=" .. tostring(i) .. ", disordered_indexes[current_index]=" .. tostring(disordered_indexes[i]).."}")
         -- after every land encounter added we should check that the total count does not surpass the total amount of encounters permitted
         if not self:can_add_land_encounters() then
             break
@@ -159,7 +159,7 @@ function Zone:reinstate(previous_state, battle_event_factory)
             self.spots[i].is_active = previous_state[flattened_key .. "_active"]
             self.spots[i].marker_id = "land_enc_marker_" .. self.name .. "_" .. i
             
-            out("LEAPOI - Zone:reinstate - index=" .. tostring(i) .. ", key=" .. flattened_key ..", zone_name=" .. self.name ..", spot_type=" .. spot_type .. ", is_active=" .. tostring(self.spots[i].is_active))
+            --out("LEAPOI - Zone:reinstate - index=" .. tostring(i) .. ", key=" .. flattened_key ..", zone_name=" .. self.name ..", spot_type=" .. spot_type .. ", is_active=" .. tostring(self.spots[i].is_active))
 
             if spot_type == "TreasureSpot" and self.spots[i].is_active then
                 self.spots[i] = TreasureSpot:newFrom(self.spots[i])
@@ -184,7 +184,7 @@ function Zone:reinstate(previous_state, battle_event_factory)
                     activate_battle_spot_index = i
                 end
             elseif self.spots[i].is_active and self:can_add_land_encounters() then
-                out("LEAPOI - Regenerating Spot")
+                --out("LEAPOI - Regenerating Spot")
                 -- this means that somewhat the point exists but bugged becoming an abstract Spot. We recreate the spot
                 self:set_spot_info(i, battle_event_factory)
             end
@@ -212,7 +212,7 @@ end
 function Zone:set_battle_spot_info(index, battle_event_factory)
     self.battle_spots[index] = ACTIVE_STATE
     
-    out("LEAPOI - Zone:set_battle_spot_info - {max_battles_count_hard=" .. tostring(self.max_battles_count_hard) .. ", battle_spots_hard=" .. tostring(self.battle_spots_hard) .. "}, {max_battles_count_mid=" .. tostring(self.max_battles_count_mid) .. ", battle_spots_mid=" .. tostring(self.battle_spots_mid) .. "}, {battle_spots_easy=" .. tostring(self.battle_spots_easy) .. ", max_battles_count_easy=" .. tostring(self.max_battles_count_easy) .. "}")
+    --out("LEAPOI - Zone:set_battle_spot_info - {max_battles_count_hard=" .. tostring(self.max_battles_count_hard) .. ", battle_spots_hard=" .. tostring(self.battle_spots_hard) .. "}, {max_battles_count_mid=" .. tostring(self.max_battles_count_mid) .. ", battle_spots_mid=" .. tostring(self.battle_spots_mid) .. "}, {battle_spots_easy=" .. tostring(self.battle_spots_easy) .. ", max_battles_count_easy=" .. tostring(self.max_battles_count_easy) .. "}")
     
     local level = 0
     if self.battle_spots_hard < self.max_battles_count_hard then 
@@ -229,8 +229,8 @@ function Zone:set_battle_spot_info(index, battle_event_factory)
     local random_event = battle_event_factory:assign_event(level, self.name)
 
     self.spots[index] = BattleSpot:newFrom(self.spots[index]) 
-    out("LEAPOI - Zone:set_battle_spot_info - Battle spot:{zone_name=" .. self.name .. ", index=" .. tostring(index) .. ", random_event=" .. random_event.dilemma .. "}")
-    out("LEAPOI - Battle spot created")
+    --out("LEAPOI - Zone:set_battle_spot_info - Battle spot:{zone_name=" .. self.name .. ", index=" .. tostring(index) .. ", random_event=" .. random_event.dilemma .. "}")
+    --out("LEAPOI - Battle spot created")
     return random_event
 end
 
@@ -239,13 +239,13 @@ function Zone:set_treasure_spot_info(index)
     self.treasure_spots[index] = ACTIVE_STATE
     random_event = treasure_events[random_number(#treasure_events)]
     self.spots[index] = TreasureSpot:newFrom(self.spots[index])  
-    out("LEAPOI - Zone:set_treasure_spot_info - Treasure spot:{index=" .. tostring(index) .. ",random_event=" .. random_event .. "}")
+    --out("LEAPOI - Zone:set_treasure_spot_info - Treasure spot:{index=" .. tostring(index) .. ",random_event=" .. random_event .. "}")
     return random_event
 end
 
 
 function Zone:reinstate_spot_basic_data(spot_index, event, deactivation_countdown, marker_id, flagged_spots)
-    out("LEAPOI - Spot data:{index=" .. spot_index ..", deactivation_countdown=" .. tostring(deactivation_countdown) .. ", marker_id=" .. marker_id .. ", is_active=" .. tostring(self.spots[spot_index].is_active) .. "}")
+    --out("LEAPOI - Spot data:{index=" .. spot_index ..", deactivation_countdown=" .. tostring(deactivation_countdown) .. ", marker_id=" .. marker_id .. ", is_active=" .. tostring(self.spots[spot_index].is_active) .. "}")
     self.spots[spot_index].automatic_deactivation_countdown = deactivation_countdown
     self.spots[spot_index].marker_id = marker_id
     self.spots[spot_index]:set_event_from_string(event)
@@ -257,7 +257,7 @@ end
 -- Depending of the spot type a different kind of event will trigger controlled via inheritance
 function Zone:trigger_spot_event(context, spot_index)
     local can_be_removed = self.spots[spot_index]:trigger_event(context)
-    out("LEAPOI - spot_index=" .. tostring(spot_index) .. ", can_be_removed=" .. tostring(can_be_removed))
+    --out("LEAPOI - spot_index=" .. tostring(spot_index) .. ", can_be_removed=" .. tostring(can_be_removed))
     if can_be_removed then
         self:deactivate_spot(spot_index)
     end

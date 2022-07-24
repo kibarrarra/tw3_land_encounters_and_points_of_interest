@@ -44,7 +44,7 @@ end
 function Army:randomize_army_composition_and_declare(random_army_manager)
     random_army_manager:remove_force(self.force_identifier)
     random_army_manager:new_force(self.force_identifier)
-    out("LEAPOI - Army new force created - " .. self.force_identifier)
+    --out("LEAPOI - Army new force created - " .. self.force_identifier)
     local randomized_units = {}
     for i=1, #self.units_pool do
         local randomized_unit = self.units_pool[i]:generate_winner_unit()
@@ -87,11 +87,11 @@ function Army:newFrom(battle_event, identifier)
         force_data = battlefields[battle_event]
     elseif string.find(battle_event, "daemonic") then
         force_data = daemonic_invasions[battle_event]
-    elseif string.find(battle_event, "incursions") then
+    elseif string.find(battle_event, "incursion") then
         force_data = incursions[battle_event]
     elseif string.find(battle_event, "stands") then
         force_data = stands[battle_event]
-    elseif string.find(battle_event, "rebellions") then
+    elseif string.find(battle_event, "underground") then
         force_data = rebellions[battle_event]
     elseif string.find(battle_event, "skirmish") then
         force_data = skirmishes[battle_event]

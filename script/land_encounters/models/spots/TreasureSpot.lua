@@ -1,5 +1,20 @@
 local Spot = require("script/land_encounters/models/spots/abstract_classes/Spot")
 
+
+------------------------------------------------
+--- Constant values of the class
+------------------------------------------------
+--TODO: Remove in August update. Is an experiment to fix the problems with the WH3 function that triggers events
+local event_to_targets = {
+    ["land_enc_incident_tomb_robbing"] = { character = true, force = false, faction = false, region = false },
+    ["land_enc_incident_abandoned_camp"] = { character = true, force = true, faction = false, region = false },
+    ["land_enc_incident_buried_relics"] = { character = true, force = false, faction = false, region = false },
+    ["land_enc_incident_hidden_temple"] = { character = true, force = true, faction = false, region = false },
+    ["land_enc_incident_caravan_remnants"] = { character = true, force = false, faction = false, region = false },
+    ["land_enc_incident_legendary_bard"] = { character = false, force = false, faction = true, region = false },
+    ["land_enc_incident_whispers_of_the_gods"] = { character = true, force = true, faction = false, region = false }
+}
+
 -------------------------
 --- Properties definition
 -------------------------
@@ -34,17 +49,10 @@ end
 
 function TreasureSpot:trigger_event(context)
     local character = context:family_member():character()
+    
+    self:trigger_incident_for_character(self.event, character, event_to_targets[self.event])
 
-    local faction_cqi = character:faction():command_queue_index()
-    local incident_key = self.event
-    local target_faction_cqi = 0 -- ignore flag
-    local secondary_faction_cqi = 0
-    local character_cqi = character:command_queue_index()
-    local military_force_cqi = 0 --character:military_force():command_queue_index()
-    local region_cqi = 0
-    local settlement_cqi = 0
-    cm:trigger_incident_with_targets(faction_cqi, incident_key, target_faction_cqi, secondary_faction_cqi, character_cqi, military_force_cqi, region_cqi, settlement_cqi)
-    out("LEAPOI - Triggered targeted treasure land encounter " .. character:get_forename())
+    --out("LEAPOI - Triggered targeted treasure land encounter for =" .. character:get_forename())
     
     return true -- can_remove_encounter_flag. Always true in the case of treasure spots
 end

@@ -15,13 +15,13 @@ incidents_localised_description_land_enc_incident_legendary_bard	While marching 
 incidents_localised_title_land_enc_incident_whispers_of_the_gods	Whispers Of Our God	false
 incidents_localised_description_land_enc_incident_whispers_of_the_gods	While traversing the land the lord suddenly feels tired of the road and decides that the army must camp for the night. While dreaming, the dream becomes vivid and god materializes in the dream. With words of courage and power it inspires the lord. The lord spokes this to the men, making them feel that they can beat anyone and anything in their path.	false
 incidents_localised_title_land_enc_incident_battle_won_skirmish	Friendly Training	false
-incidents_localised_description_land_enc_incident_battle_won_skirmish	-	false
+incidents_localised_description_land_enc_incident_battle_won_skirmish	The men of the two armies lie mixed and weary all around the field, but smiling and content. They gather all night around campfires and celebrate the skirmish without caring about the winner. In the morning the general greets you and thanks you. They will continue on their way with their spirits high and ready to face whatever comes their way.\\n	false
 incidents_localised_title_land_enc_incident_battle_avoided_skirmish	A Friendly Proposal Rejected	false
-incidents_localised_description_land_enc_incident_battle_avoided_skirmish	-	false
+incidents_localised_description_land_enc_incident_battle_avoided_skirmish	The ally general leaves, clearly dissapointed. He wishes you good luck in your travels and goes his own way with his army. Let's hope that luck smiles to both of us.	false
 incidents_localised_title_land_enc_incident_battle_won_underground	Smotted In The Crib	false
-incidents_localised_description_land_enc_incident_battle_won_underground	-	false
-incidents_localised_title_land_enc_incident_battle_avoided_underground	A Peaceful Resolution	false
-incidents_localised_description_land_enc_incident_battle_avoided_underground	-	false
+incidents_localised_description_land_enc_incident_battle_won_underground	The nascent rebellion was quickly defeated before it could attract dangerous characters. Our general lets those who no longer have the will to fight disperse. They were never our true target, and now they better understand the difference between a mere belligerent mob and a real army.\\n	false
+incidents_localised_title_land_enc_incident_battle_avoided_underground	A Band Of Weaklings Ignored	false
+incidents_localised_description_land_enc_incident_battle_avoided_underground	Our general laughs in their face. We left the weakling camp without laying a finger on them. They scatter quickly and desperately as we move away, the mere threat of our presence driving them from their reckless stupidity.	false
 incidents_localised_title_land_enc_incident_battle_won_bandits	Defeated Bandits	false
 incidents_localised_description_land_enc_incident_battle_won_bandits	Dust settles on the battlefield. The members of the bandit regiment lie dead or captured on the field, none of them will ever see the light of day or trouble our empire again. By torturing their leader, we discovered their lair and took everything they stole to aid the empire's war effort.	false
 incidents_localised_title_land_enc_incident_battle_avoided_bandits	An Uneventful Night	false
