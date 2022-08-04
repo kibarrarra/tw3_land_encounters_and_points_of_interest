@@ -244,7 +244,7 @@ local battle_events = {
     ---------------------------------------------------------------------------
     -- (Mid Upper) Daemonic Invasion
     ---------------------------------------------------------------------------
-    --{
+    --{ TODO
     --    difficulty_level = 2,
     --    dilemma = "land_enc_dilemma_surprise_attack_skv",
     --    is_exclusive_to_zone = false,
@@ -301,39 +301,47 @@ local battle_events = {
     },
     
     --{ --TODO
-    --    difficulty_level = 3,
     --    dilemma = "land_enc_dilemma_battlefield_wco",
-    --    is_exclusive_to_zone = false,
-    --    zone = false,
     --    victory_incident = "land_enc_incident_battle_won_battlefield_wco",
     --    avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
+    --    difficulty_level = 3,
+    --    is_exclusive_to_zone = false,
+    --    zone = "_",
+    --    victory_targets = { character = true, force = false, faction = false, region = false },
+    --    avoidance_targets = { character = false, force = true, faction = false, region = false }
     --},
     
     --{ --TODO
-    --    difficulty_level = 3,
     --    dilemma = "land_enc_dilemma_battlefield_doc",
-    --    is_exclusive_to_zone = false,
-    --    zone = false,
     --    victory_incident = "land_enc_incident_battle_won_battlefield_doc",
-    --    avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
+    --    avoidance_incident = "land_enc_incident_battle_avoided_battlefield"    
+    --    difficulty_level = 3,
+    --    is_exclusive_to_zone = false,
+    --    zone = "_",
+    --    victory_targets = { character = true, force = false, faction = false, region = false },
+    --    avoidance_targets = { character = false, force = true, faction = false, region = false }
     --},
     
     --{ --TODO
-    --    difficulty_level = 3,
     --    dilemma = "land_enc_dilemma_battlefield_kho",
-    --    is_exclusive_to_zone = false,
-    --    zone = false,
     --    victory_incident = "land_enc_incident_battle_won_battlefield_kho",
     --    avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
+    --    difficulty_level = 3,
+    --    is_exclusive_to_zone = false,
+    --    zone = false,
+    --    victory_targets = { character = true, force = false, faction = false, region = false },
+    --    avoidance_targets = { character = false, force = true, faction = false, region = false }
     --},
     
     --{ --TODO
-    --    difficulty_level = 3,
     --    dilemma = "land_enc_dilemma_battlefield_sla",
-    --    is_exclusive_to_zone = false,
-    --    zone = false,
     --    victory_incident = "land_enc_incident_battle_won_battlefield_sla",
     --    avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
+    --    difficulty_level = 3,
+    --    is_exclusive_to_zone = false,
+    --    zone = false,
+    --    victory_targets = { character = true, force = false, faction = false, region = false },
+    --    avoidance_targets = { character = false, force = true, faction = false, region = false }
     --}
     
     ---------------------------------------------------------------------------

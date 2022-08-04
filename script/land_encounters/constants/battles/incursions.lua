@@ -53,8 +53,6 @@ return {
             possible_subtypes = { 
                 "wh2_main_lzd_saurus_old_blood",
                 "wh2_dlc12_lzd_tiktaqto", 
-                "wh2_dlc12_lzd_tehenhauin", 
-                "wh2_dlc17_lzd_oxyotl",
                 "wh2_dlc13_lzd_nakai" 
             },
             level_ranges = {20, 30}, 
@@ -99,10 +97,10 @@ return {
             { "wh2_dlc11_cst_inf_deck_gunners_0", 2, 100, 0, nil }, -- 11 basic army (if lucky this will be the only army the player will need to beat for the reward
             { "wh2_dlc11_cst_mon_bloated_corpse_0", 2, 70, 0, nil }, -- 13
             { "wh2_dlc11_cst_inf_zombie_deckhands_mob_1", 2, 50, 20, "wh2_dlc11_cst_mon_animated_hulks_0" }, -- 15
-            { "wh2_dlc11_cst_mon_scurvy_dogs", 2, 20, 20, "wh2_dlc11_cst_cav_deck_droppers_ror_0" }, -- 17
-            { "wh2_dlc11_cst_art_carronade", 1, 5, 15, "wh2_dlc11_cst_mon_terrorgheist" }, -- 18
-            { "wh2_dlc11_cst_mon_mournguls_0", 1, 5, 10, "wh2_dlc11_cst_mon_necrofex_colossus_0" }, -- 19
-            { "wh2_dlc11_cst_mon_necrofex_colossus_0", 1, 5, 5, "wh2_dlc11_cst_art_queen_bess" } -- 20
+            { "wh2_dlc11_cst_mon_scurvy_dogs", 2, 25, 20, "wh2_dlc11_cst_cav_deck_droppers_ror_0" }, -- 17
+            { "wh2_dlc11_cst_art_carronade", 1, 5, 20, "wh2_dlc11_cst_mon_terrorgheist" }, -- 18
+            { "wh2_dlc11_cst_mon_mournguls_0", 1, 5, 20, "wh2_dlc11_cst_mon_necrofex_colossus_0" }, -- 19
+            { "wh2_dlc11_cst_mon_necrofex_colossus_0", 1, 10, 5, "wh2_dlc11_cst_art_queen_bess" } -- 20
         }
     }
     

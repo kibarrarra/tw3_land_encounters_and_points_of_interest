@@ -5,7 +5,7 @@ local treasure_events = require("script/land_encounters/constants/events/treasur
 local Spot = require("script/land_encounters/models/spots/abstract_classes/Spot")
 local TreasureSpot = require("script/land_encounters/models/spots/TreasureSpot")
 local BattleSpot = require("script/land_encounters/models/spots/BattleSpot")
-
+local SmithySpot = require("script/land_encounters/models/spots/SmithySpot")
 
 -------------------------
 --- Constant values of the class [DO NOT CHANGE]
@@ -19,6 +19,7 @@ local ERASED_FLAG = nil
 -------------------------
 local Zone = {
     name = "Unknown",
+    -- Dynamic spots
     spots = {},
     -- Indicators
     treasure_spots = {}, -- indexes of the current active treasure spots [index of a spot] = STATE[0 = Registered but not created in the map, 1 = created in the map, nil = inactive ]
@@ -39,6 +40,9 @@ local Zone = {
     max_battles_count_hard = 0,
     
     prohibited_spots = {},
+    
+    -- Fixed spots
+    points_of_interest = {}, -- Smithy / Resource / Tavern
     
     total_spots = 0
 }
@@ -157,20 +161,17 @@ function Zone:reinstate(previous_state, battle_event_factory)
         local spot_type = previous_state[flattened_key .. "_type"]
         if spot_type ~= nil then
             self.spots[i].is_active = previous_state[flattened_key .. "_active"]
-            self.spots[i].marker_id = "land_enc_marker_" .. self.name .. "_" .. i
-            
+            --self.spots[i].marker_id = "land_enc_marker_" .. self.name .. "_" .. i
             --out("LEAPOI - Zone:reinstate - index=" .. tostring(i) .. ", key=" .. flattened_key ..", zone_name=" .. self.name ..", spot_type=" .. spot_type .. ", is_active=" .. tostring(self.spots[i].is_active))
-
             if spot_type == "TreasureSpot" and self.spots[i].is_active then
                 self.spots[i] = TreasureSpot:newFrom(self.spots[i])
-                
-                self:reinstate_spot_basic_data(i, previous_state[flattened_key .. "_event"], previous_state[flattened_key .. "_deactivation"],  previous_state[flattened_key .. "_marker"], self.treasure_spots)
-                
+                self.spots[i]:reinstate(previous_state, flattened_key)
+                self.treasure_spots[i] = ACTIVE_STATE
             elseif spot_type == "BattleSpot" and self.spots[i].is_active then
                 self.spots[i] = BattleSpot:newFrom(self.spots[i])
-                
-                self:reinstate_spot_basic_data(i, previous_state[flattened_key .. "_event"], previous_state[flattened_key .. "_deactivation"],  previous_state[flattened_key .. "_marker"], self.battle_spots)
-                
+                self.spots[i]:reinstate(previous_state, flattened_key)
+                self.battle_spots[i] = ACTIVE_STATE
+                                
                 if self.spots[i].event.dilemma.difficulty_level == 1 then
                     self.battle_spots_easy = self.battle_spots_easy + 1
                 elseif self.spots[i].event.dilemma.difficulty_level == 2 then
@@ -179,7 +180,6 @@ function Zone:reinstate(previous_state, battle_event_factory)
                     self.battle_spots_hard = self.battle_spots_hard + 1
                 end
                 
-                self.spots[i].is_triggered = previous_state[flattened_key .. "_is_triggered"]
                 if self.spots[i].is_triggered then
                     activate_battle_spot_index = i
                 end
@@ -190,6 +190,11 @@ function Zone:reinstate(previous_state, battle_event_factory)
             end
         end
     end
+    
+    for i=1, #self.spots do
+        
+    end
+    
     return activate_battle_spot_index
 end
 
@@ -244,19 +249,21 @@ function Zone:set_treasure_spot_info(index)
 end
 
 
-function Zone:reinstate_spot_basic_data(spot_index, event, deactivation_countdown, marker_id, flagged_spots)
-    --out("LEAPOI - Spot data:{index=" .. spot_index ..", deactivation_countdown=" .. tostring(deactivation_countdown) .. ", marker_id=" .. marker_id .. ", is_active=" .. tostring(self.spots[spot_index].is_active) .. "}")
-    self.spots[spot_index].automatic_deactivation_countdown = deactivation_countdown
-    self.spots[spot_index].marker_id = marker_id
-    self.spots[spot_index]:set_event_from_string(event)
-    flagged_spots[spot_index] = ACTIVE_STATE
-end
-
-
 -- TRIGGERING RELATED METHODS
 -- Depending of the spot type a different kind of event will trigger controlled via inheritance
-function Zone:trigger_spot_event(context, spot_index)
-    local can_be_removed = self.spots[spot_index]:trigger_event(context)
+function Zone:trigger_spot_event(context, spot_index, spot_type, invasion_battle_manager)
+    local can_be_removed = false
+    if spot_type == 0 then
+        can_be_removed = self.spots[spot_index]:trigger_event(context)
+    elseif spot_type == 1 then -- smithy
+        --TODO: A rather stupid code smell. Fix later should access index directly
+        for i=1, #self.points_of_interest do
+            if self.points_of_interest[i].get_class() == "SmithySpot" and self.points_of_interest[i].index == spot_index then
+                self.points_of_interest[i]:trigger_event(context, invasion_battle_manager, self, i)
+                break
+            end
+        end
+    end
     --out("LEAPOI - spot_index=" .. tostring(spot_index) .. ", can_be_removed=" .. tostring(can_be_removed))
     if can_be_removed then
         self:deactivate_spot(spot_index)
@@ -264,8 +271,20 @@ function Zone:trigger_spot_event(context, spot_index)
 end
 
 
-function Zone:trigger_spot_dilemma_by_choice(invasion_battle_manager, context, spot_index)
-    local can_be_removed = self.spots[spot_index]:trigger_dilemma_by_choice(invasion_battle_manager, self, spot_index, context)
+function Zone:trigger_spot_dilemma_by_choice(invasion_battle_manager, context, spot_index, spot_type)
+    local can_be_removed = false
+    if spot_type == 0 then
+        can_be_removed = self.spots[spot_index]:trigger_dilemma_by_choice(invasion_battle_manager, self, spot_index, context)
+    elseif spot_type == 1 then -- smithy
+        --TODO: A rather stupid code smell. Fix later should access index directly
+        for i=1, #self.points_of_interest do
+            if self.points_of_interest[i].get_class() == "SmithySpot" and self.points_of_interest[i].index == spot_index then
+                self.points_of_interest[i]:trigger_dilemma_by_choice(invasion_battle_manager, self, spot_index, context)
+                break
+            end
+        end
+    end
+    
     if can_be_removed then
         self:deactivate_spot(spot_index)
     end
@@ -294,6 +313,101 @@ function Zone:deactivate_spot(spot_index)
     self.spots[spot_index]:deactivate(self.name)
 end
 
+
+--
+-- POINTS OF INTEREST (PERMANENT CONTROL SPOT)
+-- 
+function Zone:initialize_points_of_interest(points_of_interest_data)
+    self:initialize_smithies(points_of_interest_data["smithies"])
+    self:initialize_taverns(points_of_interest_data["taverns"])
+    self:initialize_resources(points_of_interest_data["resources"])
+end
+
+
+function Zone:update_points_of_interest_by_turn(turn_number)
+    for i=1, #self.points_of_interest do
+        self.points_of_interest[i]:update_state_through_turn_passing()
+    end
+end
+
+
+function Zone:initialize_smithies(smithies_data)
+    self.points_of_interest = {}
+    if #smithies_data > 0 then
+        for i=1, #smithies_data do
+            local spot = Spot:new()
+            spot:initialize_from_coordinates(i, smithies_data[i].coordinates)
+            local smithy = SmithySpot:new_from_coordinates(spot, i, smithies_data[i].initial_owning_faction)
+            table.insert(self.points_of_interest, smithy)
+        end
+    end
+end
+    
+
+function Zone:initialize_taverns(taverns_data)
+    if #taverns_data > 0 then
+        for i=1, #taverns_data do
+            --TODO table.insert(self.points_of_interest, TavernSpot:newFrom(taverns_data[i]))
+        end
+    end
+end
+
+
+function Zone:initialize_resources(resources_data)
+    if #resources_data > 0 then
+        for i=1, #resources_data do
+            --TODO table.insert(self.points_of_interest, ResourceSpot:newFrom(resources_data[i]))
+        end
+    end
+end
+
+
+function Zone:activate_points_of_interest()
+    for i=1, #self.points_of_interest do
+        self.points_of_interest[i]:activate(self.name, "")
+    end
+end
+
+
+function Zone:reinstate_points_of_interest(previous_state)
+    out("LEAPOI - Zone-reinstate_points_of_interest")
+    local poi_index_triggered = nil
+    for i=1, #self.points_of_interest do
+        local poi_type = self.points_of_interest[i]:get_class()
+        if poi_type == "SmithySpot" then
+            out("LEAPOI - Zone-reinstate_points_of_interest Reactivating smithy")
+            local flattened_key = self.name .. "_smithy_" .. tostring(self.points_of_interest[i].index)
+            
+            -- it could be that we have added a new poi. So we need to check wether if it previously existed.
+            local is_battle_triggered = false
+            if previous_state[flattened_key .. "_active"] ~= nil then
+                out("LEAPOI - Zone-reinstate_points_of_interest Restoring smithy")
+                is_battle_triggered = self.points_of_interest[i]:reinstate(flattened_key, previous_state)
+            end
+            -- the battle type is irrelevant as we will delegate to the poi its logic    
+            if is_battle_triggered then
+                poi_index_triggered = i
+            end
+        end
+    end
+    return poi_index_triggered
+end
+
+
+function Zone:trigger_event_given_battle_result(spot_type, spot_index, player_won_battle)
+    if spot_type == "BattleSpot" then
+        if player_won_battle then
+            self.spots[spot_index]:trigger_victory_incident()
+        end
+        self:deactivate_spot(spot_index)        
+    elseif spot_type == "SmithySpot" then
+        if player_won_battle then
+            self.points_of_interest[spot_index]:trigger_victory_event_given_battle_type()
+        else
+            self.points_of_interest[spot_index]:trigger_defeat_event_given_battle_type()
+        end
+    end
+end
 -------------------------
 --- Constructors
 -------------------------

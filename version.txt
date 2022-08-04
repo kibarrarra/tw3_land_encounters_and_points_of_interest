@@ -1,3 +1,5 @@
+Current Version: 1.1
+
 Overall objectives:
 - Make available this mod again for the player
 - Expand this mod so that it has more use cases
@@ -11,19 +13,76 @@ Version 1.0 for Game version 1.3
 - TODO 2: Add more possible treasure events and battle events.
 - TODO 3: Multiplayer support
 
-===============================
-Future
-===============================
-Version 1.1 for Game version 2.0
-===============================
-- Tavern spots
--
+================================
+Version 1.1 for Game version 1.3
+================================
+BALANCE
+- AI can trigger treasure spots, you can encounter buffed enemy armies this way or the enemy/ally factions can gain more items this way.
+
+- AI can trigger battle spots, giving them a random item from the spot so is more balanced.
+
+BUG FIXING
+- About the CTD / Crash after a battle. It still is under investigation. The two parts involved (the triggering of the battle and the resulting event) have been refactored from their original in the sea_encounters script logic with more optimal and revised logic. Please tell me if you still have crashes. Try putting the mod as your first mod to avoid this problem as well. (Try making a new campaign to test this).
+
+- Saving logic has been changed so that it does not trigger whenever you reload the campaign map (another candidate for the crashes). Now it only triggers during the initial load of the game and will not refresh the spot events as before.
+
+- In case of crashes due to other mods and losing the state of the spots, the spots are now more resilient avoiding being bugged forever. If someone reaches the point, it will auto trigger and self delete itself giving an event with a simple reward.
+
+- Heimdall updated his landmarks mod but found that it is a combination of several mods that triggered the error. You can give it another try and tell me to remove it.
+
+NEW FEATURES
+- Put two new battle types: Friendly Skirmishes and Nascent Rebellions.
+
+- Point distribution algorithm for the battle spots that changes the distribution of the battles given the current campaign turn:
+Turn number Battles
+0 - 40 easy (90%) >>> mid (8%) >>> hard (2%)
+40 - 80 mid (80%) >>> hard (20%) >>> easy (10%)
+80 - + hard (50%) >>> mid (40%) >>> easy (10%)
+
 
 ===============================
 Version 1.2 for Game version ???
 ===============================
-- Smith spots (if possible with Mixu stuff appearing just for a turn). If not dilemmas
+BALANCE
+- Added more possible rewards to the AI factions triggering the battlespots so that they obtain better stuff from the points than grey items.
 
+- Heavily diminished monetary rewards from the points as you could easily go upwards from 100000 in as few as 6 turns just by autoresolving with a doomstack in legendary (specially kislev and khorne as their armies have huge replenishment benefits).
+
+BUG FIXING 
+- Made BattleSpots even more resilient to errors.
+- Changed spawned armies elimination logic so that it doesn't fail out of nowhere and the enemy army remains there (could end up being really dangerous for the player).
+- Optimized and simplified post battle reward logic more.
+
+NEW FEATURES
+- First Point Of Interest? or Point Of Control? implemented = Smithy spots (V1.0)with dilemmas.
+
+Features
+============
+For AI
+============
+- Every 5 turns give a random ancillary to the controlling faction.
+- Doomstack level garrison that protects it from player reclamation.
+
+============
+For Player
+============
+Given level (1, 2, 3):
+- Every level_dependant number of turns gives a random ancillary as a tribute to the player. 
+- Can be visited to: improve it or gain an ancillary.
+- Cost of improvements: level 1 to 2 > 20000, level 2 to 3 > 40000
+
+Level                 1                2               3
+Tribute          Every 15 turns    Every 10 turns     Every 5 turns
+Visit rewards    Grey items        Green items        Blue items
+                 Improve smithy    Improve smithy     -
+Visit cooldown   10 for item       10 for item        10 for item
+                 3 for improvement 3 for improvement  -
+Defenders        12 weak units     16 good units      20 man doomstack
+
+
+===============================
+Future
+===============================
 
 ===============================
 Version 1.3 for Game version ???

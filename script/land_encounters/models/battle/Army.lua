@@ -1,7 +1,15 @@
+-- TODO: Pass a is_player flag in the constructor to double check units and pass alternatives in case they are needed.
+-- Make logic to check dlc ownership given subculture. Should a Unit or Lord type be DLC only, replace those units with its more close main variant or pass it in its constructor.
+
+
 -- Mod libs
 local ArmyUnit = require("script/land_encounters/models/battle/ArmyUnit")
 local LordUnit = require("script/land_encounters/models/battle/LordUnit")
 
+-- smithy defenders
+local smithy_defenders = require("script/land_encounters/constants/battles/smithy/defenders")
+
+-- battle spots battle types
 local bandits = require("script/land_encounters/constants/battles/bandits")
 local battlefields = require("script/land_encounters/constants/battles/battlefields")
 local daemonic_invasions = require("script/land_encounters/constants/battles/daemonic_invasions")
@@ -16,6 +24,7 @@ local waystones = require("script/land_encounters/constants/battles/waystones")
 --- Constant values of the class [DO NOT CHANGE | ALWAYS DECLARE FIRST]
 ------------------------------------------------
 local DEFAULT_FORCE_IDENTIFIER = "encounter_force"
+local DEFAULT_DEFENDER_FORCE = "defender_force"
 
 -------------------------
 --- Properties definition
@@ -78,7 +87,7 @@ end
 -------------------------
 --- Constructors
 -------------------------
-function Army:newFrom(battle_event, identifier)
+function Army:new_from_event(battle_event)
     -- Determine the force
     local force_data = false
     if string.find(battle_event, "bandit") then
@@ -101,32 +110,54 @@ function Army:newFrom(battle_event, identifier)
         force_data = waystones[battle_event]
     end
     
-    -- Check if the force is a defensive, offensive or reinforcing force
-    if identifier == nil then
-        identifier = DEFAULT_FORCE_IDENTIFIER
-    end
-    
     -- Create the invasion army
     local t = {
         faction = force_data.faction,
-        force_identifier = identifier,
+        force_identifier = DEFAULT_FORCE_IDENTIFIER,
         units_pool = {}, 
         units = {}, 
         unit_experience_amount = force_data.unit_experience_amount, 
         lord_pool = {}, 
         lord = {}
     }
+    t.lord_pool = LordUnit:newFrom(force_data.lord)
     
     for i=1, #force_data.units do
         local unit = ArmyUnit:newFrom(force_data.units[i])
         table.insert(t.units_pool, unit)
     end
     
+    setmetatable(t, self)
+    self.__index = self
+    return t
+end
+
+
+function Army:new_from_faction_and_subculture_and_level(faction_name, subculture, level)
+    local force_data = smithy_defenders[subculture]
+    local forces_of_level = force_data.armies_by_level[level]
+    
+    -- Create the defender army
+    local t = {
+        faction = faction_name,
+        force_identifier = DEFAULT_DEFENDER_FORCE,
+        units_pool = {}, 
+        units = {}, 
+        unit_experience_amount = forces_of_level.unit_experience_amount, 
+        lord_pool = {}, 
+        lord = {}
+    }
     t.lord_pool = LordUnit:newFrom(force_data.lord)
+    
+    for i=1, #forces_of_level.units do
+        local unit = ArmyUnit:newFrom(forces_of_level.units[i])
+        table.insert(t.units_pool, unit)
+    end
     
     setmetatable(t, self)
     self.__index = self
     return t
 end
+
 
 return Army

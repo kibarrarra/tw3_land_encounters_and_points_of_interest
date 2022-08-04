@@ -46,30 +46,59 @@ end
 
 
 function Spot:activate(zone_name, spot_event)
-    -- LOGICAL DATA
-    self.is_active = true
-    self.automatic_deactivation_countdown = AUTOMATIC_DEACTIVATION_COOLDOWN
+    self:set_logical_data()
+    self:set_event(spot_event)
     
-    -- EVENT DATA
-    self.event = spot_event
-    
-    -- MARKER DATA
-    -- we create the interactable marker in the map for the user
-    self.marker_id = "land_enc_marker_" .. zone_name .. "_" .. self.index
-    -- from campaign_interactable_marker_infos table
-    -- there are 12 possible skins for the markers. From number 33 to 44 up
+    local marker_id = "land_enc_marker_" .. zone_name .. "_" .. self.index
     local marker_number = random_number(12) + 33
     local marker_key = "encounter_marker_"..tostring(marker_number)
-    
+    local interaction_radius = 4
+    self:set_marker_on_map(marker_id, marker_key, interaction_radius)
+end
+
+
+function Spot:flatten_info(state_info, flattened_key)
+    state_info[flattened_key .. "_type"] = self:get_class()
+    state_info[flattened_key .. "_event"] = self:get_event_as_string()
+    state_info[flattened_key .. "_marker"] = self.marker_id
+    state_info[flattened_key .. "_deactivation"] = self.automatic_deactivation_countdown
+    state_info[flattened_key .. "_active"] = self.is_active
+end
+
+
+function Spot:reinstate(state_info, flattened_key)
+    self.automatic_deactivation_countdown = state_info[flattened_key .. "_deactivation"]
+    self.marker_id = state_info[flattened_key .. "_marker"]
+    self:set_event_from_string(state_info[flattened_key .. "_event"])
+end
+
+
+function Spot:set_logical_data()
+    self.is_active = true
+    self.automatic_deactivation_countdown = AUTOMATIC_DEACTIVATION_COOLDOWN
+end
+
+function Spot:set_event(spot_event)
+    self.event = spot_event
+end
+
+function Spot:set_marker_on_map(marker_id, marker_key, interaction_radius)
+    self.marker_id = marker_id
+    -- from campaign_interactable_marker_infos table
+    -- there are 12 possible skins for the markers. From number 33 to 44 up
     local x_coordinate = self.coordinates[1]
     local y_coordinate = self.coordinates[2]
-    local radius = 4
+    local radius = interaction_radius
     local faction_key = "" -- anyone can activate the marker
     local subculture_key = "" -- anyone can activate the marker
     --out("LEAPOI - Spot created={id:" .. self.marker_id .. ", spot_type:" .. self:get_class() .. ", (x,y):(".. x_coordinate .. "," .. y_coordinate .. "), marker_key:" .. marker_key .. "}")
-    cm:add_interactable_campaign_marker(self.marker_id, marker_key, x_coordinate, y_coordinate, radius, faction_key, subculture_key)
+    cm:add_interactable_campaign_marker(self.marker_id, marker_key, x_coordinate, y_coordinate, radius, faction_key, subculture_key)    
 end
 
+function Spot:find_location_for_character_to_spawn(faction_name)
+    local in_same_region = false
+    return cm:find_valid_spawn_location_for_character_from_position(faction_name, self.coordinates[1], self.coordinates[2], in_same_region)
+end
 
 -- SINGLE PLAYER ONLY = whose_turn_is_it_single
 function Spot:is_human_and_it_is_its_turn(faction)
@@ -93,7 +122,7 @@ end
 
 
 function Spot:trigger_incident(incident_key, character, targets)
-    -- if the campaign has been reloaded from a battle and we don't have the current player we have to obtain it back from the cm
+    -- if the campaign has been reloaded from a battle and we don't have the current player we have to obtain it back from the cm as we already know the faction, we get the closest character to the point. It may gives an incorrect one but still the player faction should get the rewards so is a half win
     if character == nil then
         local faction_name = cm:get_local_faction_name()
         local only_general = true

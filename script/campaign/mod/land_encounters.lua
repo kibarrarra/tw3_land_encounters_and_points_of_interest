@@ -8,10 +8,14 @@ local IS_PERSISTENT_LISTENER = true
     The mod logic is in scripts/land_encounters for order and maintainability.
 --]]
 --[[ Coordinates of the warhammer 3 maps --]]
-local ie_encounter_land_locations = require("script/land_encounters/constants/coordinates/inmortal_empires_coordinates")
-local roc_encounter_land_locations = require("script/land_encounters/constants/coordinates/realm_of_chaos_coordinates")
+local ie_encounter_land_locations = require("script/land_encounters/constants/coordinates/inmortal_empires/treasures_and_spots")
+local ie_points_of_interest = require("script/land_encounters/constants/coordinates/realm_of_chaos/points_of_interest")
+
+local roc_encounter_land_locations = require("script/land_encounters/constants/coordinates/realm_of_chaos/treasures_and_spots")
+local roc_points_of_interest = require("script/land_encounters/constants/coordinates/realm_of_chaos/points_of_interest")
 
 --[[ Dilemma Events created for this script --]]
+local smithy_events = require("script/land_encounters/constants/events/smithy_events")
 local battle_events = require("script/land_encounters/constants/events/battle_spot_events")
 local BattleEventFactory = require("script/land_encounters/factories/BattleEventFactory")
 
@@ -33,9 +37,9 @@ cm:add_first_tick_callback(
 
         if cm:get_campaign_name() == "wh3_main_chaos" then
             if manager:has_previous_state() then
-                manager:restore_from_previous_state(roc_encounter_land_locations, turn_number)
+                manager:restore_from_previous_state(roc_encounter_land_locations, roc_points_of_interest, turn_number)
             else
-                manager:generate_land_encounters(roc_encounter_land_locations, turn_number)
+                manager:generate_land_encounters(roc_encounter_land_locations, roc_points_of_interest, turn_number)
             end
         end
     end
@@ -83,8 +87,8 @@ core:add_listener(
 
 --[[ Triggered when the event triggered by the marker is a dilemma. 
 If it's a battle spot: Triggers a battle. Example: wh2_dlc11_cst_vampire_coast_encounters
+If it's a smith spot: Several dilemmas exist. We send to the poi itself to trigger what it needs
 If it's a tavern spot (TODO): Gives an option to recruit an unit at a low price if the cooldown has expired
-If it's a smith spot (TODO): Should open Mixu's interactable shop if this is not possible another dilemma
 If it's a resource spot (TODO): (Don't know yet but should be a fight for control of such resource: Permanent buffs like nagash books that the player and the AI should vie for as well as a zone around the marker if possible)
 --]]
 core:add_listener(
@@ -92,6 +96,15 @@ core:add_listener(
 	"DilemmaChoiceMadeEvent",
     function(context)
         local dilemma = context:dilemma()
+        --TODO in the future we should check all dilemmas from poi. Should join them all in a single list somehow
+        -- smithy dilemmas
+        for i=1, #smithy_events do
+            if dilemma == smithy_events[i] then
+                return true
+            end
+        end
+        
+        -- battles dilemmas
         for i=1, #battle_events do
             if dilemma == battle_events[i].dilemma then
                 return true

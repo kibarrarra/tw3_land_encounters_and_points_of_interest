@@ -62,7 +62,7 @@ return {
         },
         unit_experience_amount = 6,
         units = {
-            { "wh2_main_skv_inf_stormvermin", 4, 100, 10, "wh2_main_skv_inf_clanrat_spearmen_1" },
+            { "wh2_main_skv_inf_stormvermin_0", 4, 100, 10, "wh2_main_skv_inf_clanrat_spearmen_1" },
             { "wh2_dlc14_skv_inf_eshin_triads_0", 6, 100, 10, "wh2_dlc12_skv_veh_doom_flayer_0" }, -- 11 basic army
             { "wh2_dlc12_skv_inf_warplock_jezzails_0", 3, 80, 50, "wh2_dlc14_skv_inf_poison_wind_mortar_0" }, -- 14 
             { "wh2_main_skv_mon_hell_pit_abomination", 2, 40, 30, "wh2_main_skv_mon_rat_ogres"}, -- 16

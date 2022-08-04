@@ -21,3 +21,8 @@ land_enc_dilemma_battlefield_grn	false			faction	false	Event	UI_CAM_EVENT_Dilemm
 land_enc_dilemma_battlefield_def	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
 land_enc_dilemma_battlefield_vmp	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
 land_enc_dilemma_battlefield_tmb	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
+land_enc_dilemma_smithy_reclamation	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
+land_enc_dilemma_smithy_defense	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
+land_enc_dilemma_smithy_visit_level_1	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
+land_enc_dilemma_smithy_visit_level_2	false			faction	false	Event	UI_CAM_EVENT_Dilemma		
+land_enc_dilemma_smithy_visit_level_3	false			faction	false	Event	UI_CAM_EVENT_Dilemma		

@@ -5,6 +5,7 @@ require("script/land_encounters/utils/random")
 local elligible_items = require("script/land_encounters/constants/items/balancing_items")
 
 local Spot = require("script/land_encounters/models/spots/abstract_classes/Spot")
+local Army = require("script/land_encounters/models/battle/Army")
 
 ------------------------------------------------
 --- Constant values of the class [DO NOT CHANGE]
@@ -86,6 +87,23 @@ function BattleSpot:get_event_as_string()
 end
 
 
+function BattleSpot:flatten_info(state_info, flattened_key)
+    Spot.flatten_info(self, state_info, flattened_key)
+    
+    state_info[flattened_key .. "_event"] = self:get_event_as_string()
+    state_info[flattened_key .. "_is_triggered"] = self.is_triggered
+end
+
+
+-- REMEMBER cannot pass it to Spot.reinstate(self, state_info, flattened_key) implementation as it would give an stackoverflow due to the state_info being copied over an over again to that same table data.
+function Spot:reinstate(state_info, flattened_key)
+    self.automatic_deactivation_countdown = state_info[flattened_key .. "_deactivation"]
+    self.marker_id = state_info[flattened_key .. "_marker"]
+    self:set_event_from_string(state_info[flattened_key .. "_event"])
+    self.is_triggered = state_info[flattened_key .. "_is_triggered"]
+end
+
+
 function BattleSpot:trigger_event(context)
     self.player_character = context:family_member():character()
     local triggering_faction = self.player_character:faction()
@@ -125,17 +143,22 @@ end
 
 function BattleSpot:trigger_dilemma_by_choice(invasion_battle_manager, zone, spot_index, context)
     local choice = context:choice()
-    local faction = context:faction()
     
     local can_remove_encounter_marker = false
     --out("LEAPOI - BattleSpot:trigger_dilemma_by_choice= " .. tostring(choice) .. ", type= " .. type(choice))
     if choice == FIRST_OPTION then
         --out("LEAPOI - First choice -- Battle time!")
-        local in_same_region = false
-        local x, y = cm:find_valid_spawn_location_for_character_from_position(faction:name(), self.coordinates[1], self.coordinates[2], in_same_region)
+        local x, y = self:find_location_for_character_to_spawn(context:faction():name())
+        
         self.is_triggered = true
-        invasion_battle_manager:generate_battle(self.event.dilemma, self.player_character, {x, y})
-        invasion_battle_manager:reset_state_post_battle(zone, spot_index, invasion_battle_manager.DEFAULT_ENEMY_INVASION)
+        invasion_battle_manager:generate_battle(self:get_offensive_army(), self.player_character, {x, y})
+        invasion_battle_manager:setup_encounter_force_removal("encounter_invasion")
+        invasion_battle_manager:reset_state_post_battle(
+            zone, 
+            self:get_class(), 
+            spot_index, 
+            "encounter_invasion"
+        )
         return can_remove_encounter_marker
     else
         --out("LEAPOI - Second choice -- No thanks!")
@@ -153,6 +176,11 @@ end
 
 function BattleSpot:trigger_victory_incident()
     self:trigger_incident(self.event.victory_incident, self.player_character, self.event.victory_targets)
+end
+
+
+function BattleSpot:get_offensive_army()
+    return Army:new_from_event(self.event.dilemma)
 end
 
 

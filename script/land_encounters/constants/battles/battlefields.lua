@@ -33,7 +33,7 @@ return {
             possible_clan_names = {}, 
             possible_family_names = {}
         },
-        unit_experience_amount = 6,
+        unit_experience_amount = 9,
         units = {
             { "wh2_dlc15_grn_mon_river_trolls_ror_0", 1, 100, 0, nil }, -- 2
             { "wh2_dlc15_grn_mon_river_trolls_0", 4, 100, 0, nil }, -- 10

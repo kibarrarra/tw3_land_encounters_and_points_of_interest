@@ -1,6 +1,4 @@
 local Spot = require("script/land_encounters/models/spots/abstract_classes/Spot")
-local Army = require("script/land_encounters/models/battle/Army")
-
 
 -------------------------
 --- Constant values of the class [DO NOT CHANGE]
@@ -31,18 +29,22 @@ local InvasionBattleManager = {
 -------------------------
 --- Class Methods
 -------------------------
-function InvasionBattleManager:generate_defense_battle(elligible_forces, battle_event, enemy_character, defender_lat_lng)
+-- Preconditions: is defending a 
+-- Enemy_character: is at war with the player faction or is the player faction at war with the defending faction. 
+-- Army: Is a template of the army of the player faction or the controlling faction that is defending the defendable spot.
+-- Defender_lat_lng: is the defender army spawning point
+function InvasionBattleManager:generate_defense_battle(defender_army, enemy_character, defender_lat_lng)
     local force_cqi = enemy_character:military_force():command_queue_index()
     local enemy_faction_name = enemy_character:faction():name()
     
-    self.event_army = Army:newFrom(elligible_forces[battle_event], DEFAULT_DEFENDER_FORCE)
+    self.event_army = defender_army
     self.event_army:randomize_units(self.random_army_manager)
     
     local defender_force = self.random_army_manager:generate_force(DEFAULT_DEFENDER_FORCE)
     local defence = self:setup_invasion(DEFAULT_DEFENDER_INVASION, enemy_character, enemy_faction_name, defender_force, defender_lat_lng)
     defence:start_invasion(
-        function(invasion_force)
-            cm:force_attack_of_opportunity(defender_force:get_general():military_force():command_queue_index(), force_cqi, false)
+        function(created_defender_force)
+            cm:force_attack_of_opportunity(created_defender_force:get_general():military_force():command_queue_index(), force_cqi, false)
         end,
         false,
         false,
@@ -51,11 +53,11 @@ function InvasionBattleManager:generate_defense_battle(elligible_forces, battle_
 end
 
 
-function InvasionBattleManager:generate_battle(battle_event, player_character, enemy_lat_lng)
+function InvasionBattleManager:generate_battle(offensive_army, player_character, enemy_lat_lng)
     local force_cqi = player_character:military_force():command_queue_index()
     local player_faction_name = player_character:faction():name()
     
-    self.event_army = Army:newFrom(battle_event)
+    self.event_army = offensive_army
     self.event_army:randomize_units(self.random_army_manager)
 
     local invader_force = self.random_army_manager:generate_force(DEFAULT_ENEMY_FORCE)
@@ -84,8 +86,8 @@ function InvasionBattleManager:generate_battle(battle_event, player_character, e
         false,
         false
     ) 
-    self:setup_encounter_force_removal(DEFAULT_ENEMY_INVASION)
 end
+
 
 function InvasionBattleManager:setup_invasion(invasion_identifier, objective_character, objective_faction_name, force, force_lat_lng)
     local character_cqi = objective_character:command_queue_index()
@@ -132,42 +134,45 @@ function InvasionBattleManager:setup_encounter_force_removal(invasion_identifier
 end
 
 
-function InvasionBattleManager:set_auxiliary_army_for_reset(battle_event)
-    --out("LEAPOI - InvasionBattleManager:set_auxiliary_army_for_reset - Army being setted:" .. battle_event)
-    self.event_army = Army:newFrom(battle_event)
+function InvasionBattleManager:set_auxiliary_army_for_reset(army)
+    --out("LEAPOI - InvasionBattleManager-set_auxiliary_army_for_reset - Army being setted:" .. battle_event)
+    self.event_army = army
 end
 
 
-function InvasionBattleManager:reset_state_post_battle(zone, spot_index, invasion_type)
-    out("LEAPOI - InvasionBattleManager:reset_state_post_battle setted")
+function InvasionBattleManager:reset_state_post_battle(zone, spot_type, spot_index, invasion_type)
+    out("LEAPOI - InvasionBattleManager-reset_state_post_battle setted")
 	self.core:add_listener(
         "land_enc_and_poi_encounter_post_battle",
         "BattleCompleted", 
         true,
         function(context)
             local found_encounter_faction = false
-            local trigger_positive_event_result = false
+            local player_won_battle = false
     
-            --out("LEAPOI - InvasionBattleManager:reset_state_post_battle - triggered")
+            --out("LEAPOI - InvasionBattleManager-reset_state_post_battle - triggered")
             local attacker_was_victorious = cm:pending_battle_cache_attacker_victory()
             local defender_was_victorious = cm:pending_battle_cache_defender_victory()
 
             local player_faction_name = cm:get_local_faction_name()
             local encounter_invasion = self.invasion_manager:get_invasion(invasion_type)
     
-            if cm:pending_battle_cache_faction_is_attacker(player_faction_name) and cm:pending_battle_cache_faction_is_defender(self.event_army.faction) then
+            -- Changed because defensive type battles I cannot track the enemy easily
+            -- TODO: check wheter this extra logic is neccesary: and cm:pending_battle_cache_faction_is_defender(self.event_army.faction)
+            if cm:pending_battle_cache_faction_is_attacker(player_faction_name) then
                 found_encounter_faction = true
                 if attacker_was_victorious then
-                    trigger_positive_event_result = true
+                    player_won_battle = true
                 end
     
                 if encounter_invasion then
                     self:silently_remove_encounter_invasion(encounter_invasion)
                 end
-            elseif cm:pending_battle_cache_faction_is_defender(player_faction_name) and cm:pending_battle_cache_faction_is_attacker(self.event_army.faction) then
+            -- TODO: check wheter this extra logic is neccesary:  and cm:pending_battle_cache_faction_is_attacker(self.event_army.faction) 
+            elseif cm:pending_battle_cache_faction_is_defender(player_faction_name)then
                 found_encounter_faction = true
                 if defender_was_victorious then
-                    trigger_positive_event_result = true
+                    player_won_battle = true
                 end
     
                 if encounter_invasion then
@@ -181,12 +186,7 @@ function InvasionBattleManager:reset_state_post_battle(zone, spot_index, invasio
             if found_encounter_faction == true then
                 local uim = cm:get_campaign_ui_manager()
                 uim:override("retreat"):unlock()
-                
-                if trigger_positive_event_result then
-                    --out("LEAPOI - InvasionBattleManager:reset_state_post_battle triggering trigger_positive_event_result")
-                    zone.spots[spot_index]:trigger_victory_incident()
-                end
-                zone:deactivate_spot(spot_index)
+                zone:trigger_event_given_battle_result(spot_type, spot_index, player_won_battle)
             end
         end,
         IS_NOT_PERSISTENT_LISTENER
