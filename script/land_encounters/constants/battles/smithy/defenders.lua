@@ -1,5 +1,5 @@
 -- Defenders by culture and level given the faction that has control of the defensive spot
-local smithy_defenders =  {
+local smithy_defenders = {
     --WH1
     --Dwarfs
     ["wh_main_sc_dwf_dwarfs"] = {
@@ -73,10 +73,10 @@ local smithy_defenders =  {
             [3] = {
                 unit_experience_amount = 7,
                 units = {
-                    { "wh_main_grn_inf_black_orcs", 6, 100, 0, nil },
-                    { "wh2_dlc15_grn_mon_stone_trolls_0", 6, 100, 0, nil },
-                    { "wh2_dlc15_grn_mon_river_trolls_0", 2, 100, 0, nil },
-                    { "wh_main_grn_mon_arachnarok_spider_0", 5, 100, 0, nil }
+                    { "wh_main_grn_inf_black_orcs", 8, 100, 0, nil },
+                    { "wh_main_grn_mon_arachnarok_spider_0", 8, 100, 0, nil }, --wh2_dlc15_grn_mon_stone_trolls_0 DLC check needed
+                    { "wh_main_grn_art_doom_diver_catapult", 3, 100, 0, nil }, --wh2_dlc15_grn_mon_river_trolls_0 DLC check needed
+                    --{ "wh_main_grn_mon_arachnarok_spider_0", 5, 100, 0, nil } DLC check needed
                 }
             }
         }
@@ -113,9 +113,9 @@ local smithy_defenders =  {
             [3] = {
                 unit_experience_amount = 7,
                 units = {
-                    { "wh_main_emp_inf_greatswords", 4, 100, 0, nil },
-                    { "wh2_dlc13_emp_inf_huntsmen_0", 4, 100, 0, nil },
-                    { "wh_main_emp_inf_handgunners", 4, 100, 0, nil },
+                    { "wh_main_emp_inf_greatswords", 6, 100, 0, nil },
+                    --{ "wh2_dlc13_emp_inf_huntsmen_0", 4, 100, 0, nil }, DLC check needed
+                    { "wh_main_emp_inf_handgunners", 6, 100, 0, nil },
                     { "wh_main_emp_art_helstorm_rocket_battery", 4, 100, 0, nil },
                     { "wh_main_emp_art_helblaster_volley_gun", 3, 100, 0, nil }
                 }
@@ -157,8 +157,8 @@ local smithy_defenders =  {
                     { "wh_main_vmp_inf_grave_guard_1", 8, 100, 0, nil },
                     { "wh_main_vmp_inf_cairn_wraiths", 3, 100, 0, nil },
                     { "wh2_dlc11_vmp_inf_handgunners", 4, 100, 0, nil },
-                    { "wh_dlc04_vmp_veh_mortis_engine_0", 1, 100, 0, nil },
-                    { "wh_main_vmp_mon_varghulf", 3, 100, 0, nil }
+                    --{ "wh_dlc04_vmp_veh_mortis_engine_0", 1, 100, 0, nil }, DLC check needed
+                    { "wh_main_vmp_mon_varghulf", 4, 100, 0, nil }
                 }
             }
         }
@@ -241,8 +241,8 @@ local smithy_defenders =  {
                     { "wh_dlc03_bst_inf_minotaurs_2", 4, 100, 0, nil },
                     { "wh_dlc03_bst_inf_cygor_0", 4, 100, 0, nil },
                     { "wh_dlc03_bst_feral_manticore", 2, 100, 0, nil },
-                    { "wh2_dlc17_bst_mon_ghorgon_0", 2, 100, 0, nil },
-                    { "wh2_dlc17_bst_mon_jabberslythe_0", 1, 100, 0, nil }
+                    { "wh2_dlc17_bst_mon_ghorgon_0", 2, 0, 100, "wh_dlc03_bst_inf_minotaurs_2" }, -- DLC check needed
+                    { "wh2_dlc17_bst_mon_jabberslythe_0", 1, 0, 100, "wh_dlc03_bst_feral_manticore" } -- DLC check needed
                 }
             }
         }
@@ -316,7 +316,7 @@ local smithy_defenders =  {
             [3] = {
                 unit_experience_amount = 7,
                 units = {
-                    { "wh2_dlc16_wef_inf_bladesingers_0", 6, 100, 0, nil },
+                    { "wh2_dlc16_wef_inf_bladesingers_0", 6, 0, 100, "wh_dlc05_wef_inf_waywatchers_0" }, -- DLC Check needed
                     { "wh_dlc05_wef_inf_waywatchers_0", 10, 100, 0, nil },
                     { "wh_dlc05_wef_cha_ancient_treeman_0", 3, 100, 0, nil }
                 }
@@ -441,9 +441,9 @@ local smithy_defenders =  {
                 units = {
                     { "wh2_main_hef_inf_swordmasters_of_hoeth_0", 3, 100, 0, nil },
                     { "wh2_main_hef_inf_phoenix_guard", 3, 100, 0, nil },
-                    { "wh2_dlc10_hef_inf_sisters_of_avelorn_0", 10, 100, 0, nil },
+                    { "wh2_dlc10_hef_inf_sisters_of_avelorn_0", 10, 0, 100, "wh2_dlc10_hef_infantry_shadow_walker" }, -- dlc check required
                     { "wh2_main_hef_mon_star_dragon", 2, 100, 0, nil },
-                    { "wh2_dlc15_hef_mon_arcane_phoenix_0", 1, 100, 0, nil }
+                    { "wh2_dlc15_hef_mon_arcane_phoenix_0", 1, 0, 100, "wh2_main_hef_mon_phoenix_flamespyre" } -- dlc check required
                 }
             }
         }
@@ -465,7 +465,7 @@ local smithy_defenders =  {
                 units = {
                     { "wh2_main_lzd_inf_saurus_spearmen_1", 2, 100, 0, nil },
                     { "wh2_main_lzd_inf_temple_guards", 2, 100, 0, nil },
-                    { "wh2_dlc17_lzd_inf_chameleon_stalkers_0", 8, 100, 0, nil }
+                    { "wh2_dlc17_lzd_inf_chameleon_stalkers_0", 8, 0, 100, "wh2_main_lzd_inf_chameleon_skinks_0" } -- Dlc check required
                 }
             },
             [2] = {
@@ -473,7 +473,7 @@ local smithy_defenders =  {
                 units = {
                     { "wh2_main_lzd_inf_temple_guards", 5, 100, 0, nil },
                     { "wh2_main_lzd_mon_kroxigors", 3, 100, 0, nil },
-                    { "wh2_dlc17_lzd_inf_chameleon_stalkers_0", 5, 100, 0, nil },
+                    { "wh2_dlc17_lzd_inf_chameleon_stalkers_0", 5, 0, 100, "wh2_main_lzd_inf_chameleon_skinks_blessed_0" }, -- Dlc check required
                     { "wh2_main_lzd_mon_stegadon_1", 3, 100, 0, nil }
                 }
             },
@@ -481,11 +481,11 @@ local smithy_defenders =  {
                 unit_experience_amount = 7,
                 units = {
                     { "wh2_main_lzd_mon_carnosaur_0", 4, 100, 0, nil },
-                    { "wh2_dlc12_lzd_mon_ancient_stegadon_1", 4, 100, 0, nil },
-                    { "wh2_dlc17_lzd_mon_troglodon_0", 2, 100, 0, nil },
-                    { "wh2_main_lzd_mon_stegadon_1", 6, 100, 0, nil },
-                    { "wh2_dlc17_lzd_mon_coatl_0", 2, 100, 0, nil },
-                    { "wh2_dlc13_lzd_mon_dread_saurian_1", 1, 100, 0, nil }
+                    { "wh2_dlc12_lzd_mon_ancient_stegadon_1", 4, 0, 100, "wh2_main_lzd_mon_stegadon_1" }, -- DLC check required
+                    { "wh2_dlc17_lzd_mon_troglodon_0", 2, 0, 100, "wh2_main_lzd_mon_stegadon_1" }, -- Dlc check required
+                    { "wh2_main_lzd_mon_stegadon_1", 6, 100, 0, nil }, 
+                    { "wh2_dlc17_lzd_mon_coatl_0", 2, 0, 0, nil },
+                    { "wh2_dlc13_lzd_mon_dread_saurian_1", 1, 0, 100, "wh2_main_lzd_mon_stegadon_1" } -- Dlc check required
                 }
             }
         }
@@ -505,9 +505,9 @@ local smithy_defenders =  {
             [1] = {
                 unit_experience_amount = 2,
                 units = {
-                    { "wh2_dlc14_skv_inf_eshin_triads_0", 4, 100, 0, nil },
+                    { "wh2_dlc14_skv_inf_eshin_triads_0", 4, 0, 100, "wh2_main_skv_inf_night_runners_1" },
                     { "wh2_main_skv_inf_night_runners_1", 4, 100, 0, nil },
-                    { "wh2_dlc12_skv_inf_ratling_gun_0", 2, 100, 0, nil },
+                    { "wh2_dlc12_skv_inf_ratling_gun_0", 2, 0, 100, "wh2_main_skv_inf_night_runners_1" },
                     { "wh2_main_skv_art_plagueclaw_catapult", 2, 100, 0, nil }
                 }
             },
@@ -515,10 +515,10 @@ local smithy_defenders =  {
                 unit_experience_amount = 5,
                 units = {
                     { "wh2_main_skv_inf_stormvermin_0", 4, 100, 0, nil },
-                    { "wh2_dlc14_skv_inf_eshin_triads_0", 2, 100, 0, nil },
+                    { "wh2_dlc14_skv_inf_eshin_triads_0", 2, 0, 100, "wh2_main_skv_inf_stormvermin_1" },
                     { "wh2_main_skv_inf_night_runners_1", 2, 100, 0, nil },
-                    { "wh2_dlc12_skv_inf_warplock_jezzails_0", 2, 100, 0, nil },
-                    { "wh2_dlc12_skv_inf_ratling_gun_0", 2, 100, 0, nil },
+                    { "wh2_dlc12_skv_inf_warplock_jezzails_0", 2, 0, 100, "wh2_main_skv_inf_gutter_runner_slingers_1" },
+                    { "wh2_dlc12_skv_inf_ratling_gun_0", 2, 0, 100, "wh2_main_skv_art_plagueclaw_catapult" },
                     { "wh2_main_skv_art_plagueclaw_catapult", 3, 100, 0, nil }
                 }
             },
@@ -526,10 +526,10 @@ local smithy_defenders =  {
                 unit_experience_amount = 7,
                 units = {
                     { "wh2_main_skv_inf_stormvermin_1", 5, 100, 0, nil },
-                    { "wh2_dlc12_skv_inf_warplock_jezzails_0", 3, 100, 0, nil },
-                    { "wh2_dlc12_skv_inf_ratling_gun_0", 5, 100, 0, nil },
-                    { "wh2_dlc14_skv_inf_poison_wind_mortar_0", 2, 100, 0, nil },
-                    { "wh2_main_skv_art_plagueclaw_catapult", 2, 100, 0, nil },
+                    { "wh2_dlc12_skv_inf_warplock_jezzails_0", 3, 0, 100, "wh2_main_skv_inf_gutter_runner_slingers_1" },
+                    { "wh2_dlc12_skv_inf_ratling_gun_0", 5, 0, 100, "wh2_main_skv_inf_gutter_runner_slingers_1" },
+                    { "wh2_dlc14_skv_inf_poison_wind_mortar_0", 2, 0, 100, "wh2_main_skv_art_plagueclaw_catapult" },
+                    { "wh2_main_skv_art_plagueclaw_catapult", 2, 100, 0, nil  },
                     { "wh2_main_skv_art_warp_lightning_cannon", 2, 100, 0, nil }
                 }
             }

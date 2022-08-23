@@ -333,11 +333,21 @@ end
 
 function Zone:initialize_smithies(smithies_data)
     self.points_of_interest = {}
+    -- we get the player faction so that we never give him the smithy or any other poi initially
+    local player_faction_name = cm:get_local_faction_name()
     if #smithies_data > 0 then
         for i=1, #smithies_data do
             local spot = Spot:new()
             spot:initialize_from_coordinates(i, smithies_data[i].coordinates)
-            local smithy = SmithySpot:new_from_coordinates(spot, i, smithies_data[i].initial_owning_faction)
+            
+            local initial_owner = ""
+            if player_faction_name == smithies_data[i].initial_owner then
+                initial_owner = smithies_data[i].owner_if_player
+            else
+                initial_owner = smithies_data[i].initial_owner
+            end
+            
+            local smithy = SmithySpot:new_from_coordinates(spot, i, initial_owner)
             table.insert(self.points_of_interest, smithy)
         end
     end

@@ -1,0 +1,4 @@
+id	mission_key	payload_key	status_key	value	target_key
+#cdir_events_mission_payloads_tables;2;db/cdir_events_mission_payloads_tables/land_encounters_and_points_of_interest					
+7017900569	land_enc_mission_smithy_kislev_wyrm_killer	ADD_ANCILLARY	SUCCESS	ANCILLARY_KEY[wh3_main_anc_armour_wyrm_harness]	default
+7017900570	land_enc_mission_smithy_kislev_wyrm_killer	ADD_ANCILLARY	SUCCESS	ANCILLARY_KEY[wh3_main_anc_weapon_wyrmspike]	default

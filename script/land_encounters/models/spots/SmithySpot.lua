@@ -12,6 +12,8 @@ V1.1 in 2.X
 - Region aware. Region AI owner auto attacks the smithy if owned by the player.
 - Quest given by the smithy itself. Should give legendary items or blue sets if they are completed in time.
 ]]--
+local smithy_missions_by_subculture = require("script/land_encounters/constants/missions/smithy_missions_by_subculture")
+local special_items_by_subculture = require("script/land_encounters/constants/items/item_sets_or_special_items_by_subculture")
 
 local Spot = require("script/land_encounters/models/spots/abstract_classes/Spot")
 local Army = require("script/land_encounters/models/battle/Army")
@@ -294,7 +296,7 @@ function SmithySpot:trigger_dilemma_by_choice(invasion_battle_manager, zone, spo
         elseif dilemma == EVENT_DEFENSE then
             self.is_defense_triggered = true
         end
-        self:trigger_forced_interception_defense(zone, spot_index)
+        self:trigger_forced_interception_defense(invasion_battle_manager, zone, spot_index)
 
     elseif dilemma == EVENT_DEFENSE and choice == SECOND_OPTION then
         self:trigger_unconditional_surrender_incident(faction_name)
@@ -503,6 +505,7 @@ function SmithySpot:update_state_through_turn_passing()
         
         self:reward_owner_faction(controlling_faction)
         self:update_visit_cooldown(controlling_faction:name())
+        self:issue_mission_if_possible(controlling_faction)
         
         self.turns_under_control = self.turns_under_control + 1
     end
@@ -559,12 +562,12 @@ function SmithySpot:is_on_cooldown()
 end
 
 
-function SmithySpot:update_visit_cooldown(visiting_faction_name)
+function SmithySpot:update_visit_cooldown(controlling_faction)
     if self:is_occupied_by_player() and self.visit_cooldown > 0 then
         self.visit_cooldown = self.visit_cooldown - 1
         -- you can visit now
         if self.visit_cooldown == 0 then
-            cm:show_message_event_located(visiting_faction_name,
+            cm:show_message_event_located(controlling_faction,
                 "event_feed_strings_text_title_event_land_enc_smithy_visit_available",
                 "event_feed_strings_text_subtitle_event_land_enc_smithy_visit_available",
                 "event_feed_strings_text_description_event_land_enc_smithy_visit_available",
@@ -576,6 +579,30 @@ function SmithySpot:update_visit_cooldown(visiting_faction_name)
         end
     end
 end
+
+
+function SmithySpot:issue_mission_if_possible(controlling_faction)
+    -- if is occupied by player and the smithy has been under control for 20 turns
+    if self:is_occupied_by_player() and self.turns_under_control % 20 then
+        -- issue a subculture mission for the player so that they can win an ancillary by completing a mission
+        local subculture_missions = smithy_missions_by_subculture[self.controlling_faction_subculture]
+        if #subculture_missions > 0 then
+            -- TODO: Not working. Need more input from DF and Vandy
+            --cm:trigger_mission(controlling_faction:name(), subculture_missions[random_number(#subculture_missions)], true)
+        end
+    elseif not self:is_occupied_by_player() and self:is_occupied() and self.turns_under_control % 20 then
+        -- give a set or a special subculture item directly to the ai
+        local subculture_items = special_items_by_subculture[self.controlling_faction_subculture]
+        if #subculture_items > 0 then
+            local set_or_special_ancillaries = subculture_items[random_number(#subculture_items)]
+            local trigger_event_feed = false
+            for i=1, #set_or_special_ancillaries do
+                cm:add_ancillary_to_faction(controlling_faction, set_or_special_ancillaries[i], trigger_event_feed)
+            end
+        end
+    end
+end
+
 
 function SmithySpot:get_defensive_army() 
     local battle_level = 3

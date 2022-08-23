@@ -41,7 +41,7 @@ Turn number Battles
 
 
 ===============================
-Version 1.2 for Game version ???
+Version 1.2 for Game version 1.3
 ===============================
 BALANCE
 - Added more possible rewards to the AI factions triggering the battlespots so that they obtain better stuff from the points than grey items.

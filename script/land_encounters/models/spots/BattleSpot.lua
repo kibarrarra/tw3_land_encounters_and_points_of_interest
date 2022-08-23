@@ -7,6 +7,9 @@ local elligible_items = require("script/land_encounters/constants/items/balancin
 local Spot = require("script/land_encounters/models/spots/abstract_classes/Spot")
 local Army = require("script/land_encounters/models/battle/Army")
 
+
+-- TODO: Effect while active. Give them an effect if they are active and not resolved due to stuff (positive or neutral effects over their region or province
+
 ------------------------------------------------
 --- Constant values of the class [DO NOT CHANGE]
 ------------------------------------------------

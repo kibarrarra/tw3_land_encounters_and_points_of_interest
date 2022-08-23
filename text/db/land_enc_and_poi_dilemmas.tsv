@@ -46,11 +46,9 @@ dilemmas_localised_description_land_enc_dilemma_smithy_reclamation	This smithy i
 dilemmas_localised_title_land_enc_dilemma_smithy_reclamation	Reclaming The Smithy	false
 dilemmas_localised_description_land_enc_dilemma_smithy_defense	An enemy army approaches the smithy. Blacksmiths arm themselves with the weapons they create. The detachment of soldiers prepares for battle. Protecting the smithy is our duty and must not fall into enemy hands.	false
 dilemmas_localised_title_land_enc_dilemma_smithy_defense	Defending The Smithy	false
-dilemmas_localised_description_land_enc_dilemma_smithy_visit_level_1	The master blacksmith looks at us anxiously. He looks at his works and asks us to choose one of them. The quality is clearly poor but it will still serve us for our army. Or we could give him a budget to expand the smithy so that it pays taxes faster and improve the quality of the equipment created upong visiting.
-	false
+dilemmas_localised_description_land_enc_dilemma_smithy_visit_level_1	The master blacksmith looks at us anxiously. He looks at his works and asks us to choose one of them. The quality is clearly poor but it will still serve us for our army. Or we could give him a budget to expand the smithy so that it pays taxes faster and improve the quality of the equipment created upong visiting.\\n	false
 dilemmas_localised_title_land_enc_dilemma_smithy_visit_level_1	The Master Blacksmith's Offer	false
-dilemmas_localised_description_land_enc_dilemma_smithy_visit_level_2	The master blacksmith looks at us seriously. He looks at his works and asks us to choose one of them. The quality is clearly good and it will serve us for our army. Or we could give him a budget to expand the smithy so that it pays taxes faster and improve the quality of the equipment created upong visiting.
-	false
+dilemmas_localised_description_land_enc_dilemma_smithy_visit_level_2	The master blacksmith looks at us seriously. He looks at his works and asks us to choose one of them. The quality is clearly good and it will serve us for our army. Or we could give him a budget to expand the smithy so that it pays taxes faster and improve the quality of the equipment created upong visiting.\\n	false
 dilemmas_localised_title_land_enc_dilemma_smithy_visit_level_2	The Master Blacksmith's Trust	false
 dilemmas_localised_description_land_enc_dilemma_smithy_visit_level_3	The master blacksmith smiles. He looks at his masterpieces and asks you to choose one of them. The quality is clearly excellent and will serve us well in our military.	false
 dilemmas_localised_title_land_enc_dilemma_smithy_visit_level_3	The Master Blacksmith's Gift	false

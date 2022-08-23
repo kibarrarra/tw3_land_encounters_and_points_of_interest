@@ -18,7 +18,6 @@ None
 -- Incursions: Small invasions of stronger races with better armies
 ------------------------------------------------------------------------------------
 return {
-
     -- High Elves (W)
     ["land_enc_dilemma_incursion_army_hef"] = {
         faction = "wh2_main_hef_high_elves_qb1",
