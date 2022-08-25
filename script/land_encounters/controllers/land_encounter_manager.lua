@@ -5,7 +5,7 @@ local Zone = require("script/land_encounters/models/Zone")
 -------------------------
 --- Constant values of the class [DO NOT CHANGE]
 -------------------------
-local DEFAULT_ACTIVE_SPOT_PERCENTAGE = 0.75
+local DEFAULT_ACTIVE_SPOT_PERCENTAGE = 1.00--0.75
 local DEFAULT_BATTLE_PERCENTAGE = 0.80
 
 --=======================
@@ -77,6 +77,7 @@ end
 function LandEncounterManager:initialize_points_of_interest_by_zone(perpetual_coordinates_with_types)
     for i = 1, #self.zones do
         local zone = self.zones[i]
+        out("LEAPOI - LandEncounterManager:initialize_points_of_interest_by_zone Zone:" .. zone.name)
         zone:initialize_points_of_interest(perpetual_coordinates_with_types[zone.name])
     end
 end

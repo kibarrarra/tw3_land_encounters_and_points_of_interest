@@ -7,7 +7,7 @@ local Spot = require("script/land_encounters/models/spots/abstract_classes/Spot"
 --TODO: Remove in August update. Is an experiment to fix the problems with the WH3 function that triggers events
 local event_to_targets = {
     ["land_enc_incident_tomb_robbing"] = { character = true, force = false, faction = false, region = false },
-    ["land_enc_incident_abandoned_camp"] = { character = true, force = true, faction = false, region = false },
+    ["land_enc_incident_abandoned_camp"] = { character = false, force = true, faction = false, region = false },
     ["land_enc_incident_buried_relics"] = { character = true, force = false, faction = false, region = false },
     ["land_enc_incident_hidden_temple"] = { character = true, force = true, faction = false, region = false },
     ["land_enc_incident_caravan_remnants"] = { character = true, force = false, faction = false, region = false },

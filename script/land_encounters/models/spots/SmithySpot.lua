@@ -583,17 +583,17 @@ end
 
 function SmithySpot:issue_mission_if_possible(controlling_faction)
     -- if is occupied by player and the smithy has been under control for 20 turns
-    if self:is_occupied_by_player() and self.turns_under_control % 20 then
+    if self:is_occupied_by_player() and self.turns_under_control % 20 == 0 then
         -- issue a subculture mission for the player so that they can win an ancillary by completing a mission
         local subculture_missions = smithy_missions_by_subculture[self.controlling_faction_subculture]
-        if #subculture_missions > 0 then
+        if not (subculture_missions == nil) and #subculture_missions > 0 then
             -- TODO: Not working. Need more input from DF and Vandy
             --cm:trigger_mission(controlling_faction:name(), subculture_missions[random_number(#subculture_missions)], true)
         end
-    elseif not self:is_occupied_by_player() and self:is_occupied() and self.turns_under_control % 20 then
+    elseif not self:is_occupied_by_player() and self:is_occupied() and self.turns_under_control % 20 == 0 then
         -- give a set or a special subculture item directly to the ai
         local subculture_items = special_items_by_subculture[self.controlling_faction_subculture]
-        if #subculture_items > 0 then
+        if not (subculture_items == nil) and #subculture_items > 0 then
             local set_or_special_ancillaries = subculture_items[random_number(#subculture_items)]
             local trigger_event_feed = false
             for i=1, #set_or_special_ancillaries do

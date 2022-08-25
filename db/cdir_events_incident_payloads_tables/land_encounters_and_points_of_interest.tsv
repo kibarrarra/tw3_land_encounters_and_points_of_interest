@@ -3,7 +3,7 @@ id	incident_key	payload_key	value	target_key
 7017900569	land_enc_incident_tomb_robbing	TREASURY	AMOUNT[2000]	default
 7017900570	land_enc_incident_tomb_robbing	CHARACTER_EXPERIENCE	AMOUNT[3000]	default
 7017900571	land_enc_incident_tomb_robbing	ADD_ANCILLARY	RANDOM_ANCILLARY;TARGET_OWNING_FACTION	default
-7017900572	land_enc_incident_abandoned_camp	EFFECT_BUNDLE	KEY[land_enc_effect_abandoned_camp];DURATION[10]	default
+7017900572	land_enc_incident_abandoned_camp	EFFECT_BUNDLE	KEY[land_enc_effect_abandoned_camp];DURATION[8]	default
 7017900573	land_enc_incident_abandoned_camp	CHARACTER_EXPERIENCE	AMOUNT[1000]	default
 7017900574	land_enc_incident_buried_relics	CHARACTER_EXPERIENCE	AMOUNT[1000]	default
 7017900575	land_enc_incident_buried_relics	ADD_ANCILLARY	RANDOM_ANCILLARY;TARGET_OWNING_FACTION	default

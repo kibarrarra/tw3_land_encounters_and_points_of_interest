@@ -9,7 +9,7 @@ local IS_PERSISTENT_LISTENER = true
 --]]
 --[[ Coordinates of the warhammer 3 maps --]]
 local ie_land_encounters = require("script/land_encounters/constants/coordinates/inmortal_empires/treasures_and_spots")
-local ie_points_of_interest = require("script/land_encounters/constants/coordinates/realm_of_chaos/points_of_interest")
+local ie_points_of_interest = require("script/land_encounters/constants/coordinates/inmortal_empires/points_of_interest")
 
 local roc_encounters = require("script/land_encounters/constants/coordinates/realm_of_chaos/treasures_and_spots")
 local roc_points_of_interest = require("script/land_encounters/constants/coordinates/realm_of_chaos/points_of_interest")
@@ -39,7 +39,7 @@ cm:add_first_tick_callback(
             else
                 manager:generate_land_encounters(roc_encounters, roc_points_of_interest, turn_number)
             end
-        elseif cm:get_campaign_name() == "wh3_inmortal_empires" then
+        elseif cm:get_campaign_name() == "main_warhammer" then
             if manager:has_previous_state() then
                 manager:restore_from_previous_state(ie_land_encounters, ie_points_of_interest, turn_number)
             else
@@ -128,7 +128,9 @@ core:add_listener(
 	"land_enc_and_poi_incident_occured_event",
 	"IncidentOccuredEvent",
     function(context)
-        out("LEAPOI - land_enc_and_poi_incident_occured_event")
+        local incident = context:dilemma()
+		local faction_name = context:faction():name()
+        out("LEAPOI - land_enc_and_poi_incident_occured_event current incident=" .. incident .. ", for faction=" .. faction_name)
         return false
     end,
 	function(context)

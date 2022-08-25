@@ -54,7 +54,3 @@ id	incident_key	option_key	value	target
 7017900615	land_enc_incident_clean_up_event	GEN_TARGET_MODEL		default
 7017900616	land_enc_incident_smithy_tribute	VAR_CHANCE	100	default
 7017900617	land_enc_incident_smithy_tribute	GEN_TARGET_MODEL		default
-7017900620	land_enc_incident_smithy_visit_cooldown	VAR_CHANCE	100	default
-7017900621	land_enc_incident_smithy_visit_cooldown	GEN_TARGET_MODEL		default
-7017900622	land_enc_incident_smithy_visit_available	VAR_CHANCE	100	default
-7017900623	land_enc_incident_smithy_visit_available	GEN_TARGET_MODEL		default
