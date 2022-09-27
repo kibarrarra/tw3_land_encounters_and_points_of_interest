@@ -34,13 +34,41 @@ effect_bundles_ localised_title_
 --]]
 local treasures = {
     --"land_enc_incident_clean_up_event" SPECIAL: Only used for the abstract class spot to eliminate bugged points
-    "land_enc_incident_tomb_robbing",
-    "land_enc_incident_abandoned_camp",
-    "land_enc_incident_buried_relics",
-    "land_enc_incident_hidden_temple",
-    "land_enc_incident_caravan_remnants",
-    --"land_enc_incident_legendary_bard",
-    "land_enc_incident_whispers_of_the_gods"
+    { 
+        incident = "land_enc_incident_tomb_robbing",
+        targets =  { character = true, force = false, faction = false, region = false },
+        effect = false -- for AI
+    },
+    { 
+        incident = "land_enc_incident_abandoned_camp",
+        targets = { character = false, force = true, faction = false, region = false },
+        effect = "land_enc_effect_abandoned_camp"
+    },
+    { 
+        incident = "land_enc_incident_buried_relics",
+        targets = { character = false, force = true, faction = false, region = false },
+        effect = false
+    },
+    { 
+        incident = "land_enc_incident_hidden_temple",
+        targets = { character = false, force = true, faction = false, region = false },
+        effect = "land_enc_effect_hidden_temple"
+    },
+    { 
+        incident = "land_enc_incident_caravan_remnants",
+        targets = { character = true, force = false, faction = false, region = false },
+        effect = false
+    },
+    { 
+        incident = "land_enc_incident_whispers_of_the_gods",
+        targets = { character = false, force = true, faction = false, region = false },
+        effect = "land_enc_effect_whispers_of_the_gods"
+    },
+    {
+        incident = "land_enc_incident_the_explorer",
+        targets = { character = false, force = true, faction = false, region = false },
+        effect = "land_enc_effect_the_explorer"
+    }
 }
 
 return treasures

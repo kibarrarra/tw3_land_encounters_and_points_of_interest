@@ -18,9 +18,11 @@ None
 -- Incursions: Small invasions of stronger races with better armies
 ------------------------------------------------------------------------------------
 return {
-    -- High Elves (W)
+    -- High Elves
     ["land_enc_dilemma_incursion_army_hef"] = {
         faction = "wh2_main_hef_high_elves_qb1",
+        identifier = "encounter_force",
+        invasion_identifier = "encounter_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh2_main_hef_princess", 
@@ -42,12 +44,16 @@ return {
             { "wh2_main_hef_cav_ithilmar_chariot", 2, 30, 30, "wh2_main_hef_mon_moon_dragon" }, -- 17
             { "wh2_main_hef_mon_phoenix_flamespyre", 2, 20, 50, "wh2_main_hef_mon_phoenix_frostheart" }, -- 19
             { "wh2_main_hef_mon_star_dragon", 1, 5, 0, nil } -- 20
-        }
+        },
+        reinforcing_ally_armies = false,
+        reinforcing_enemy_armies = false
     },
     
-    -- Lizardmen (W)
+    -- Lizardmen
     ["land_enc_dilemma_incursion_army_lzd"] = {
         faction = "wh2_main_lzd_lizardmen_qb1",
+        identifier = "encounter_force",
+        invasion_identifier = "encounter_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh2_main_lzd_saurus_old_blood",
@@ -71,12 +77,16 @@ return {
             { "wh2_main_lzd_mon_ancient_stegadon", 1, 10, 5, "wh2_main_lzd_mon_stegadon_blessed_1" }, -- 18
             { "wh2_dlc17_lzd_mon_coatl_0", 1, 10, 5, "wh2_dlc12_lzd_cav_ripperdactyl_riders_ror_0" }, -- 19
             { "wh2_dlc13_lzd_mon_dread_saurian_1", 1, 5, 0, nil } -- 20
-        }
+        },
+        reinforcing_ally_armies = false,
+        reinforcing_enemy_armies = false
     },
     
-    -- Vampire Coast (W)
+    -- Vampire Coast
     ["land_enc_dilemma_incursion_army_vco"] = {
         faction = "wh2_dlc11_cst_vampire_coast_qb1",
+        identifier = "encounter_force",
+        invasion_identifier = "encounter_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh2_dlc11_cst_admiral_fem_vampires",
@@ -100,7 +110,9 @@ return {
             { "wh2_dlc11_cst_art_carronade", 1, 5, 20, "wh2_dlc11_cst_mon_terrorgheist" }, -- 18
             { "wh2_dlc11_cst_mon_mournguls_0", 1, 5, 20, "wh2_dlc11_cst_mon_necrofex_colossus_0" }, -- 19
             { "wh2_dlc11_cst_mon_necrofex_colossus_0", 1, 10, 5, "wh2_dlc11_cst_art_queen_bess" } -- 20
-        }
-    }
+        },
+        reinforcing_ally_armies = false,
+        reinforcing_enemy_armies = false
+    },
     
 }

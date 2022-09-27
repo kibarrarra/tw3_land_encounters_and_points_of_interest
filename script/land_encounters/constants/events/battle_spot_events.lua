@@ -300,6 +300,17 @@ local battle_events = {
         avoidance_targets = { character = false, force = true, faction = false, region = false }
     },
     
+    {
+        dilemma = "land_enc_dilemma_battlefield_dwf",
+        victory_incident = "land_enc_incident_battle_won_battlefield_dwf",
+        avoidance_incident = "land_enc_incident_battle_avoided_battlefield",
+        difficulty_level = 3,
+        is_exclusive_to_zone = false,
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
+    },
+    
     --{ --TODO
     --    dilemma = "land_enc_dilemma_battlefield_wco",
     --    victory_incident = "land_enc_incident_battle_won_battlefield_wco",
@@ -328,7 +339,7 @@ local battle_events = {
     --    avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
     --    difficulty_level = 3,
     --    is_exclusive_to_zone = false,
-    --    zone = false,
+    --    zone = "_",
     --    victory_targets = { character = true, force = false, faction = false, region = false },
     --    avoidance_targets = { character = false, force = true, faction = false, region = false }
     --},
@@ -339,11 +350,90 @@ local battle_events = {
     --    avoidance_incident = "land_enc_incident_battle_avoided_battlefield"
     --    difficulty_level = 3,
     --    is_exclusive_to_zone = false,
-    --    zone = false,
+    --    zone = "_",
     --    victory_targets = { character = true, force = false, faction = false, region = false },
     --    avoidance_targets = { character = false, force = true, faction = false, region = false }
     --}
     
+    ---------------------------------------------------------------------------
+    -- (Harder) Daemoic Gifts battlefields
+    ---------------------------------------------------------------------------
+    {
+        dilemma = "land_enc_dilemma_daemonic_gift_chainsword",
+        victory_incident = "land_enc_incident_battle_won_daemonic_gift_chainsword",
+        avoidance_incident = "land_enc_incident_battle_avoided_daemonic_gift_khorne",
+        difficulty_level = 4,
+        is_exclusive_to_zone = false,
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
+    },
+
+    {
+        dilemma = "land_enc_dilemma_daemonic_gift_the_bane_spear",
+        victory_incident = "land_enc_incident_battle_won_daemonic_gift_the_bane_spear",
+        avoidance_incident = "land_enc_incident_battle_avoided_daemonic_gift_khorne",
+        difficulty_level = 4,
+        is_exclusive_to_zone = false,
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
+    },
+
+    {
+        dilemma = "land_enc_dilemma_daemonic_gift_skars_kraken_killer",
+        victory_incident = "land_enc_incident_battle_won_daemonic_gift_skars_kraken_killer",
+        avoidance_incident = "land_enc_incident_battle_avoided_daemonic_gift_khorne",
+        difficulty_level = 4,
+        is_exclusive_to_zone = false,
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
+    },
+
+    {
+        dilemma = "land_enc_dilemma_daemonic_gift_gilellions_soulnetter",
+        victory_incident = "land_enc_incident_battle_won_daemonic_gift_gilellions_soulnetter",
+        avoidance_incident = "land_enc_incident_battle_avoided_daemonic_gift_khorne",
+        difficulty_level = 4,
+        is_exclusive_to_zone = false,
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
+    },
+    
+    {
+        dilemma = "land_enc_dilemma_daemonic_gift_slaaneshs_blade",
+        victory_incident = "land_enc_incident_battle_won_daemonic_gift_slaaneshs_blade",
+        avoidance_incident = "land_enc_incident_battle_avoided_daemonic_gift_slaanesh",
+        difficulty_level = 4,
+        is_exclusive_to_zone = false,
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
+    },
+    
+    {
+        dilemma = "land_enc_dilemma_daemonic_gift_personal_sycophant",
+        victory_incident = "land_enc_incident_battle_won_daemonic_gift_personal_sycophant",
+        avoidance_incident = "land_enc_incident_battle_avoided_daemonic_gift_slaanesh",
+        difficulty_level = 4,
+        is_exclusive_to_zone = false,
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
+    },
+    
+    {
+        dilemma = "land_enc_dilemma_daemonic_gift_dark_princes_paramour",
+        victory_incident = "land_enc_incident_battle_won_daemonic_gift_dark_princes_paramour",
+        avoidance_incident = "land_enc_incident_battle_avoided_daemonic_gift_slaanesh",
+        difficulty_level = 4,
+        is_exclusive_to_zone = false,
+        zone = "_",
+        victory_targets = { character = true, force = false, faction = false, region = false },
+        avoidance_targets = { character = false, force = true, faction = false, region = false }
+    },
     ---------------------------------------------------------------------------
     -- (Harder) Three way battlefields
     ---------------------------------------------------------------------------

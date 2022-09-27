@@ -15,22 +15,22 @@ local roc_encounters = require("script/land_encounters/constants/coordinates/rea
 local roc_points_of_interest = require("script/land_encounters/constants/coordinates/realm_of_chaos/points_of_interest")
 
 --[[ Dilemma Events created for this script --]]
-local smithy_events = require("script/land_encounters/constants/events/smithy_events")
 local battle_events = require("script/land_encounters/constants/events/battle_spot_events")
-local BattleEventFactory = require("script/land_encounters/factories/BattleEventFactory")
+local smithy_events = require("script/land_encounters/constants/events/smithy_events")
 
 --[[ Model of the the land encounters functionality --]]
-local LandEncounterManager = require("script/land_encounters/controllers/land_encounter_manager")
 local InvasionBattleManager = require("script/land_encounters/controllers/invasion_battle_manager")
+local LandEncounterManager = require("script/land_encounters/controllers/land_encounter_manager")
+local BattleEventFactory = require("script/land_encounters/factories/BattleEventFactory")
+
 --[[ Instance of the Model of the the land encounters functionality --]]
-local manager = nil
+local manager = false
 
 --[[ Triggered on campaign first tick.
 Initializes the land encounters by instantiating a LandEncounterModel
 --]]
 cm:add_first_tick_callback(
     function()
-        --out("LEAPOI - INITIALIZE LAND ENCOUNTERS v1.3")
         local turn_number = cm:turn_number()
 
         if cm:get_campaign_name() == "wh3_main_chaos" then
@@ -61,7 +61,6 @@ core:add_listener(
     end,
 	function(context)
         if manager then
-            --out("LEAPOI - Beginning update process")
             local turn_number = cm:turn_number()
             manager:update_land_encounters(turn_number)
         end
@@ -122,36 +121,32 @@ core:add_listener(
 	IS_PERSISTENT_LISTENER
 )
 
+-- FOR DEBUGGING PURPOSES ONLY
+--core:add_listener(
+--	"land_enc_and_poi_incident_occured_event",
+--	"IncidentOccuredEvent",
+--    function(context)
+--        out("LEAPOI - land_enc_and_poi_incident_occured_event current incident=" .. context:dilemma() .. ", for faction=" .. context:faction():name())
+--        return false
+--    end,
+--	function(context)
+        --cm:force_winds_of_magic_change(province:key(), "wom_strength_4")
+--	end,
+--	IS_PERSISTENT_LISTENER
+--)
 
---TODO destroying a waystone or other region related events
-core:add_listener(
-	"land_enc_and_poi_incident_occured_event",
-	"IncidentOccuredEvent",
-    function(context)
-        local incident = context:dilemma()
-		local faction_name = context:faction():name()
-        out("LEAPOI - land_enc_and_poi_incident_occured_event current incident=" .. incident .. ", for faction=" .. faction_name)
-        return false
-    end,
-	function(context)
-		local incident = context:dilemma()
-		local faction_name = context:faction():name()
-        cm:force_winds_of_magic_change(province:key(), "wom_strength_4")
-
-	end,
-	IS_PERSISTENT_LISTENER
-)
-
-
+-- FOR DEBUGGING PURPOSES ONLY
 core:add_listener(
     "land_enc_and_poi_faction_gained_ancillary",
     "FactionGainedAncillary",
     function(context)
-        out("LEAPOI - land_enc_and_poi_faction_gained_ancillary")
+        out("LEAPOI - land_enc_and_poi_faction_gained_ancillary ancillary:" .. context:ancillary() .. " for faction:" .. context:faction():name())
+
         return false
     end,
     function(context)
-        
+        -- Has to check if twice
+        context:faction():ancillary_exists(context:ancillary())
     end,
     IS_PERSISTENT_LISTENER
 )
@@ -162,21 +157,19 @@ local DEFAULT_FLATTENED_SPOTS_VALUE = {}
 -- Saves the land_encounters state variables when the game is about to close
 cm:add_saving_game_callback(
 	function(context)
-        --out("LEAPOI - Saving State")
         cm:save_named_value(FLATTENED_SPOTS_STATE, manager:export_state_as_table(), context)
 	end
 )
 -- Loads the land_encounters state variables when the game is 
 cm:add_loading_game_callback(
 	function(context)
-        --out("LEAPOI - State restoration")
         local land_encounters_state = cm:load_named_value(FLATTENED_SPOTS_STATE, DEFAULT_FLATTENED_SPOTS_VALUE, context)
 
-        if manager == nil then
+        if not manager then
             local invasion_battle_manager = InvasionBattleManager:newFrom(core, random_army_manager, invasion_manager)
             local battle_event_factory = BattleEventFactory:new()
         
-            manager = LandEncounterManager:newFrom(core, invasion_battle_manager, battle_event_factory)
+            manager = LandEncounterManager:newFrom(core, mission_manager, invasion_battle_manager, battle_event_factory)
         end
     
         if land_encounters_state ~= DEFAULT_FLATTENED_SPOTS_VALUE then

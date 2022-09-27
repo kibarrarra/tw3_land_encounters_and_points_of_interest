@@ -58,9 +58,24 @@ local im_perpetual_points = {
      },
      ["cathay"] = {
         ["smithies"] = {
-            { coordinates = {1209, 655}, initial_owner = "wh3_main_cth_the_northern_provinces", owner_if_player = "wh3_dlc20_chs_vilitch", region = "" },
-            { coordinates = {1348, 607}, initial_owner = "wh2_dlc11_def_the_blessed_dread", owner_if_player = "wh3_main_cth_celestial_loyalists", region = "" },
-            { coordinates = {1308, 369}, initial_owner = "wh2_dlc13_lzd_spirits_of_the_jungle", owner_if_player = "wh3_dlc21_wef_spirits_of_shanlin", region = "" }
+            { 
+                coordinates = {1209, 655}, 
+                initial_owner = "wh3_main_cth_the_northern_provinces",
+                owner_if_player = "wh3_dlc20_chs_vilitch",
+                region = "" 
+            },
+            { 
+                coordinates = {1348, 607}, 
+                initial_owner = "wh2_dlc11_def_the_blessed_dread",
+                owner_if_player = "wh3_main_cth_celestial_loyalists",
+                region = "" 
+            },
+            { 
+                coordinates = {1308, 369}, 
+                initial_owner = "wh2_dlc13_lzd_spirits_of_the_jungle",
+                owner_if_player = "wh3_dlc21_wef_spirits_of_shanlin",
+                region = "" 
+            }
         },
         
         ["taverns"] = {},
@@ -166,7 +181,7 @@ local im_perpetual_points = {
      },
      ["ulthuan"] = {          
         ["smithies"] = {
-            { coordinates = {225, 633}, initial_owner = "wh3_main_sla_seducers_of_slaanesh", owner_if_player = "wh2_main_def_scourge_of_khaine", region = "" },
+            { coordinates = {216, 630}, initial_owner = "wh3_main_sla_seducers_of_slaanesh", owner_if_player = "wh2_main_def_scourge_of_khaine", region = "" },
             { coordinates = {326, 593}, initial_owner = "wh3_main_sla_seducers_of_slaanesh", owner_if_player = "wh2_main_hef_yvresse", region = "" }
         },
         
@@ -188,11 +203,36 @@ local im_perpetual_points = {
      },
      ["northernchaoswastes"] = {
         ["smithies"] = {
-            { coordinates = {554, 935}, initial_owner = "wh2_main_def_hag_graef", owner_if_player = "wh3_main_tze_broken_wheel", region = "" },
-            { coordinates = {837, 882}, initial_owner = "wh3_main_ksl_ursun_revivalists", owner_if_player = "wh_main_chs_chaos", region = "" },
-            { coordinates = {843, 751}, initial_owner = "wh_main_grn_greenskins", owner_if_player = "wh3_main_grn_slaves_of_zharr", region = "" },
-            { coordinates = {1097, 704}, initial_owner = "wh3_dlc20_chs_kholek", owner_if_player = "wh3_main_ogr_fleshgreeders", region = "" },
-            { coordinates = {1221, 692}, initial_owner = "wh3_dlc20_chs_vilitch", owner_if_player = "wh3_main_cth_imperial_wardens", region = "" }
+            { 
+                coordinates = {554, 935}, 
+                initial_owner = "wh2_main_def_hag_graef",
+                owner_if_player = "wh3_main_tze_broken_wheel",
+                region = "" 
+            }, 
+            { 
+                coordinates = {837, 882}, 
+                initial_owner = "wh3_main_ksl_ursun_revivalists",
+                owner_if_player = "wh_main_chs_chaos",
+                region = "" 
+            },
+            { 
+                coordinates = {843, 751}, 
+                initial_owner = "wh_main_grn_greenskins",
+                owner_if_player = "wh3_main_grn_slaves_of_zharr",
+                region = "" 
+            },
+            { 
+                coordinates = {1097, 704}, 
+                initial_owner = "wh3_dlc20_chs_kholek",
+                owner_if_player = "wh3_main_ogr_fleshgreeders",
+                region = "" 
+            },
+            { 
+                coordinates = {1221, 692}, 
+                initial_owner = "wh3_dlc20_chs_vilitch",
+                owner_if_player = "wh3_main_cth_imperial_wardens",
+                region = "" 
+            }
         },
         
         ["taverns"] = {},

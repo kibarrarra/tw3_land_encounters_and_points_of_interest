@@ -1,14 +1,20 @@
 key	localised_description	localised_title	bundle_target	priority	ui_icon	is_global_effect	show_in_3d_space	owner_only
 #effect_bundles_tables;4;db/effect_bundles_tables/land_encounters_and_points_of_interest								
-land_enc_effect_abandoned_camp	Sheer luck or the blessing of your god has given the army plenty of supplies.	Abandoned Camp Supplies	force	1	icon_effects_fortify.png	false	false	true
-land_enc_effect_hidden_temple	A communion with the graces, inspires the army to achieve greatness.	Hidden Temple Visited	force	1	icon_effects_fortify.png	false	false	true
-land_enc_effect_legendary_bard	Whan the turuf is thy tour, And thy pit is thy bour, Thy fel and thy whitë throtë, Shullen wormës to notë.	A Legendary Bard Saved	faction	1	icon_effects_fortify.png	false	false	true
-land_enc_effect_whispers_of_the_gods	Zealotry has taken over the army. They will strike fear even unto the demons themselves!	Whispers Of The Gods	force	1	icon_effects_fortify.png	false	false	true
-land_enc_effect_battle_won_incursion_hef	The fresh memory of repelling the elven incursion is still with us.	For the greater good	force	1	icon_effects_fortify.png	false	false	true
-land_enc_effect_battle_won_incursion_lzd	The fresh memory of repelling the lizardmen incursion is still with us.	A suit of scales	force	1	icon_effects_fortify.png	false	false	true
-land_enc_effect_battle_won_incursion_vco	The fresh memory of repelling the undead pirates incursion is still with us.	Drowned twice	force	1	icon_effects_fortify.png	false	false	true
-land_enc_effect_battle_avoided_incursion	You did not avoid the plundering of territory of interest. You are despised by its people.	Dishonor	force	1	icon_effects_fortify.png	false	false	true
-land_enc_effect_battle_won_surprise_bst	We have rid the world of destructive corruption.	Nature cleansed	force	1	icon_effects_fortify.png	false	false	true
-land_enc_effect_battle_won_surprise_skv	We have rid the world of unseen corruption.	A rat's tail for good luck	force	1	icon_effects_fortify.png	false	false	true
-land_enc_effect_battle_avoided_surprise	The ambush failed and we are more alert.	Quick thinking!	force	1	icon_effects_fortify.png	false	false	true
-land_enc_effect_battle_avoided_battlefield	In the fight with a superior adversary, retreat is no shame.	Wise retreat	force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_abandoned_camp			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_hidden_temple			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_legendary_bard			faction	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_whispers_of_the_gods			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_the_explorer			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_battle_won_incursion_hef			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_battle_won_incursion_lzd			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_battle_won_incursion_vco			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_battle_avoided_incursion			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_battle_won_surprise_bst			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_battle_won_surprise_skv			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_battle_avoided_surprise			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_battle_avoided_battlefield			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_battle_won_daemonic_gift_khorne_already_granted			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_battle_avoided_daemonic_gift_khorne			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_battle_won_daemonic_gift_slaanesh_already_granted			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_battle_avoided_daemonic_gift_slaanesh			force	1	icon_effects_fortify.png	false	false	true
+land_enc_effect_battle_clean_up_event			force	1	icon_effects_fortify.png	false	false	true

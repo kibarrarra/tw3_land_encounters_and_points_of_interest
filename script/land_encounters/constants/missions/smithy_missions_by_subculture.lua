@@ -38,7 +38,20 @@ local smithy_missions_by_subculture = {
     -- WH2
     -- Dark Elves
     ["wh2_main_sc_def_dark_elves"] = {
-        
+        [1] = {
+            mission = "land_enc_mission_smithy_dark_elves_armour_of_living_death",
+            ancillaries = { "wh2_main_anc_armour_armour_of_living_death" }
+        },
+                                      
+        [2] = {
+            mission = "land_enc_mission_smithy_dark_elves_armour_armour_of_eternal_servitude",
+            ancillaries = { "wh2_main_anc_armour_armour_of_eternal_servitude" }
+        },
+                                      
+        [3] = {
+            mission = "land_enc_mission_smithy_dark_elves_anc_weapon_chillblade",
+            ancillaries = { "wh2_main_anc_weapon_chillblade" }
+        }
     },
     -- High Elves
     ["wh2_main_sc_hef_high_elves"] = {
@@ -61,7 +74,20 @@ local smithy_missions_by_subculture = {
     -- WH3
     -- Kislev
     ["wh3_main_sc_ksl_kislev"] = {
-        "land_enc_mission_smithy_kislev_wyrm_killer"
+        --[1] = {
+        --    mission = "land_enc_mission_smithy_kislev_ursire",
+        --    ancillaries = { "wh3_main_anc_armour_great_bear_pelt", "wh3_main_anc_weapon_ursuns_claws" }
+        --},
+                                  
+        --[2] = {
+        --    mission = "land_enc_mission_smithy_kislev_wyrm_hunter",
+        --    ancillaries = { "wh3_main_anc_armour_wyrm_harness", "wh3_main_anc_weapon_wyrmspike" }
+        --},
+        
+        --[3] = {
+        --    mission = "land_enc_mission_smithy_kislev_dazhs_brazier",
+        --   ancillaries = { "wh3_main_anc_weapon_dazhs_brazier" }
+        --},
     },
 
     -- Daemons

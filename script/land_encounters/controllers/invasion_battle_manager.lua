@@ -3,14 +3,6 @@ local Spot = require("script/land_encounters/models/spots/abstract_classes/Spot"
 -------------------------
 --- Constant values of the class [DO NOT CHANGE]
 -------------------------
-local DEFAULT_ENEMY_FORCE = "encounter_force"
-local DEFAULT_ENEMY_INVASION = "encounter_invasion"
-
-local DEFAULT_ENEMY_REINFORCEMENT_FORCE = "encounter_force_reinforcement"
-
-local DEFAULT_DEFENDER_FORCE = "defender_force"
-local DEFAULT_DEFENDER_INVASION = "defender_invasion"
-
 local IS_NOT_PERSISTENT_LISTENER = false
 
 -------------------------
@@ -29,19 +21,20 @@ local InvasionBattleManager = {
 -------------------------
 --- Class Methods
 -------------------------
--- Preconditions: is defending a 
+-- Preconditions: is defending army
 -- Enemy_character: is at war with the player faction or is the player faction at war with the defending faction. 
 -- Army: Is a template of the army of the player faction or the controlling faction that is defending the defendable spot.
 -- Defender_lat_lng: is the defender army spawning point
-function InvasionBattleManager:generate_defense_battle(defender_army, enemy_character, defender_lat_lng)
+function InvasionBattleManager:generate_defense_battle(defender_army, enemy_character, spot_coordinates)
+    local x, y = self:find_location_for_character_to_spawn(defender_army.faction, spot_coordinates)
+    -- we try to correct the problem if we cannot find another place to spawn the enemy armies    
     local force_cqi = enemy_character:military_force():command_queue_index()
-    local enemy_faction_name = enemy_character:faction():name()
     
     self.event_army = defender_army
     self.event_army:randomize_units(self.random_army_manager)
     
-    local defender_force = self.random_army_manager:generate_force(DEFAULT_DEFENDER_FORCE)
-    local defence = self:setup_invasion(DEFAULT_DEFENDER_INVASION, enemy_character, enemy_faction_name, defender_force, defender_lat_lng)
+    local defender_force = self.random_army_manager:generate_force(defender_army.force_identifier)
+    local defence = self:setup_invasion(defender_army, enemy_character, defender_force, {x, y})
     defence:start_invasion(
         function(created_defender_force)
             cm:force_attack_of_opportunity(created_defender_force:get_general():military_force():command_queue_index(), force_cqi, false)
@@ -53,16 +46,105 @@ function InvasionBattleManager:generate_defense_battle(defender_army, enemy_char
 end
 
 
-function InvasionBattleManager:generate_battle(offensive_army, player_character, enemy_lat_lng)
-    local force_cqi = player_character:military_force():command_queue_index()
-    local player_faction_name = player_character:faction():name()
-    
+function InvasionBattleManager:can_generate_battle(offensive_army, spot_coordinates)
+    if offensive_army then
+        local x, y = self:find_location_for_character_to_spawn(offensive_army.faction, spot_coordinates)
+        if x ~= -1 and y ~= -1 then
+            return true
+        end
+    end
+    return false
+end
+
+
+function InvasionBattleManager:generate_battle(offensive_army, player_character, spot_coordinates)
     self.event_army = offensive_army
     self.event_army:randomize_units(self.random_army_manager)
 
-    local invader_force = self.random_army_manager:generate_force(DEFAULT_ENEMY_FORCE)
-    --out("LEAPOI - InvasionBattleManager:generate_battle - Event_army.faction:" .. self.event_army.faction)
-    local invasion = self:setup_invasion(DEFAULT_ENEMY_INVASION, player_character, player_faction_name, invader_force, enemy_lat_lng)
+    local force_cqi = player_character:military_force():command_queue_index()
+    local player_faction_name = player_character:faction():name()
+    
+    -- if event army has reinforcements
+    if self.event_army:has_offensive_reinforcements() then
+        self:create_enemy_reinforcements_before_attack(player_character, player_faction_name, force_cqi, spot_coordinates, 1)
+    else
+        self:main_attacker_attacks_player_and_allies(player_character, player_faction_name, force_cqi, spot_coordinates)
+    end
+end
+
+
+-- we generate the enemy reinforcements first and the main force is the one that triggers the battle
+function InvasionBattleManager:create_enemy_reinforcements_before_attack(player_character, player_faction_name, force_cqi, spot_coordinates, army_number)
+    local reinforcing_army = self.event_army.reinforcing_enemy_armies[army_number]
+    reinforcing_army:randomize_units(self.random_army_manager)
+    local x, y = self:find_location_for_character_to_spawn(reinforcing_army.faction, spot_coordinates)
+    local invader_force = self.random_army_manager:generate_force(reinforcing_army.force_identifier)
+    local invasion = self:setup_invasion(reinforcing_army, player_character, invader_force, {x, y})
+        
+    invasion:start_invasion(
+        function(invasion_force)
+            -- we force war with this faction for the player
+            local call_player_allies_to_war = false
+            local call_faction_allies_to_war = false
+            cm:force_declare_war(reinforcing_army.faction, player_faction_name, call_player_allies_to_war, call_faction_allies_to_war)
+            -- all enemies have been declared
+            if army_number == #self.event_army.reinforcing_enemy_armies then
+                if self.event_army:has_ally_reinforcements() then
+                    local enemy_character = cm:get_closest_character_to_position_from_faction(reinforcing_army.faction, spot_coordinates[1], spot_coordinates[2])
+                    self:create_allied_reinforcements_before_attack(player_character, player_faction_name, force_cqi, spot_coordinates, enemy_character)
+                else
+                    -- Last: we declare the main attacker and begin the battle
+                    self:main_attacker_attacks_player_and_allies(player_character, player_faction_name, force_cqi, spot_coordinates)                    
+                end
+            else    
+                local next_army_number = army_number + 1
+                self:create_enemy_reinforcements_before_attack(player_character, player_faction_name, force_cqi, spot_coordinates, next_army_number)
+            end
+            --
+        end,
+        false,
+        false,
+        false
+    )
+end
+
+
+function InvasionBattleManager:create_allied_reinforcements_before_attack(player_character, player_faction_name, force_cqi, spot_coordinates, enemy_character)
+    local reinforcing_army = self.event_army.reinforcing_ally_armies[1]
+    reinforcing_army:randomize_units(self.random_army_manager)
+    local x, y = self:find_location_for_character_to_spawn(reinforcing_army.faction, spot_coordinates)
+    local invader_force = self.random_army_manager:generate_force(reinforcing_army.force_identifier)
+    local invasion = self:setup_invasion(reinforcing_army, enemy_character, invader_force, {x, y})
+    invasion:start_invasion(
+        function(invasion_force)
+            -- we force war with the other reinformcement enemy armies
+            self:ally_reinforcement_declares_war_to_enemy_reinforcements_if_available(reinforcing_army.faction)
+            -- we invoke the main attacker
+            self:main_attacker_attacks_player_and_allies(player_character, player_faction_name, force_cqi, spot_coordinates)
+        end,
+        false,
+        false,
+        false
+    )
+end
+
+
+function InvasionBattleManager:ally_reinforcement_declares_war_to_enemy_reinforcements_if_available(allied_faction)
+    if self.event_army:has_offensive_reinforcements() then 
+        local call_player_allies_to_war = false
+        local call_faction_allies_to_war = false
+        for i=1, #self.event_army.reinforcing_enemy_armies do
+            cm:force_declare_war(allied_faction, self.event_army.reinforcing_enemy_armies[i].faction, call_player_allies_to_war, call_faction_allies_to_war)
+        end
+    end
+end
+
+
+function InvasionBattleManager:main_attacker_attacks_player_and_allies(player_character, player_faction_name, force_cqi, spot_coordinates)
+    local x, y = self:find_location_for_character_to_spawn(self.event_army.faction, spot_coordinates)
+    local invader_force = self.random_army_manager:generate_force(self.event_army.force_identifier)
+    local invasion = self:setup_invasion(self.event_army, player_character, invader_force, {x, y})
+    
     invasion:start_invasion(
         function(invasion_force)
             self.core:add_listener(
@@ -70,7 +152,9 @@ function InvasionBattleManager:generate_battle(offensive_army, player_character,
                 "FactionLeaderDeclaresWar",
                 true,
                 function(local_context)
-                    --out("LEAPOI - InvasionBattleManager:generate_battle - FactionLeaderDeclaresWar")
+                    -- force declare war on reinforcement allies of player
+                    self:declare_war_on_ally_reinforcement_if_available()
+                    -- force attack of opportunity on player
                     local faction_being_declared_war_to = local_context:character():faction():name()
                     if faction_being_declared_war_to == self.event_army.faction then
                         cm:force_attack_of_opportunity(invasion_force:get_general():military_force():command_queue_index(), force_cqi, false)
@@ -85,49 +169,47 @@ function InvasionBattleManager:generate_battle(offensive_army, player_character,
         false,
         false,
         false
-    ) 
+    )
 end
 
 
-function InvasionBattleManager:setup_invasion(invasion_identifier, objective_character, objective_faction_name, force, force_lat_lng)
-    local character_cqi = objective_character:command_queue_index()
-    -- create invasion
-    if self.invasion_manager:get_invasion(invasion_identifier) then
-        self.invasion_manager:remove_invasion(invasion_identifier)
+-- For now the maximum number of allies that a player has is 1
+function InvasionBattleManager:declare_war_on_ally_reinforcement_if_available()
+    if self.event_army:has_ally_reinforcements() then
+        local call_player_allies_to_war = false
+        local call_faction_allies_to_war = false
+        cm:force_declare_war(self.event_army.faction, self.event_army.reinforcing_ally_armies[1].faction, call_player_allies_to_war, call_faction_allies_to_war)
     end
-    local invasion = self.invasion_manager:new_invasion(invasion_identifier, self.event_army.faction, force, force_lat_lng)
-    invasion:set_target("CHARACTER", character_cqi, objective_faction_name)
+end
+
+
+function InvasionBattleManager:setup_invasion(army, objective_character, force, force_lat_lng)
+    -- create invasion
+    if self.invasion_manager:get_invasion(army.invasion_identifier) then
+        self.invasion_manager:remove_invasion(army.invasion_identifier)
+    end
+    local invasion = self.invasion_manager:new_invasion(army.invasion_identifier, army.faction, force, force_lat_lng)
+    invasion:set_target("CHARACTER", objective_character:command_queue_index(), objective_character:faction():name())
     invasion:apply_effect("wh_main_bundle_military_upkeep_free_force", -1)
     -- create general for the invasion
     local make_faction_leader = false
-    invasion:create_general(make_faction_leader, self.event_army.lord.subtype, self.event_army.lord.forename, self.event_army.lord.clan_name, self.event_army.lord.family_name, self.event_army.lord.other_name)
-    --out("LEAPOI - InvasionBattleManager:setup_invasion - Lord:{type=" .. self.event_army.lord.subtype .. ", forename=" .. self.event_army.lord.forename .. ", clan_name=" .. self.event_army.lord.clan_name .. ", family_name=" .. self.event_army.lord.family_name .. ", other_name=" .. self.event_army.lord.other_name .. "}")
-    -- adds an experience level to the invasion forces
+    invasion:create_general(make_faction_leader, army.lord.subtype, army.lord.forename, army.lord.clan_name, army.lord.family_name, army.lord.other_name)
+    -- add an experience level to the invasion forces
     local by_level = true
-    invasion:add_character_experience(self.event_army.lord.level, by_level)
-    invasion:add_unit_experience(self.event_army.unit_experience_amount)
-    --out("LEAPOI - Invasion setup finished")
+    invasion:add_character_experience(army.lord.level, by_level)
+    -- add experience to the unit
+    invasion:add_unit_experience(army.unit_experience_amount)
     return invasion
 end
     
 
-function InvasionBattleManager:setup_encounter_force_removal(invasion_identifier)
-    out("LEAPOI - InvasionBattleManager:setup_encounter_force_removal setted for invasion_identifier=" .. tostring(invasion_identifier))
-	self.core:add_listener(
+function InvasionBattleManager:mark_battle_forces_for_removal(army)
+    self.core:add_listener(
         "land_enc_and_poi_encounter_removal",
         "FactionTurnStart", 
         true,
         function(context)
-            --out("LEAPOI - InvasionBattleManager:setup_encounter_force_removal runned")
-            local force = self.invasion_manager:get_invasion(invasion_identifier)
-            if force then
-                out("LEAPOI - InvasionBattleManager:setup_encounter_force_removal force triggered and killed")
-                cm:disable_event_feed_events(true, "", "", "diplomacy_faction_destroyed")
-                cm:disable_event_feed_events(true, "wh_event_category_character", "", "")
-                force:kill()
-                cm:callback(function() cm:disable_event_feed_events(false, "", "", "diplomacy_faction_destroyed") end, 1)
-                cm:callback(function() cm:disable_event_feed_events(false, "wh_event_category_character", "", "") end, 1)
-            end 
+            self:remove_invasion_forces(army)
         end,
         IS_NOT_PERSISTENT_LISTENER
 	)
@@ -135,13 +217,11 @@ end
 
 
 function InvasionBattleManager:set_auxiliary_army_for_reset(army)
-    --out("LEAPOI - InvasionBattleManager-set_auxiliary_army_for_reset - Army being setted:" .. battle_event)
     self.event_army = army
 end
 
 
-function InvasionBattleManager:reset_state_post_battle(zone, spot_type, spot_index, invasion_type)
-    out("LEAPOI - InvasionBattleManager-reset_state_post_battle setted")
+function InvasionBattleManager:reset_state_post_battle(zone, spot_type, spot_index, army)
 	self.core:add_listener(
         "land_enc_and_poi_encounter_post_battle",
         "BattleCompleted", 
@@ -150,42 +230,33 @@ function InvasionBattleManager:reset_state_post_battle(zone, spot_type, spot_ind
             local found_encounter_faction = false
             local player_won_battle = false
     
-            --out("LEAPOI - InvasionBattleManager-reset_state_post_battle - triggered")
             local attacker_was_victorious = cm:pending_battle_cache_attacker_victory()
             local defender_was_victorious = cm:pending_battle_cache_defender_victory()
 
             local player_faction_name = cm:get_local_faction_name()
-            local encounter_invasion = self.invasion_manager:get_invasion(invasion_type)
-    
-            -- Changed because defensive type battles I cannot track the enemy easily
-            -- TODO: check wheter this extra logic is neccesary: and cm:pending_battle_cache_faction_is_defender(self.event_army.faction)
+            local encounter_invasion = self.invasion_manager:get_invasion(army.invasion_identifier)
+            -- Changed because defensive type battles cannot be tracked easily
             if cm:pending_battle_cache_faction_is_attacker(player_faction_name) then
                 found_encounter_faction = true
                 if attacker_was_victorious then
                     player_won_battle = true
                 end
-    
                 if encounter_invasion then
-                    self:silently_remove_encounter_invasion(encounter_invasion)
+                    self:remove_invasion_forces(army)
                 end
-            -- TODO: check wheter this extra logic is neccesary:  and cm:pending_battle_cache_faction_is_attacker(self.event_army.faction) 
             elseif cm:pending_battle_cache_faction_is_defender(player_faction_name)then
                 found_encounter_faction = true
                 if defender_was_victorious then
                     player_won_battle = true
                 end
-    
                 if encounter_invasion then
-                    self:silently_remove_encounter_invasion(encounter_invasion)
+                    local uim = cm:get_campaign_ui_manager()
+                    uim:override("retreat"):unlock()
+                    self:remove_invasion_forces(army)
                 end
             end
-            
-            cm:callback(function() cm:disable_event_feed_events(false, "","","diplomacy_faction_destroyed") end, 1)
-            cm:callback(function() cm:disable_event_feed_events(false, "wh_event_category_character", "", "") end, 1)
-            
+                        
             if found_encounter_faction == true then
-                local uim = cm:get_campaign_ui_manager()
-                uim:override("retreat"):unlock()
                 zone:trigger_event_given_battle_result(spot_type, spot_index, player_won_battle)
             end
         end,
@@ -194,12 +265,55 @@ function InvasionBattleManager:reset_state_post_battle(zone, spot_type, spot_ind
 end
 
 
-function InvasionBattleManager:silently_remove_encounter_invasion(encounter_invasion)
-    cm:disable_event_feed_events(true, "","","diplomacy_faction_destroyed")
-	cm:disable_event_feed_events(true, "wh_event_category_character", "", "")
-	encounter_invasion:kill()
-	cm:callback(function() cm:disable_event_feed_events(false, "","","diplomacy_faction_destroyed") end, 1)
-	cm:callback(function() cm:disable_event_feed_events(false, "wh_event_category_character", "", "") end, 1)
+function InvasionBattleManager:remove_invasion_forces(army)
+    self:remove_invasion_force_by_identifier(army.invasion_identifier)
+    if army:has_offensive_reinforcements() then
+        for i=1, #army.reinforcing_enemy_armies do
+            self:remove_invasion_force_by_identifier(army.reinforcing_enemy_armies[i].invasion_identifier)
+        end
+    end
+    
+    if army:has_ally_reinforcements() then
+        for i=1, #army.reinforcing_ally_armies do
+            self:remove_invasion_force_by_identifier(army.reinforcing_ally_armies[i].invasion_identifier)
+        end
+    end
+end
+
+
+function InvasionBattleManager:remove_invasion_force_by_identifier(invasion_identifier)
+    local force = self.invasion_manager:get_invasion(invasion_identifier)
+    if force then
+        cm:disable_event_feed_events(true, "", "", "diplomacy_faction_destroyed")
+        cm:disable_event_feed_events(true, "wh_event_category_character", "", "")
+        force:kill()
+        cm:callback(function() cm:disable_event_feed_events(false, "", "", "diplomacy_faction_destroyed") end, 1)
+        cm:callback(function() cm:disable_event_feed_events(false, "wh_event_category_character", "", "") end, 1)
+    end
+end
+
+
+function InvasionBattleManager:find_location_for_character_to_spawn(faction_name, center_coordinates)
+    local x, y = cm:find_valid_spawn_location_for_character_from_position(faction_name, center_coordinates[1], center_coordinates[2], false)
+    -- we check in the center and then X logical meters around
+    for i=0, 4 do
+        -- we check in the same region
+        if x == -1 and y == -1 then
+            x, y = cm:find_valid_spawn_location_for_character_from_position(faction_name, center_coordinates[1],    center_coordinates[2], true, i*2)
+        else 
+            break
+        end
+        
+        -- we check in another region
+        if x == -1 and y == -1 then
+            x, y = cm:find_valid_spawn_location_for_character_from_position(faction_name, center_coordinates[1],    center_coordinates[2], false, i*2)
+        else 
+            break
+        end
+    end
+    
+    -- can be x = -1 and y = -1. The battle will not trigger if so.
+    return x, y
 end
 
 

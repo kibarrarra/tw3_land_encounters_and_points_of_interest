@@ -123,7 +123,6 @@ function SmithySpot:activate(zone_name, ignore)
     local marker_key = "encounter_marker_smithy"
     local interaction_radius = 8
     self:set_marker_on_map(marker_id, marker_key, interaction_radius)
-    out("LEAPOI - SmithySpot-activate - Marker Created")
 end
 
 
@@ -207,8 +206,8 @@ function SmithySpot:trigger_event(context, invasion_battle_manager, zone, spot_i
                 self:change_owner_through_occupation(visiting_faction:name())
             elseif self:is_faction_at_war_with_owner(visiting_faction) then
             -- and its occupied by an enemy
-                -- Character is in normal stance and can trigger the event
-                if self:character_can_trigger_dilemma(visiting_character) then
+                -- Character is in accepted stance and can trigger the event
+                if self:character_is_general_and_can_trigger_dilemma(visiting_character) then
                     -- then we can avoid it or battle for it
                     self.visiting_enemy_character = visiting_character
                     self.visiting_enemy_faction_name = visiting_faction:name()
@@ -288,7 +287,6 @@ function SmithySpot:trigger_dilemma_by_choice(invasion_battle_manager, zone, spo
     
     -- when the smithy is controlled by an enemy faction
     if (dilemma == EVENT_RECLAMATION or dilemma == EVENT_DEFENSE) and choice == FIRST_OPTION then
-        --out("LEAPOI - SmithySpot:trigger_dilemma_by_choice= " .. tostring(choice) .. ", type= " .. type(choice))
         -- If the AI controls the point. The point will be heavily defended. Only the player has to level it up correctly as the player benefits more from it
         -- up in the other logic
         if dilemma == EVENT_RECLAMATION then
@@ -316,23 +314,16 @@ function SmithySpot:trigger_dilemma_by_choice(invasion_battle_manager, zone, spo
 end
 
 
---////
 function SmithySpot:trigger_forced_interception_defense(invasion_battle_manager, zone, spot_index)
-    local x, y = self:find_location_for_character_to_spawn(self.controlling_faction_name)
     local defender_army = self:get_defensive_army()
     
     if not self.visiting_enemy_character then
         self.visiting_enemy_character = cm:get_closest_character_to_position_from_faction(self.visiting_enemy_faction_name, self.coordinates[1], self.coordinates[2], true, false, false, false)
     end
     
-    invasion_battle_manager:generate_defense_battle(defender_army, self.visiting_enemy_character, {x, y})
-    invasion_battle_manager:setup_encounter_force_removal("defender_invasion")
-    invasion_battle_manager:reset_state_post_battle(
-        zone, 
-        self:get_class(), 
-        spot_index, 
-        "defender_invasion"
-    )    
+    invasion_battle_manager:generate_defense_battle(defender_army, self.visiting_enemy_character, self.coordinates)
+    invasion_battle_manager:mark_battle_forces_for_removal(defender_army)
+    invasion_battle_manager:reset_state_post_battle(zone, self:get_class(), spot_index, defender_army)
 end
 
 
@@ -455,10 +446,8 @@ end
 
 
 function SmithySpot:is_faction_at_war_with_owner(visiting_faction)
-    out("SmithySpot:is_faction_at_war_with_owner controlling_faction_name=" .. self.controlling_faction_name)
     local controlling_faction = cm:get_faction(self.controlling_faction_name)
     if controlling_faction == false then
-        out("SmithySpot:is_faction_at_war_with_owner controlling faction was false")
         return false
     end
     return controlling_faction:at_war_with(visiting_faction)
@@ -498,14 +487,14 @@ end
 
 
 -- check that controlling faction is not dead. 
-function SmithySpot:update_state_through_turn_passing()
+function SmithySpot:update_state_through_turn_passing(mission_manager)
     local controlling_faction = self:check_if_owner_is_alive_and_return_faction()
     if self:is_occupied() then
         self:force_enemy_invasion_if_possible()
         
         self:reward_owner_faction(controlling_faction)
         self:update_visit_cooldown(controlling_faction:name())
-        self:issue_mission_if_possible(controlling_faction)
+        self:issue_mission_if_possible(controlling_faction, mission_manager)
         
         self.turns_under_control = self.turns_under_control + 1
     end
@@ -537,18 +526,16 @@ function SmithySpot:reward_owner_faction(controlling_faction)
     if self:is_occupied_by_player() then
         -- if the smith is under player control, give an ancillary every [ancillary_reward_turn] configurable through MCT and the smithing level
         turns_till_reward = self.turns_under_control % self:reward_turn_given_level()
-    else
-        -- if the smith is under AI control. Every 5 levels give an ancillary to their faction (flat)
-        turns_till_reward = self.turns_under_control % 5
+    elseif self:is_occupied() then
+        -- if the smith is under AI control. Every 4 levels give an ancillary to their faction (flat)
+        turns_till_reward = self.turns_under_control % 4
     end
-    
+
     if turns_till_reward == 0 then
-        --TODO check wether it is the player faction
         -- if its an ai filter the event
-        -- campaign_manager:disable_event_feed_events(boolean should disable, [string event categories],[string event subcategories], [string event])
         local representative_character = cm:get_highest_ranked_general_for_faction(controlling_faction)
         self:trigger_incident(self.event.tribute_incident, representative_character, self.event.targets)
-    end
+    end    
 end
 
 
@@ -581,16 +568,25 @@ function SmithySpot:update_visit_cooldown(controlling_faction)
 end
 
 
-function SmithySpot:issue_mission_if_possible(controlling_faction)
+function SmithySpot:issue_mission_if_possible(controlling_faction, mission_manager)
     -- if is occupied by player and the smithy has been under control for 20 turns
-    if self:is_occupied_by_player() and self.turns_under_control % 20 == 0 then
+    if self:is_occupied_by_player() and self.turns_under_control % 30 == 0 then
         -- issue a subculture mission for the player so that they can win an ancillary by completing a mission
         local subculture_missions = smithy_missions_by_subculture[self.controlling_faction_subculture]
         if not (subculture_missions == nil) and #subculture_missions > 0 then
-            -- TODO: Not working. Need more input from DF and Vandy
-            --cm:trigger_mission(controlling_faction:name(), subculture_missions[random_number(#subculture_missions)], true)
+            local smithy_mission = subculture_missions[random_number(#subculture_missions)]
+            local mm = mission_manager:new(controlling_faction:name(), smithy_mission.mission)
+            mm:set_mission_issuer("CLAN_ELDERS")
+            mm:add_new_objective("KILL_X_ENTITIES")
+            mm:add_condition("total 7500")
+            mm:set_turn_limit(15)
+            mm:set_should_whitelist(false)
+            for i = 1, #smithy_mission.ancillaries do
+                mm:add_payload("add_ancillary_to_faction_pool{ancillary_key ".. smithy_mission.ancillaries[i] ..";}")
+            end
+            mm:trigger()
         end
-    elseif not self:is_occupied_by_player() and self:is_occupied() and self.turns_under_control % 20 == 0 then
+    elseif not self:is_occupied_by_player() and self:is_occupied() and self.turns_under_control % 12 == 0 then
         -- give a set or a special subculture item directly to the ai
         local subculture_items = special_items_by_subculture[self.controlling_faction_subculture]
         if not (subculture_items == nil) and #subculture_items > 0 then
@@ -609,9 +605,6 @@ function SmithySpot:get_defensive_army()
     if self:is_occupied_by_player() then
         battle_level = self.level
     end
-    
-    out("LEAPOI - SmithySpot-get_defensive_army controlling_faction_name:" .. self.controlling_faction_name .. ", controlling_faction_subculture:" .. self.controlling_faction_subculture .. ", battle_level=" .. battle_level)
-    
     return Army:new_from_faction_and_subculture_and_level(self.controlling_faction_name, self.controlling_faction_subculture, battle_level)
 end
 

@@ -3,6 +3,8 @@ local smithy_defenders = {
     --WH1
     --Dwarfs
     ["wh_main_sc_dwf_dwarfs"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh_dlc06_dwf_cha_runelord"
@@ -43,6 +45,8 @@ local smithy_defenders = {
     },
     --Greenskins
     ["wh_main_sc_grn_greenskins"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh_main_grn_goblin_great_shaman"
@@ -83,6 +87,8 @@ local smithy_defenders = {
     },
     --The Empire
     ["wh_main_sc_emp_empire"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh_main_emp_lord"
@@ -124,6 +130,8 @@ local smithy_defenders = {
     },
     --Vampire Counts
     ["wh_main_sc_vmp_vampire_counts"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh2_dlc11_vmp_bloodline_necrarch"
@@ -165,6 +173,8 @@ local smithy_defenders = {
     },
     --Warriors of Chaos
     ["wh_main_sc_chs_chaos"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh_dlc01_chs_cha_chaos_lord"
@@ -206,6 +216,8 @@ local smithy_defenders = {
     },
     --Beastmen
     ["wh_dlc03_sc_bst_beastmen"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh_dlc03_bst_beastlord"
@@ -249,6 +261,8 @@ local smithy_defenders = {
     },
     --Bretonnia
     ["wh_main_sc_brt_bretonnia"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh_main_brt_cha_lord"
@@ -289,6 +303,8 @@ local smithy_defenders = {
     },
     --Wood Elves
     ["wh_dlc05_sc_wef_wood_elves"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh_dlc05_wef_glade_lord"
@@ -325,6 +341,8 @@ local smithy_defenders = {
     },
     --Norsca
     ["wh_dlc08_sc_nor_norsca"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh_main_nor_marauder_chieftain"
@@ -369,6 +387,8 @@ local smithy_defenders = {
     --WH2
     --Dark Elves
     ["wh2_main_sc_def_dark_elves"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh2_main_def_dreadlord_fem"
@@ -409,6 +429,8 @@ local smithy_defenders = {
     },
     --High Elves
     ["wh2_main_sc_hef_high_elves"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh2_main_hef_princess"
@@ -450,6 +472,8 @@ local smithy_defenders = {
     },
     --Lizardmen
     ["wh2_main_sc_lzd_lizardmen"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh2_main_lzd_saurus_old_blood"
@@ -492,6 +516,8 @@ local smithy_defenders = {
     },
     --Skaven
     ["wh2_main_sc_skv_skaven"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh2_dlc12_skv_warlock_master"
@@ -537,6 +563,8 @@ local smithy_defenders = {
     },
     --Tomb Kings
     ["wh2_dlc09_sc_tmb_tomb_kings"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh2_dlc09_tmb_tomb_king"
@@ -580,6 +608,8 @@ local smithy_defenders = {
     },
     --Vampire Coast
     ["wh2_dlc11_sc_cst_vampire_coast"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh2_dlc11_cst_admiral_fem_vampires"
@@ -625,6 +655,8 @@ local smithy_defenders = {
 
     --WH3
     ["wh3_main_sc_ksl_kislev"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh3_main_ksl_ataman"
@@ -670,6 +702,8 @@ local smithy_defenders = {
     },
 
     ["wh3_main_sc_dae_daemons"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh3_main_kho_herald_of_khorne",
@@ -716,6 +750,8 @@ local smithy_defenders = {
     },
 
     ["wh3_main_sc_cth_cathay"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh3_main_cth_dragon_blooded_shugengan_yang",
@@ -761,6 +797,8 @@ local smithy_defenders = {
     },
     
     ["wh3_main_sc_ogr_ogre_kingdoms"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh3_main_ogr_tyrant"
@@ -804,6 +842,8 @@ local smithy_defenders = {
     },
     
     ["wh3_main_sc_nur_nurgle"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh3_main_nur_exalted_great_unclean_one_nurgle"
@@ -847,6 +887,8 @@ local smithy_defenders = {
     },
 
     ["wh3_main_sc_kho_khorne"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh3_main_kho_exalted_bloodthirster"
@@ -894,6 +936,8 @@ local smithy_defenders = {
     },
 
     ["wh3_main_sc_sla_slaanesh"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh3_main_sla_exalted_keeper_of_secrets_shadow"
@@ -937,6 +981,8 @@ local smithy_defenders = {
     },
     
     ["wh3_main_sc_tze_tzeentch"] = {
+        identifier = "defender_force",
+        invasion_identifier = "defender_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh3_main_tze_exalted_lord_of_change_tzeentch"

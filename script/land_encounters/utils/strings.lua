@@ -17,7 +17,6 @@ function process_marker_id(marker_id)
     beginning_index, ending_index = string.find(marker_id, "_", (#marker_id - 3))
     local zone_name = string.sub(marker_id, 17, beginning_index - 1)
     local spot_index = string.sub(marker_id, ending_index + 1, #marker_id)
-    --out("LEAPOI - process_marker_id {zone_name:" .. zone_name .. ", spot_index:" .. spot_index .. "}")
     return { zone_name, tonumber(spot_index), LAND_ENCOUNTER_TYPE } -- 0 for land_encounter
 end
 
@@ -29,4 +28,40 @@ function split_by_regex(splittable_string, separator)
         table.insert(string_parts, part)
     end
     return string_parts
+end
+
+
+function table_to_string(t, indent)
+    if not indent then
+        indent = 0
+    end
+    local prefix = ""
+    for i = 1, indent do
+        prefix = prefix .. "\t"
+    end
+    local result = "{" .. "".."\n"
+    local first_result = false 
+    for k, v in pairs(t) do
+        if not first_result then
+            first_result = true
+        else
+            result = result .. ",\n" 
+        end
+        local layer_indent = "\t"
+        if type(k) == "string" then
+            k = string.format("%q", k)
+        end
+        if v == "" then
+            v = "\"\"" --empty string
+        elseif type(v) == "boolean" or type(v) == "number" then
+            v = tostring(v)
+        elseif type(v) == "string" then
+            v = string.format("%q", v) 
+        elseif type(v) == "table" then
+            v = table_to_string(v, indent + 1)
+        end
+        result = result ..layer_indent..prefix.."[" .. k .. "] = " .. v
+    end
+    result = result .. "\n"..prefix.."}"
+    return result
 end

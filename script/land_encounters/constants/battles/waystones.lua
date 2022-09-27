@@ -17,6 +17,8 @@ None
 return {
     ["land_enc_dilemma_waystone_defense_hef"] = {
         faction = "wh2_main_hef_high_elves_qb1",
+        identifier = "encounter_force",
+        invasion_identifier = "encounter_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh2_main_hef_princess", 
@@ -38,6 +40,8 @@ return {
             { "wh2_main_hef_cav_ithilmar_chariot", 2, 30, 30, "wh2_main_hef_mon_moon_dragon" }, -- 17
             { "wh2_main_hef_mon_phoenix_flamespyre", 2, 20, 50, "wh2_main_hef_mon_phoenix_frostheart" }, -- 19
             { "wh2_main_hef_mon_star_dragon", 1, 5, 0, nil } -- 20
-        }
+        },
+        reinforcing_ally_armies = false,
+        reinforcing_enemy_armies = false
     }
 }

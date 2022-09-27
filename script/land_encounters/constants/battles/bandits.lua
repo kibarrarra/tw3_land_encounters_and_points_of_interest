@@ -21,7 +21,9 @@ return {
 
     -- Empire
     ["land_enc_dilemma_bandits_emp"] = {
-        faction = "wh_main_emp_empire_qb1", -- Do not create new factions as recommended by Vandy.
+        faction = "wh_main_emp_empire_qb1",
+        identifier = "encounter_force",
+        invasion_identifier = "encounter_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh_main_emp_lord",
@@ -46,11 +48,15 @@ return {
             { "wh_main_emp_art_great_cannon", 1, 5, 5, "wh_main_emp_art_helstorm_rocket_battery" }, -- 19
             { "wh_main_emp_art_helblaster_volley_gun", 1, 5, 5, "wh_main_emp_cav_demigryph_knights_0" } -- 20
         },
+        reinforcing_ally_armies = false,
+        reinforcing_enemy_armies = false
     },
     
     -- Wood Elves
     ["land_enc_dilemma_bandits_wef"] = {
         faction = "wh_dlc05_wef_wood_elves_qb1",
+        identifier = "encounter_force",
+        invasion_identifier = "encounter_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh_dlc05_wef_glade_lord", 
@@ -71,12 +77,16 @@ return {
             { "wh_dlc05_wef_inf_wardancers_0", 2, 5, 0, nil }, -- 17
             { "wh_dlc05_wef_inf_waywatchers_0", 2, 5, 60, "wh_dlc05_wef_inf_deepwood_scouts_0" },  -- 19
             { "wh_dlc05_wef_forest_dragon_0", 1, 1, 50, "wh_dlc05_wef_cha_ancient_treeman_0" } -- 20
-        }
+        },
+        reinforcing_ally_armies = false,
+        reinforcing_enemy_armies = false
     }, 
     
     -- Norsca
     ["land_enc_dilemma_bandits_nor"] = {
         faction = "wh_main_nor_norsca_qb1",
+        identifier = "encounter_force",
+        invasion_identifier = "encounter_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh_main_nor_marauder_chieftain", 
@@ -96,7 +106,9 @@ return {
             { "wh_dlc08_nor_mon_skinwolves_1", 2, 10, 50, "wh_main_nor_mon_chaos_warhounds_1" }, -- 17
             { "wh_dlc08_nor_mon_fimir_1", 2, 5, 0, nil }, -- 19
             { "wh_dlc08_nor_mon_war_mammoth_0", 1, 5, 0, nil } -- 20
-        }
+        },
+        reinforcing_ally_armies = false,
+        reinforcing_enemy_armies = false
      },
     
 }

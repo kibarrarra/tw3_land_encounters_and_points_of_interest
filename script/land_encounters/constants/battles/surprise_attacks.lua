@@ -22,6 +22,8 @@ return {
     -- Beastmen
     ["land_enc_dilemma_surprise_attack_bst"] = {
         faction = "wh_dlc03_bst_beastmen_qb1",
+        identifier = "encounter_force",
+        invasion_identifier = "encounter_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh_dlc03_bst_beastlord",
@@ -42,12 +44,16 @@ return {
             { "wh_dlc03_bst_inf_ungor_herd_1", 2, 40, 30, "wh2_dlc17_bst_cha_wargor_2"}, -- 16
             { "wh_dlc03_bst_inf_chaos_warhounds_1", 2, 30, 50, "wh2_dlc17_bst_mon_ghorgon_0" }, -- 18
             { "wh_dlc03_bst_cav_razorgor_chariot_0", 2, 20, 50, "wh2_dlc17_bst_mon_jabberslythe_0" } -- 20
-        }
+        },
+        reinforcing_ally_armies = false,
+        reinforcing_enemy_armies = false
     },
     
     -- Skaven
     ["land_enc_dilemma_surprise_attack_skv"] = {
         faction = "wh2_main_skv_skaven_qb1",
+        identifier = "encounter_force",
+        invasion_identifier = "encounter_invasion",
         lord = { 
             possible_subtypes = { 
                 "wh2_dlc12_skv_warlock_master", 
@@ -68,7 +74,9 @@ return {
             { "wh2_main_skv_mon_hell_pit_abomination", 2, 40, 30, "wh2_main_skv_mon_rat_ogres"}, -- 16
             { "wh2_main_skv_veh_doomwheel", 2, 30, 50, "wh2_main_skv_inf_gutter_runners_1" }, -- 18
             { "wh2_main_skv_inf_night_runners_1", 2, 20, 50, "wh2_main_skv_inf_plague_monks" } -- 20
-        }
+        },
+        reinforcing_ally_armies = false,
+        reinforcing_enemy_armies = false
     },
     
 }

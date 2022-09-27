@@ -81,10 +81,39 @@ Defenders        12 weak units     16 good units      20 man doomstack
 
 
 ===============================
-Future
+Version 1.3 for Game version 2.2
 ===============================
+Battle Spots
+[Additions]
+- Added 8 more battles (1 hard, 7 harder with the special ROC ancillaries).
+- Added more complex logic for battles: Like having several armies at once, being enemy reinforcements the most common, and just one example battle for ally reinforcements (Azazel's Prank).
+- Added 2 more stances that can trigger battle encounters (Alith's Anar problem). WARNING: When entering a point in Ambush or Channeling stance, you won't be able to retreat. There is no way to change this so be warned.
+- Rebalanced some of the battles to be harder (Still autoresolvable but kinda hate how easy is IM right now).
+- Made certain ancillaries gained through the battles sellable, so that you don't have to have them in your inventory forever if you don't want to.
 
-===============================
-Version 1.3 for Game version ???
-===============================
-- Controlled resource spot
+[Fixes]
+- Clean up the code (even more). Removed some possible cause of errors like the creation of several points every time the game is reentered, some event managements that were causing problems (like battles not spawning or battle rewards not being received).
+
+[Balance]
+- Rebalance the rewards so that you won't as easily become too rich with them (halved almost all money from them) (sorry friends but I ended up with a billion in money just from visiting points with 3 doomstacks armies so it is for the best).
+- The seven battles give you and 2 random enemy factions the blades so that it is more balanced. After gaining an ancillary you cannot gain it again and a second different buff will be given.
+
+Treasure Spots
+[Additions]
+Added a new treasure spot to help the order / destruction races traverse the chaos wastes or zones of heavy attrition. Right now there is very little way of reducing attrition damage for certain races and is annoying.
+
+[Experiment]
+Some of the treasure spot give a buff directly to the armies that AI trigger them. In one of the previous versions, it would give an incident that triggered the buff. This sometimes would crash the game. Shouldn't now. But if it does. Please give a testing savefile so I can confirm and regress the experiment.
+
+Smithy Spots
+[Fixes]
+- Fixed an error where one could end up with too many gifts from the smithy, because smithies withouth owners will give their gifts to the player because a part of the logic was missing.
+
+Spots
+[Additions]
+- Added a failsafe trigger in case the event in the spot cannot trigger the battle because the armies have too little space or armies that cannot spawn. The spot will became a treasure spot and auto deactivate giving some money and experience in the process instead of being bugged for the lifespan of that spot. The event would not trigger but eventually the reward would have been given to you missing the point.
+- Added optional flow events. Given that you won the legendary ROC ancillary you won't win it a again. A different event will trigger just benefiting your army in the process.
+- Added World balancing effects logic: in this case, the first example is the daemonic gifts the enemy AI (2 of your enemies) receive the ancillaries when you also win them (the khorne blades and the slaanesh gifts).
+
+IM 
+Removed and moved some spots that weren't reachable or couldn't be reached no matter were you move them because there were no easy place to put them. Non triggerable spots may still exist. Please report accordingly through the links to fix them.

@@ -5,8 +5,10 @@ local Zone = require("script/land_encounters/models/Zone")
 -------------------------
 --- Constant values of the class [DO NOT CHANGE]
 -------------------------
-local DEFAULT_ACTIVE_SPOT_PERCENTAGE = 1.00--0.75
-local DEFAULT_BATTLE_PERCENTAGE = 0.80
+-- Should be 0.75 by default. This means that 75% of all points are active during a campaign. Modify to make it more.
+local DEFAULT_ACTIVE_SPOT_PERCENTAGE = 1.00--0.85 
+-- Should be 0.9 by default. This means that 90% of the dynamic spots are battles and 10% of the spots are treasures.
+local DEFAULT_BATTLE_PERCENTAGE = 0.90 
 
 --=======================
 --- Properties definition
@@ -19,9 +21,11 @@ local LandEncounterManager = {
     -- given that the dilemma context does not have an area_key(), we need to track it here
     dilemma_zone_and_spot = false,
     
-    -- TODO: Ca managers. They don't seem to pass properly to functions outside their scope and importing them does not work. Passing their instances to the land encounters manager for using them in whenever instance needs them
+    -- CA managers
     -- Core is the main manager for listeners.
     core = false,
+    -- For letting the poi issue missions
+    mission_manager = false,
     -- For creating random armies and creating invasions
     invasion_battle_manager = false,
     battle_event_factory = false,
@@ -77,7 +81,6 @@ end
 function LandEncounterManager:initialize_points_of_interest_by_zone(perpetual_coordinates_with_types)
     for i = 1, #self.zones do
         local zone = self.zones[i]
-        out("LEAPOI - LandEncounterManager:initialize_points_of_interest_by_zone Zone:" .. zone.name)
         zone:initialize_points_of_interest(perpetual_coordinates_with_types[zone.name])
     end
 end
@@ -105,15 +108,11 @@ function LandEncounterManager:reinstate_zone_land_encounters(previous_state, tur
         local active_battle_spot_index = self.zones[i]:reinstate(previous_state, self.battle_event_factory)
 
         if active_battle_spot_index ~= nil then
-            
-            self.invasion_battle_manager:set_auxiliary_army_for_reset(auxiliary_army)
-            self.invasion_battle_manager:setup_encounter_force_removal("encounter_invasion")
-            self.invasion_battle_manager:reset_state_post_battle(
-                self.zones[i], 
-                self.zones[i].spots[active_battle_spot_index]:get_class(),
-                active_battle_spot_index, 
-                "encounter_invasion"
-            )
+            local battle_spot = self.zones[i].spots[active_battle_spot_index]
+            local offensive_army = battle_spot:get_offensive_army()
+            self.invasion_battle_manager:set_auxiliary_army_for_reset(offensive_army)
+            self.invasion_battle_manager:mark_battle_forces_for_removal(offensive_army)
+            self.invasion_battle_manager:reset_state_post_battle(self.zones[i], battle_spot:get_class(), active_battle_spot_index, offensive_army)
         end
     end
 end
@@ -124,14 +123,11 @@ function LandEncounterManager:reinstate_zone_points_of_interest(previous_state)
         local active_poi_spot_index = self.zones[i]:reinstate_points_of_interest(previous_state)
         
         if active_poi_spot_index ~= nil then
-            self.invasion_battle_manager:set_auxiliary_army_for_reset(self.zones[i].points_of_interest[active_poi_spot_index]:get_defensive_army())
-            self.invasion_battle_manager:setup_encounter_force_removal("defender_invasion")
-            self.invasion_battle_manager:reset_state_post_battle(
-                self.zones[i], 
-                self.zones[i].points_of_interest[active_poi_spot_index]:get_class(), 
-                active_poi_spot_index, 
-                "defender_invasion"
-            )
+            local poi = self.zones[i].points_of_interest[active_poi_spot_index]
+            local defensive_army = poi:get_defensive_army()
+            self.invasion_battle_manager:set_auxiliary_army_for_reset(defensive_army)
+            self.invasion_battle_manager:mark_battle_forces_for_removal(defender_army)
+            self.invasion_battle_manager:reset_state_post_battle(self.zones[i], poi:get_class(), active_poi_spot_index, defensive_army)
         end
     end
 end
@@ -146,7 +142,7 @@ function LandEncounterManager:update_land_encounters(turn_number)
         self:populate_zone(self.zones[i], turn_number)
         
         -- related to points_of_interest
-        self.zones[i]:update_points_of_interest_by_turn(turn_number)
+        self.zones[i]:update_points_of_interest_by_turn(turn_number, self.mission_manager)
     end    
 end
 
@@ -229,12 +225,13 @@ end
 --=======================
 --- Constructors
 --=======================
-function LandEncounterManager:newFrom(core, invasion_battle_manager, battle_event_factory)
+function LandEncounterManager:newFrom(core, mission_manager, invasion_battle_manager, battle_event_factory)
     local t = { 
         zones = {},
         active_spot_percentage = DEFAULT_ACTIVE_SPOT_PERCENTAGE,
         battle_percentage = DEFAULT_BATTLE_PERCENTAGE,
         core = core,
+        mission_manager = mission_manager,
         invasion_battle_manager = invasion_battle_manager,
         battle_event_factory = battle_event_factory 
     }
