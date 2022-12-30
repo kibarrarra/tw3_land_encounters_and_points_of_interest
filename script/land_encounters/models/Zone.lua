@@ -183,6 +183,8 @@ function Zone:reinstate(previous_state, battle_event_factory)
                     self.battle_spots_mid = self.battle_spots_mid + 1
                 elseif self.spots[i].event.dilemma.difficulty_level == 3 then
                     self.battle_spots_hard = self.battle_spots_hard + 1
+                elseif self.spots[i].event.dilemma.difficulty_level == 4 then
+                    self.battle_spots_harder = self.battle_spots_harder + 1
                 end
                 
                 if self.spots[i].is_triggered then
